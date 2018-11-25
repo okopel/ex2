@@ -23,7 +23,7 @@ class myID;
 
 class AllId;
 
-class myPlane : public Plane {
+class myPlane : virtual public Plane {
     int model;
     int maxFirstClass;
     int maxSecondClass;
@@ -36,16 +36,16 @@ public:
 
     int getModelNumber() override;
 
-    map<Jobs, int> getCrewNeeded();
+    map<Jobs, int> getCrewNeeded() override;
 
     int getMaxFirstClass() override;
 
     int getMaxEconomyClass() override;
 };
 
-class MyReservation : public Reservation {
-    MyCustomer *customer;
-    MyFlight *flight;
+class MyReservation : virtual public Reservation {
+    Customer *customer;
+    Flight *flight;
     int baggage;
     Classes classes;
     string id;
@@ -72,14 +72,14 @@ class AllId {
     int pilots;
     int other;
 public:
-    AllId(int managers = 0, int navigators = 0, int fly_attendant = 0, int pilots = 0, int other = 0);
+    explicit AllId(int managers = 0, int navigators = 0, int fly_attendant = 0, int pilots = 0, int other = 0);
 
     string generate(Jobs type);
 
     int getCount(Jobs type);
 };
 
-class myEmploee : public Employee {
+class myEmploee : virtual public Employee {
     Jobs type;
     string id;
     int seniority;
@@ -88,13 +88,13 @@ class myEmploee : public Employee {
 public:
     myEmploee(Jobs type, int seniority, int birthYear, myEmploee *employee, AllId company);
 
-    int getSeniority();
+    int getSeniority() override;
 
-    int getBirthYear();
+    int getBirthYear() override;
 
-    Jobs getTitle();
+    Jobs getTitle() override;
 
-    string getID();
+    string getID() override;
 
     string toString();
 
@@ -105,7 +105,7 @@ public:
     }
 };
 
-class MyCustomer : public Customer {
+class MyCustomer : virtual public Customer {
     string name;
     int priority;
     string id;
@@ -122,7 +122,7 @@ public:
     MyCustomer(const string name, int priority, AllId company);
 };
 
-class MyFlight : public Flight {
+class MyFlight : virtual public Flight {
     string id;
     int model;
     list<Reservation *> reser;
@@ -153,34 +153,34 @@ public:
 class MyEx2 : Ex2 {
     AllId company;
     vector<myEmploee> employees;
-    list <Plane> planes;
-    list <Flight> flight;
-    list <Customer> customer;
-    list <Reservation> reservs;
+    list<Plane *> planes;
+    list<Flight *> flight;
+    list<Customer *> customer;
+    list<Reservation *> reservs;
 
 public:
     MyEx2();
 
 private:
-    Employee *addEmployee(int seniority, int birth_year, string employer_id, Jobs title);
+    Employee *addEmployee(int seniority, int birth_year, string employer_id, Jobs title) override;
 
-    myEmploee *getEmployee(const string id);
+    myEmploee *getEmployee(const string id) override;
 
-    Plane *addPlane(int model_number, map<Jobs, int> crew_needed, map<Classes, int> max_passangers);
+    Plane *addPlane(int model_number, map<Jobs, int> crew_needed, map<Classes, int> max_passangers) override;
 
-    Plane *getPlane(string id);
+    Plane *getPlane(string id) override;
 
-    Flight *addFlight(int model_number, Date date, string source, string destination);
+    Flight *addFlight(int model_number, Date date, string source, string destination) override;
 
-    Flight *getFlight(string id);
+    Flight *getFlight(string id) override;
 
-    Customer *addCustomer(string full_name, int priority);
+    Customer *addCustomer(string full_name, int priority) override;
 
-    Customer *getCustomer(string id);
+    Customer *getCustomer(string id) override;
 
-    Reservation *addResevation(string customerId, string flightId, Classes cls, int max_baggage);
+    Reservation *addResevation(string customerId, string flightId, Classes cls, int max_baggage) override;
 
-    Reservation *getReservation(string id);
+    Reservation *getReservation(string id) override;
 };
 
 class Table {

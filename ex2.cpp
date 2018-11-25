@@ -1,6 +1,5 @@
 #include <iostream>
 #include "ex2.h"
-#include "interface.h"
 
 
 int main() {
@@ -22,7 +21,7 @@ int myEmploee::getSeniority() {
 }
 
 int myEmploee::getBirthYear() {
-    return this->getBirthYear();
+    return this->birthYead;
 }
 
 Employee *myEmploee::getEmployer() {
@@ -117,7 +116,7 @@ bool Date::operator==(const Date &d) const {
 }
 
 MyReservation::MyReservation(Customer *customer, Flight *flight, int baggage, Classes classes, AllId comp) :
-        customer(customer), flight(flight), baggage(baggage), classes(classes) {
+        baggage(baggage), classes(classes), customer(customer), flight(flight) {
 
     this->id = comp.generate(OTHER);
 }
@@ -144,7 +143,7 @@ MyCustomer::MyCustomer(const string name, int priority, AllId company) {
     if (this->priority > 5) {
         this->priority = 5;
     } else if (this->priority < 1) {
-        priority = 1;
+        this->priority = 1;
     }
     this->id = company.generate(OTHER);
 }
@@ -203,9 +202,6 @@ MyFlight::MyFlight(int model, const Date &date, const string &from, const string
 
 }
 
-MyEx2::MyEx2() {
-    this->company;
-}
 
 Employee *MyEx2::addEmployee(int seniority, int birth_year, string employer_id, Jobs title) {
     myEmploee *boss = this->getEmployee(employer_id);
@@ -217,7 +213,7 @@ Employee *MyEx2::addEmployee(int seniority, int birth_year, string employer_id, 
 
 myEmploee *MyEx2::getEmployee(const string id) {
     for (auto &employee : this->employees) {
-        if (employee.getID().compare(id) == 0) { continue; }
+        if (employee.getID() == (id)) { continue; }
         return &employee;
     }
     return nullptr;
@@ -225,59 +221,62 @@ myEmploee *MyEx2::getEmployee(const string id) {
 }
 
 Plane *MyEx2::addPlane(int model_number, map<Jobs, int> crew_needed, map<Classes, int> max_passangers) {
-    myPlane mp(model_number, max_passangers.at(FIRST_CLASS), max_passangers.at(SECOND_CLASS), crew_needed,
-               this->company);
+    Plane *mp = new myPlane(model_number, max_passangers.at(FIRST_CLASS), max_passangers.at(SECOND_CLASS), crew_needed,
+                            this->company);
+//    myPlane mp(model_number, max_passangers.at(FIRST_CLASS), max_passangers.at(SECOND_CLASS), crew_needed,
+//               this->company);
     this->planes.push_back(mp);
-    return this->getPlane(mp.getID());
+    return this->getPlane(mp->getID());
 }
 
 Plane *MyEx2::getPlane(string id) {
     for (auto &plane : this->planes) {
-        if (plane.getID().compare(id) == 0) { continue; }
-        return &plane;
+        if (plane->getID().compare(id) == 0) { continue; }
+        return plane;
     }
     return nullptr;
 }
 
 Flight *MyEx2::addFlight(int model_number, Date date, string source, string destination) {
     MyFlight myFlight(model_number, date, source, destination);
-    this->flight.push_back(myFlight);
+    this->flight.push_back(&myFlight);
     return this->getFlight(myFlight.getID());
 }
 
 Flight *MyEx2::getFlight(string id) {
     for (auto &flight : this->flight) {
-        if (flight.getID().compare(id) == 0) { continue; }
-        return &flight;
+        if (flight->getID().compare(id) == 0) { continue; }
+        return flight;
     }
     return nullptr;
 }
 
 Customer *MyEx2::addCustomer(string full_name, int priority) {
-    MyCustomer myCustomer(full_name, priority, this->company);
+    Customer *myCustomer = new MyCustomer(full_name, priority, this->company);
     this->customer.push_back(myCustomer);
-    return this->getCustomer(myCustomer.getID());
+    return this->getCustomer(myCustomer->getID());
 }
 
 Customer *MyEx2::getCustomer(string id) {
     for (auto &cust : this->customer) {
-        if (cust.getID().compare(id) == 0) { continue; }
-        return &cust;
+        if (cust->getID().compare(id) == 0) { continue; }
+        return cust;
     }
     return nullptr;
 }
 
 Reservation *MyEx2::addResevation(string customerId, string flightId, Classes cls, int max_baggage) {
-    MyReservation myres(this->getCustomer(customerId), this->getFlight(flightId), max_baggage, cls,
-                        this->company);                               );
+
+    Reservation *myres = new MyReservation(this->getCustomer(customerId), this->getFlight(flightId), max_baggage, cls,
+                                           this->company);
     this->reservs.push_back(myres);
-    return this->getReservation(myres.getID());
+    return this->getReservation(myres->getID());
 }
 
 Reservation *MyEx2::getReservation(string id) {
     for (auto &res : this->reservs) {
-        if (res.getID().compare(id) == 0) { continue; }
-        return &res;
+        if (res->getID().compare(id) == 0) { continue; }
+        return res;
     }
     return nullptr;
 }
