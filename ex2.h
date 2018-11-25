@@ -152,7 +152,7 @@ class MyFlight : virtual public Flight {
     string des;
 
 public:
-    MyFlight(int model, const Date &date, const string &from, const string &des);
+    MyFlight(int model, const Date &date, const string &from, const string &des, AllId *company);
 
     int getModelNumber() override;
 

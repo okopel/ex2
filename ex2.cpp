@@ -17,6 +17,8 @@ int main() {
     crew.insert(std::pair<Jobs, int>(MANAGER, 100));
     map<Classes, int> clas;
     clas.insert(std::pair<Classes, int>(FIRST_CLASS, 12));
+    clas.insert(std::pair<Classes, int>(SECOND_CLASS, 1));
+
     my.addPlane(123, crew, clas);
     flightTable t(my.getFlight());
     t.printTable();
@@ -222,9 +224,11 @@ string MyFlight::getDestination() {
     return this->des;
 }
 
-MyFlight::MyFlight(int model, const Date &date, const string &from, const string &des) : model(model), date(date),
-                                                                                         from(from), des(des) {
-
+MyFlight::MyFlight(int model, const Date &date, const string &from, const string &des, AllId *company) : model(model),
+                                                                                                         date(date),
+                                                                                                         from(from),
+                                                                                                         des(des) {
+    this->id = company->generate(OTHER);
 }
 
 
@@ -267,15 +271,16 @@ Plane *MyEx2::getPlane(string id) {
 }
 
 Flight *MyEx2::addFlight(int model_number, Date date, string source, string destination) {
-    MyFlight myFlight(model_number, date, source, destination);
-    this->flight.push_back(&myFlight);
-    return this->getFlight(myFlight.getID());
+    Flight *myFlight = new MyFlight(model_number, date, source, destination, &this->company);
+    this->flight.push_back(myFlight);
+    return this->getFlight(myFlight->getID());
 }
 
 Flight *MyEx2::getFlight(string id) {
     for (auto &flight : this->flight) {
-        if (flight->getID().compare(id) == 0) { continue; }
-        return flight;
+        if (flight->getID().compare(id) == 0) {
+            return flight;
+        }
     }
     return nullptr;
 }
@@ -288,8 +293,10 @@ Customer *MyEx2::addCustomer(string full_name, int priority) {
 
 Customer *MyEx2::getCustomer(string id) {
     for (auto &cust : this->customer) {
-        if (cust->getID().compare(id) == 0) { continue; }
-        return cust;
+        if (cust->getID().compare(id) == 0) {
+            return cust;
+        }
+
     }
     return nullptr;
 }
