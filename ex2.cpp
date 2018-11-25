@@ -4,6 +4,23 @@
 
 int main() {
     std::cout << "Hello, World!" << std::endl;
+    AllId company(0, 0, 0, 0, 0);
+    MyEx2 my(company);
+    my.addEmployee(2, 1994, "", MANAGER);
+    my.addEmployee(4, 1974, "", PILOT);
+    my.addCustomer("ori kopel", 3);
+    my.addCustomer("shlomo", 5);
+    my.addFlight(975, Date("2018-11-25"), "israel", "usa");
+    my.addFlight(6665, Date("2019-01-25"), "Poland", "greece");
+    my.addResevation("c-1", "??", FIRST_CLASS, 2);
+    map<Jobs, int> crew;
+    crew.insert(std::pair<Jobs, int>(MANAGER, 100));
+    map<Classes, int> clas;
+    clas.insert(std::pair<Classes, int>(FIRST_CLASS, 12));
+    my.addPlane(123, crew, clas);
+    flightTable t(my.getFlight());
+    t.printTable();
+
     return 0;
 }
 
@@ -71,6 +88,14 @@ int AllId::getCount(Jobs type) {
         default:
             return -1;
     }
+}
+
+AllId::AllId(int managers, int navigators, int fly_attendant, int pilots, int other) {
+    this->mangers = 0;
+    this->navigators = 0;
+    this->fly_attendant = 0;
+    this->pilots = 0;
+    this->other = 0;
 }
 
 
@@ -204,6 +229,7 @@ MyFlight::MyFlight(int model, const Date &date, const string &from, const string
 
 
 Employee *MyEx2::addEmployee(int seniority, int birth_year, string employer_id, Jobs title) {
+
     myEmploee *boss = this->getEmployee(employer_id);
     myEmploee emp(title, seniority, birth_year, boss, this->company);
     this->employees.push_back(emp);
@@ -212,6 +238,9 @@ Employee *MyEx2::addEmployee(int seniority, int birth_year, string employer_id, 
 }
 
 myEmploee *MyEx2::getEmployee(const string id) {
+    if (id == "") {
+        return nullptr;
+    }
     for (auto &employee : this->employees) {
         if (employee.getID() == (id)) { continue; }
         return &employee;
@@ -281,6 +310,18 @@ Reservation *MyEx2::getReservation(string id) {
     return nullptr;
 }
 
+void MyEx2::exit() {
+
+}
+
+MyEx2::~MyEx2() {
+
+}
+
+MyEx2::MyEx2(AllId company) {
+    this->company = company;
+}
+
 myPlane::myPlane(int model, int maxFirstClass, int maxSecondClass, map<Jobs, int> neededCrew, AllId company)
         : model(model),
           maxFirstClass(
@@ -309,4 +350,49 @@ int myPlane::getMaxEconomyClass() {
 
 string myPlane::getID() {
     return this->id;
+}
+
+MyDate::MyDate(string date) : Date(date) {
+    this->date = date;
+}
+
+bool MyDate::operator<(const Date &d) const {
+    return Date::operator<(d);
+}
+
+bool MyDate::operator>(const Date &d) const {
+    return Date::operator>(d);
+}
+
+bool MyDate::operator==(const Date &d) const {
+    return Date::operator==(d);
+}
+
+string MyDate::getDate() {
+    return this->date;
+}
+
+flightTable::flightTable(std::list<Flight *> list) {
+    this->list = list;
+}
+
+void flightTable::printTable() {
+
+    printf("%s \t %s \t%s \t%s \t%s \t", "ID", "Model", "date", "From", "to");
+    for (auto fly : this->list) {
+        auto id = fly->getID() + "";
+        string des = fly->getDestination() + "";
+        string from = fly->getSource() + "";
+        printf("%s \t %d \t %s \t %s \t", &id, fly->getModelNumber()/*, fly.getDate()*/, &from, &des);
+
+    }
+
+}
+
+void flightTable::saveTable() {
+
+}
+
+void flightTable::loadTable() {
+
 }

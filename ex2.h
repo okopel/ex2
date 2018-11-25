@@ -11,6 +11,10 @@
 
 #include <vector>
 #include "interface.h"
+#include <string>
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 
 class MyCustomer;
@@ -22,6 +26,22 @@ class myPlane;
 class myID;
 
 class AllId;
+
+class MyDate;
+
+class MyDate : public Date {
+    string date;
+public:
+    string getDate();
+
+    MyDate(string date);
+
+    bool operator<(const Date &d) const override;
+
+    bool operator>(const Date &d) const override;
+
+    bool operator==(const Date &d) const override;
+};
 
 class myPlane : virtual public Plane {
     int model;
@@ -150,7 +170,7 @@ public:
 
 };
 
-class MyEx2 : Ex2 {
+class MyEx2 : virtual public Ex2 {
     AllId company;
     vector<myEmploee> employees;
     list<Plane *> planes;
@@ -159,9 +179,30 @@ class MyEx2 : Ex2 {
     list<Reservation *> reservs;
 
 public:
-    MyEx2();
+    MyEx2(AllId company);
 
-private:
+
+    vector<myEmploee> getEemployees() {
+        return this->employees;
+    }
+
+    list<Plane *> getPlanes() {
+        return this->planes;
+    }
+
+    list<Flight *> getFlight() {
+        return this->flight;
+    }
+
+    list<Customer *> getCustomer() {
+        return this->customer;
+    }
+
+    list<Reservation *> getReservs() {
+        return this->reservs;
+    };
+
+
     Employee *addEmployee(int seniority, int birth_year, string employer_id, Jobs title) override;
 
     myEmploee *getEmployee(const string id) override;
@@ -181,14 +222,33 @@ private:
     Reservation *addResevation(string customerId, string flightId, Classes cls, int max_baggage) override;
 
     Reservation *getReservation(string id) override;
+
+    void exit() override;
+
+    ~MyEx2() override;
 };
 
 class Table {
 
+public:
+    virtual void saveTable() = 0;
+
+    virtual void loadTable() = 0;
+
+    virtual void printTable() = 0;
+
 };
 
-class flightTable : public Table {
+class flightTable : virtual public Table {
+    std::list<Flight *> list;
+public:
+    explicit flightTable(std::list<Flight *> list);
 
+    void saveTable() override;
+
+    void loadTable() override;
+
+    void printTable() override;
 };
 
 class ReservTable : public Table {

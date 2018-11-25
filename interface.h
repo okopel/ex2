@@ -109,11 +109,11 @@ class Date {
     string date;
 public:
     Date(string date);    // format: YYYY-MM-DD
-    bool operator<(const Date &d) const;
+    virtual bool operator<(const Date &d) const;
 
-    bool operator>(const Date &d) const;
+    virtual bool operator>(const Date &d) const;
 
-    bool operator==(const Date &d) const;
+    virtual bool operator==(const Date &d) const;
 };
 
 
