@@ -36,7 +36,7 @@ Employee *MyEx2::addEmployee(int seniority, int birth_year, string employer_id, 
 }
 
 myEmploee *MyEx2::getEmployee(const string id) {
-    if (id == "") {
+    if (id.empty()) {
         return nullptr;
     }
     for (auto &employee : this->employees) {
@@ -56,8 +56,9 @@ Plane *MyEx2::addPlane(int model_number, map<Jobs, int> crew_needed, map<Classes
 
 Plane *MyEx2::getPlane(string id) {
     for (auto &plane : this->planes) {
-        if (plane->getID().compare(id) == 0) { continue; }
-        return plane;
+        if (plane->getID() == id) {
+            return plane;
+        }
     }
     return nullptr;
 }
@@ -70,7 +71,7 @@ Flight *MyEx2::addFlight(int model_number, Date date, string source, string dest
 
 Flight *MyEx2::getFlight(string id) {
     for (auto &flight : this->flight) {
-        if (flight->getID().compare(id) == 0) {
+        if (flight->getID() == id) {
             return flight;
         }
     }
@@ -85,7 +86,7 @@ Customer *MyEx2::addCustomer(string full_name, int priority) {
 
 Customer *MyEx2::getCustomer(string id) {
     for (auto &cust : this->customer) {
-        if (cust->getID().compare(id) == 0) {
+        if (cust->getID() == id) {
             return cust;
         }
 
@@ -103,8 +104,9 @@ Reservation *MyEx2::addResevation(string customerId, string flightId, Classes cl
 
 Reservation *MyEx2::getReservation(string id) {
     for (auto &res : this->reservs) {
-        if (res->getID().compare(id) == 0) { continue; }
-        return res;
+        if (res->getID() == id) {
+            return res;
+        }
     }
     return nullptr;
 }

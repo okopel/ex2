@@ -12,8 +12,8 @@
 #include <vector>
 #include "interface.h"
 #include <string>
-#include <string.h>
-#include <stdio.h>
+#include <cstring>
+#include <cstdio>
 #include <stdlib.h>
 
 
@@ -34,7 +34,7 @@ class MyDate : public Date {
 public:
     string getDate();
 
-    MyDate(string date);
+    MyDate(string &date);
 
     bool operator<(const Date &d) const override;
 

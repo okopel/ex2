@@ -3,7 +3,7 @@
 //
 #include "ex2.h"
 
-MyDate::MyDate(string date) : Date(date) {
+MyDate::MyDate(string &date) : Date(date) {
     this->date = date;
 }
 
