@@ -4,3 +4,29 @@
 
 #include "ex2.h"
 
+MyReservation::MyReservation(Customer *customer, Flight *flight, int baggage, Classes classes, AllId comp) :
+        baggage(baggage), classes(classes), customer(customer), flight(flight) {
+
+    this->id = comp.generate(OTHER);
+}
+
+Customer *MyReservation::getCustomer() {
+    return this->customer;
+}
+
+Flight *MyReservation::getFlight() {
+    return this->flight;
+}
+
+Classes MyReservation::getClass() {
+    return this->classes;
+}
+
+int MyReservation::getMaxBaggage() {
+    return this->baggage;
+}
+
+
+string MyReservation::getID() {
+    return this->id;
+}
