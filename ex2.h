@@ -32,9 +32,11 @@ class MyDate;
 class MyDate : public Date {
     string date;
 public:
-    string getDate();
+    string getDate() override;
 
     MyDate(string &date);
+
+    MyDate(string date);
 
     bool operator<(const Date &d) const override;
 
@@ -61,6 +63,8 @@ public:
     int getMaxFirstClass() override;
 
     int getMaxEconomyClass() override;
+
+    ~myPlane() override;
 };
 
 class MyReservation : virtual public Reservation {
@@ -161,6 +165,8 @@ public:
     list<Employee *> getAssignedCrew() override;
 
     Date getDate() override;
+
+    ~MyFlight() override;
 
     string getSource() override;
 

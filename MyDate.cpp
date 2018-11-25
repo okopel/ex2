@@ -23,10 +23,10 @@ string MyDate::getDate() {
     return this->date;
 }
 
-
 Date::Date(string date) {
     this->date = date;
 }
+
 
 bool Date::operator<(const Date &d) const {
 
@@ -61,4 +61,8 @@ bool Date::operator>(const Date &d) const {
 
 bool Date::operator==(const Date &d) const {
     return (this->date == d.date);
+}
+
+string Date::getDate() {
+    return this->date;
 }

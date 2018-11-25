@@ -58,7 +58,7 @@ public:
 
     virtual int getMaxEconomyClass() = 0;
 
-    virtual ~Plane(){}
+    virtual ~Plane() {}
 };
 
 class Flight : public ID {
@@ -114,6 +114,9 @@ public:
     virtual bool operator>(const Date &d) const;
 
     virtual bool operator==(const Date &d) const;
+
+    virtual string getDate();
+
 };
 
 

@@ -11,7 +11,8 @@ flightTable::flightTable(std::list<Flight *> list) {
 void flightTable::printTable() {
 
     for (auto fly : this->list) {
-        cout << "ID: " << fly->getID() << "\t\t Model: " << fly->getModelNumber() << " \t\t From:" << fly->getSource()
+        cout << "ID: " << fly->getID() << "\t\t Date:" << fly->getDate().getDate() << "\t\t Model: "
+             << fly->getModelNumber() << " \t\t From:" << fly->getSource()
              << " \t\tTo:" << fly->getDestination() << endl;
 
     }
