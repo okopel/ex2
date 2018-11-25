@@ -9,7 +9,6 @@
 #ifndef EX2_EX2_H
 #define EX2_EX2_H
 
-#include <vector>
 #include "interface.h"
 #include <string>
 #include <cstring>
@@ -28,6 +27,10 @@ class myID;
 class AllId;
 
 class MyDate;
+
+class EmploeeTable;
+
+class PlaneTable;
 
 class MyDate : public Date {
     string date;
@@ -108,9 +111,9 @@ class myEmploee : virtual public Employee {
     string id;
     int seniority;
     int birthYead;
-    myEmploee *employer;
+    Employee *employer;
 public:
-    myEmploee(Jobs type, int seniority, int birthYear, myEmploee *employee, AllId company);
+    myEmploee(Jobs type, int seniority, int birthYear, Employee *employee, AllId company);
 
     int getSeniority() override;
 
@@ -178,7 +181,7 @@ public:
 
 class MyEx2 : virtual public Ex2 {
     AllId company;
-    vector<myEmploee> employees;
+    list<Employee *> employees;
     list<Plane *> planes;
     list<Flight *> flight;
     list<Customer *> customer;
@@ -188,7 +191,7 @@ public:
     MyEx2(AllId company);
 
 
-    vector<myEmploee> getEemployees() {
+    list<Employee *> getEemployees() {
         return this->employees;
     }
 
@@ -211,7 +214,7 @@ public:
 
     Employee *addEmployee(int seniority, int birth_year, string employer_id, Jobs title) override;
 
-    myEmploee *getEmployee(const string id) override;
+    Employee *getEmployee(const string id) override;
 
     Plane *addPlane(int model_number, map<Jobs, int> crew_needed, map<Classes, int> max_passangers) override;
 
@@ -245,7 +248,9 @@ public:
 
 };
 
+
 class flightTable : virtual public Table {
+
     std::list<Flight *> list;
 public:
     explicit flightTable(std::list<Flight *> list);
@@ -257,16 +262,18 @@ public:
     void printTable() override;
 };
 
-class ReservTable : public Table {
 
+class EmploeeTable : virtual public Table {
+    std::list<Employee *> list;
+public:
+    explicit EmploeeTable(std::list<Employee *> list);
+
+    void saveTable() override;
+
+    void loadTable() override;
+
+    void printTable() override;
 };
 
-class EmploeeTable : public Table {
-
-};
-
-class PlaneTable : public Table {
-
-};
 
 #endif //EX2_EX2_H

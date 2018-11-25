@@ -30,28 +30,27 @@ int main() {
     my.addPlane(153, crew, clas);
     my.addPlane(3333, crew, clas);
     flightTable t(my.getFlight());
-    t.printTable();
+    EmploeeTable e(my.getEemployees());
+    e.printTable();
 
     return 0;
 }
 
 
 Employee *MyEx2::addEmployee(int seniority, int birth_year, string employer_id, Jobs title) {
-
-    myEmploee *boss = this->getEmployee(employer_id);
-    myEmploee emp(title, seniority, birth_year, boss, this->company);
+    Employee *boss = this->getEmployee(employer_id);
+    Employee *emp = new myEmploee(title, seniority, birth_year, boss, this->company);
     this->employees.push_back(emp);
-    return this->getEmployee(emp.getID());
-
+    return this->getEmployee(emp->getID());
 }
 
-myEmploee *MyEx2::getEmployee(const string id) {
+Employee *MyEx2::getEmployee(const string id) {
     if (id.empty()) {
         return nullptr;
     }
     for (auto &employee : this->employees) {
-        if (employee.getID() == (id)) { continue; }
-        return &employee;
+        if (employee->getID() == (id)) { continue; }
+        return employee;
     }
     return nullptr;
 
@@ -132,7 +131,5 @@ MyEx2::~MyEx2() {
 MyEx2::MyEx2(AllId company) {
     this->company = company;
 }
-
-
 
 

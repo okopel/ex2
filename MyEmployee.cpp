@@ -4,7 +4,7 @@
 
 #include "ex2.h"
 
-myEmploee::myEmploee(Jobs type, int seniority, int birthYear, myEmploee *employer, AllId company) {
+myEmploee::myEmploee(Jobs type, int seniority, int birthYear, Employee *employer, AllId company) {
     this->type = type;
     this->seniority = seniority;
     this->birthYead = birthYear;
