@@ -12,7 +12,7 @@ int main() {
     my.addCustomer("shlomo", 5);
     my.addFlight(975, Date("2018-11-25"), "israel", "usa");
     my.addFlight(6665, Date("2019-01-25"), "Poland", "greece");
-    my.addResevation("c-1", "??", FIRST_CLASS, 2);
+    my.addResevation("4-1", "0-1", FIRST_CLASS, 2);
     map<Jobs, int> crew;
     crew.insert(std::pair<Jobs, int>(MANAGER, 100));
     map<Classes, int> clas;
