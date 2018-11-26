@@ -9,6 +9,10 @@
 #ifndef EX2_EX2_H
 #define EX2_EX2_H
 #define EMP_FILE "Employee.txt"
+#define CUS_FILE "Custemer.txt"
+#define PLAN_FILE "Plans.txt"
+#define RES_FILE "Reservation.txt"
+
 
 #include "interface.h"
 #include <string>
@@ -228,14 +232,20 @@ public:
     ~MyEx2() override;
 };
 
+template<typename T>
+
 class Table {
-
+protected:
+    std::list<string> slist;
+    std::list<T *> list;
 public:
-    virtual void saveTable() = 0;
+    virtual void saveTable(string file);
 
-    virtual void loadTable() = 0;
+    virtual void loadTable(string file);
 
     virtual void listToStringList() = 0;
+
+    virtual T *loadFromString(string s) = 0;
 
     virtual void printTable() = 0;
 
@@ -244,42 +254,55 @@ public:
 };
 
 
-class flightTable : virtual public Table {
-
-    std::list<Flight *> list;
-    std::list<string> slist;
+class flightTable : public Table<Flight> {
 public:
     explicit flightTable(std::list<Flight *> list);
 
-    void saveTable() override;
-
-    void loadTable() override;
-
     void listToStringList() override;
 
-    void printTable() override;
+    Flight *loadFromString(string s) override;
+
+    void printTable();
 };
 
 
-class EmploeeTable : virtual public Table {
-    std::list<Employee *> list;
-    std::list<string> slist;
+class EmploeeTable : virtual public Table<Employee> {
 public:
     explicit EmploeeTable(std::list<Employee *> list);
 
-    void saveTable() override;
-
     void listToStringList();
-
-    void loadTable() override;
 
     void printTable() override;
 
     Employee *findBoss(string s);
 
     Employee *loadFromString(string s);
-
 };
 
+class PlanTable : public Table<Plane> {
+public:
+    explicit PlanTable(std::list<Plane *> list);
+
+    void listToStringList();
+
+    void printTable() override;
+
+    Plane *loadFromString(string s);
+};
+
+class ResTable : public Table<Reservation> {
+    std::list<Reservation *> list;
+
+public:
+    explicit ResTable(std::list<Reservation *> list);
+
+    void listToStringList();
+
+
+    void printTable() override;
+
+    Reservation *loadFromString(string s);
+
+};
 
 #endif //EX2_EX2_H

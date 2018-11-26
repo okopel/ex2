@@ -20,12 +20,8 @@ void flightTable::printTable() {
     }
 }
 
-void flightTable::saveTable() {
-
-}
-
-void flightTable::loadTable() {
-
+Flight *flightTable::loadFromString(string s) {
+    return nullptr; //todo
 }
 
 void flightTable::listToStringList() {
@@ -35,7 +31,6 @@ void flightTable::listToStringList() {
 
 EmploeeTable::EmploeeTable(std::list<Employee *> list) {
     this->list = list;
-
 }
 
 void EmploeeTable::printTable() {
@@ -51,18 +46,6 @@ void EmploeeTable::printTable() {
     }
 }
 
-void EmploeeTable::saveTable() {
-    this->listToStringList();
-    ofstream myfile;
-    myfile.open(EMP_FILE);
-    if (!myfile.is_open()) {
-        return;
-    }
-    for (string s:this->slist) {
-        myfile << s + "\n";
-    }
-    myfile.close();
-}
 
 void EmploeeTable::listToStringList() {
     for (auto emp : this->list) {
@@ -78,22 +61,6 @@ void EmploeeTable::listToStringList() {
     }
 }
 
-void EmploeeTable::loadTable() {
-    string s = "1";
-    ifstream myfile;
-    myfile.open(EMP_FILE);
-    if (!myfile.is_open()) {
-        return;
-    }
-    while (s != "") {
-        s = "";
-        getline(myfile, s);
-        if (s != "") {
-            this->list.push_back(this->loadFromString(s));
-        }
-    }
-    myfile.close();
-}
 
 Employee *EmploeeTable::loadFromString(string s) {
     std::istringstream iss(s);
@@ -118,8 +85,8 @@ Employee *EmploeeTable::findBoss(string s) {
     return nullptr;
 }
 
-
-Jobs Table::stringToJobs(string s) {
+template<typename T>
+Jobs Table<T>::stringToJobs(string s) {
     if (s == "0")
         return MANAGER;
     if (s == "1")
@@ -129,4 +96,36 @@ Jobs Table::stringToJobs(string s) {
     if (s == "3")
         return PILOT;
     return OTHER;
+}
+
+template<typename T>
+void Table<T>::saveTable(string file) {
+    this->listToStringList();
+    ofstream myfile;
+    myfile.open(file);
+    if (!myfile.is_open()) {
+        return;
+    }
+    for (string s:this->slist) {
+        myfile << s + "\n";
+    }
+    myfile.close();
+}
+
+template<typename T>
+void Table<T>::loadTable(string file) {
+    string s = "1";
+    ifstream myfile;
+    myfile.open(file);
+    if (!myfile.is_open()) {
+        return;
+    }
+    while (s != "") {
+        s = "";
+        getline(myfile, s);
+        if (s != "") {
+            this->list.push_back(this->loadFromString(s));
+        }
+    }
+    myfile.close();
 }
