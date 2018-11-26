@@ -243,7 +243,9 @@ public:
 
     virtual void loadTable(string file);
 
-    virtual void listToStringList() = 0;
+    virtual void listToStringList();
+
+    virtual string makeString(T *tmp) = 0;
 
     virtual T *loadFromString(string s) = 0;
 
@@ -258,9 +260,9 @@ class flightTable : public Table<Flight> {
 public:
     explicit flightTable(std::list<Flight *> list);
 
-    void listToStringList() override;
-
     Flight *loadFromString(string s) override;
+
+    string makeString(Flight *tmp) override;
 
     void printTable();
 };
@@ -270,9 +272,10 @@ class EmploeeTable : virtual public Table<Employee> {
 public:
     explicit EmploeeTable(std::list<Employee *> list);
 
-    void listToStringList();
 
     void printTable() override;
+
+    string makeString(Employee *tmp);
 
     Employee *findBoss(string s);
 
@@ -283,7 +286,7 @@ class PlanTable : public Table<Plane> {
 public:
     explicit PlanTable(std::list<Plane *> list);
 
-    void listToStringList();
+    string makeString(Plane *tmp) override;
 
     void printTable() override;
 

@@ -52,6 +52,6 @@ int main() {
 //    e.printTable();
     e.saveTable(EMP_FILE);
     e.loadTable(EMP_FILE);
-    cout << "d";
+    cout << "Good Job!";
     return 0;
 }

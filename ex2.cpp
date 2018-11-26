@@ -97,5 +97,3 @@ MyEx2::MyEx2(AllId company) {
     this->company = company;
 }
 
-
-

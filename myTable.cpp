@@ -24,8 +24,8 @@ Flight *flightTable::loadFromString(string s) {
     return nullptr; //todo
 }
 
-void flightTable::listToStringList() {
-
+string flightTable::makeString(Flight *tmp) {
+    return std::__cxx11::string();//todo
 }
 
 
@@ -46,19 +46,15 @@ void EmploeeTable::printTable() {
     }
 }
 
-
-void EmploeeTable::listToStringList() {
-    for (auto emp : this->list) {
-        string empBosId = "NULL";
-        if (emp->getEmployer() != NULL) {
-            empBosId = emp->getEmployer()->getID();
-        }
-        string s = emp->getID() + " " + to_string(emp->getTitle()) + " "
-                   + to_string(emp->getBirthYear()) + " " + empBosId + " " +
-                   to_string(emp->getSeniority());
-
-        slist.push_back(s);
+string EmploeeTable::makeString(Employee *tmp) {
+    string empBosId = "NULL";
+    if (tmp->getEmployer() != NULL) {
+        empBosId = tmp->getEmployer()->getID();
     }
+    string s = tmp->getID() + " " + to_string(tmp->getTitle()) + " "
+               + to_string(tmp->getBirthYear()) + " " + empBosId + " " +
+               to_string(tmp->getSeniority());
+    return s;
 }
 
 
@@ -129,3 +125,25 @@ void Table<T>::loadTable(string file) {
     }
     myfile.close();
 }
+
+template<typename T>
+void Table<T>::listToStringList() {
+    for (auto tmp : this->list) {
+        string s = this->makeString(tmp);
+        this->slist.push_back(s);
+    }
+}
+
+
+string PlanTable::makeString(Plane *tmp) {
+    return "moshe";//todo
+}
+
+Plane *PlanTable::loadFromString(string s) {
+    return nullptr;//todo
+}
+
+void PlanTable::printTable() {
+//todo
+}
+
