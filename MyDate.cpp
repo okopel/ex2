@@ -3,30 +3,6 @@
 //
 #include "ex2.h"
 
-MyDate::MyDate(string &date) : Date(date) {
-    this->date = date;
-}
-
-bool MyDate::operator<(const Date &d) const {
-    return Date::operator<(d);
-}
-
-bool MyDate::operator>(const Date &d) const {
-    return Date::operator>(d);
-}
-
-bool MyDate::operator==(const Date &d) const {
-    return Date::operator==(d);
-}
-
-string MyDate::getDate() {
-    return this->date;
-}
-
-Date::Date(string date) {
-    this->date = date;
-}
-
 
 bool Date::operator<(const Date &d) const {
 
@@ -63,6 +39,6 @@ bool Date::operator==(const Date &d) const {
     return (this->date == d.date);
 }
 
-string Date::getDate() {
-    return this->date;
+Date::Date(string date) {
+    this->date = date;
 }

@@ -45,7 +45,30 @@ void EmploeeTable::printTable() {
 }
 
 void EmploeeTable::saveTable() {
+    this->listToStringList();
+    ofstream myfile;
+    myfile.open(EMP_FILE);
+    if (!myfile.is_open()) {
+        return;
+    }
+    for (string s:this->slist) {
+        myfile << s + "\n";
+    }
+    myfile.close();
+}
 
+void EmploeeTable::listToStringList() {
+    for (auto emp : this->list) {
+        string empBosId = "";
+        if (emp->getEmployer() != NULL) {
+            empBosId = emp->getEmployer()->getID();
+        }
+        string s = "@ID:" + emp->getID() + " @Jobs:" + to_string(emp->getTitle()) + " @Birth:"
+                   + to_string(emp->getBirthYear()) + " @EmployerID:" + empBosId + " @Seniority:" +
+                   to_string(emp->getSeniority()) + "~";
+
+        slist.push_back(s);
+    }
 }
 
 void EmploeeTable::loadTable() {

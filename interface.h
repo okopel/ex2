@@ -1,3 +1,10 @@
+/******************************************************
+Change log:
+3.0
+Added getter to Date class
+Virtual destructor to ID class
+*******************************************************/
+
 #ifndef INTERFACE_H
 #define INTERFACE_H
 
@@ -19,19 +26,16 @@ enum Classes {
 class ID {
 public:
     virtual string getID() = 0;
+
+    virtual ~ID() {}
 };
 
 
 class Employee;
-
 class Plane;
-
 class Flight;
-
 class Customer;
-
 class Reservation;
-
 class Date;
 
 class Employee : public ID {
@@ -49,7 +53,6 @@ public:
 
 class Plane : public ID {
 public:
-
     virtual int getModelNumber() = 0;
 
     virtual map<Jobs, int> getCrewNeeded() = 0;
@@ -108,15 +111,14 @@ public:
 class Date {
     string date;
 public:
+    string getDate() const { return date; }
+
     Date(string date);    // format: YYYY-MM-DD
-    virtual bool operator<(const Date &d) const;
+    bool operator<(const Date &d) const;
 
-    virtual bool operator>(const Date &d) const;
+    bool operator>(const Date &d) const;
 
-    virtual bool operator==(const Date &d) const;
-
-    virtual string getDate();
-
+    bool operator==(const Date &d) const;
 };
 
 

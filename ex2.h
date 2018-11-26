@@ -8,13 +8,15 @@
 
 #ifndef EX2_EX2_H
 #define EX2_EX2_H
+#define EMP_FILE "Employee.txt"
 
 #include "interface.h"
 #include <string>
 #include <cstring>
 #include <cstdio>
 #include <stdlib.h>
-
+#include <iostream>
+#include <fstream>
 
 class MyCustomer;
 
@@ -32,21 +34,6 @@ class EmploeeTable;
 
 class PlaneTable;
 
-class MyDate : public Date {
-    string date;
-public:
-    string getDate() override;
-
-    MyDate(string &date);
-
-    MyDate(string date);
-
-    bool operator<(const Date &d) const override;
-
-    bool operator>(const Date &d) const override;
-
-    bool operator==(const Date &d) const override;
-};
 
 class myPlane : virtual public Plane {
     int model;
@@ -244,6 +231,8 @@ public:
 
     virtual void loadTable() = 0;
 
+    virtual void listToStringList() = 0;
+
     virtual void printTable() = 0;
 
 };
@@ -252,6 +241,7 @@ public:
 class flightTable : virtual public Table {
 
     std::list<Flight *> list;
+    std::list<string> slist;
 public:
     explicit flightTable(std::list<Flight *> list);
 
@@ -265,10 +255,13 @@ public:
 
 class EmploeeTable : virtual public Table {
     std::list<Employee *> list;
+    std::list<string> slist;
 public:
     explicit EmploeeTable(std::list<Employee *> list);
 
     void saveTable() override;
+
+    void listToStringList();
 
     void loadTable() override;
 
