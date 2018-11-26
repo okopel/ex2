@@ -36,6 +36,7 @@ int main() {
 
     EmploeeTable e(my.getEemployees());
 //    e.printTable();
+    e.saveTable();
     e.loadTable();
     cout << "d";
     return 0;
@@ -53,7 +54,7 @@ Employee *MyEx2::getEmployee(const string id) {
     if (id.empty()) {
         return nullptr;
     }
-    for (auto &employee : this->employees) {
+    for (auto const &employee : this->employees) {
         if (employee->getID() == (id)) { continue; }
         return employee;
     }
@@ -69,7 +70,7 @@ Plane *MyEx2::addPlane(int model_number, map<Jobs, int> crew_needed, map<Classes
 }
 
 Plane *MyEx2::getPlane(string id) {
-    for (auto &plane : this->planes) {
+    for (auto const &plane : this->planes) {
         if (plane->getID() == id) {
             return plane;
         }
@@ -84,7 +85,7 @@ Flight *MyEx2::addFlight(int model_number, Date date, string source, string dest
 }
 
 Flight *MyEx2::getFlight(string id) {
-    for (auto &flight : this->flight) {
+    for (auto const &flight : this->flight) {
         if (flight->getID() == id) {
             return flight;
         }
@@ -99,7 +100,7 @@ Customer *MyEx2::addCustomer(string full_name, int priority) {
 }
 
 Customer *MyEx2::getCustomer(string id) {
-    for (auto &cust : this->customer) {
+    for (auto const &cust : this->customer) {
         if (cust->getID() == id) {
             return cust;
         }
@@ -117,7 +118,7 @@ Reservation *MyEx2::addResevation(string customerId, string flightId, Classes cl
 }
 
 Reservation *MyEx2::getReservation(string id) {
-    for (auto &res : this->reservs) {
+    for (auto const &res : this->reservs) {
         if (res->getID() == id) {
             return res;
         }

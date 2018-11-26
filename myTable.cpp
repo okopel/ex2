@@ -88,7 +88,9 @@ void EmploeeTable::loadTable() {
     while (s != "") {
         s = "";
         getline(myfile, s);
-        this->list.push_back(this->loadFromString(s));
+        if (s != "") {
+            this->list.push_back(this->loadFromString(s));
+        }
     }
     myfile.close();
 }
