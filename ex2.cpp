@@ -32,8 +32,6 @@ int main() {
 
 
     flightTable t(my.getFlight());
-
-
     EmploeeTable e(my.getEemployees());
 //    e.printTable();
     e.saveTable();

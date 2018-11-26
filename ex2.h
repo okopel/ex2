@@ -24,6 +24,8 @@ class MyFlight;
 
 class myPlane;
 
+class MyEx2;
+
 class myID;
 
 class AllId;
@@ -102,7 +104,7 @@ class myEmploee : virtual public Employee {
 public:
     myEmploee(Jobs type, int seniority, int birthYear, Employee *employee, AllId company);
 
-    myEmploee(string ID, Jobs type, int seniority, int birthYear, string employeeID);
+    myEmploee(string ID, Jobs type, int seniority, int birthYear, Employee *employee);
 
     int getSeniority() override;
 
@@ -272,6 +274,8 @@ public:
     void loadTable() override;
 
     void printTable() override;
+
+    Employee *findBoss(string s);
 
     Employee *loadFromString(string s);
 

@@ -104,8 +104,18 @@ Employee *EmploeeTable::loadFromString(string s) {
     int birth = stoi(results.at(2));
     string bossID = results.at(3);
     int senyority = stoi(results.at(4));
-    Employee *emp = new myEmploee(ID, job, senyority, birth, bossID);
+    Employee *boss = this->findBoss(bossID);
+    Employee *emp = new myEmploee(ID, job, senyority, birth, boss);
     return emp;
+}
+
+Employee *EmploeeTable::findBoss(string s) {
+    for (auto const &emp : this->list) {
+        if (emp->getID() == s) {
+            return emp;
+        }
+    }
+    return nullptr;
 }
 
 
