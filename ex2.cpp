@@ -29,11 +29,15 @@ int main() {
     my.addPlane(123, crew, clas);
     my.addPlane(153, crew, clas);
     my.addPlane(3333, crew, clas);
+
+
     flightTable t(my.getFlight());
+
 
     EmploeeTable e(my.getEemployees());
 //    e.printTable();
-    e.saveTable();
+    e.loadTable();
+    cout << "d";
     return 0;
 }
 

@@ -2,6 +2,9 @@
 // Created by okopel on 11/25/18.
 //
 #include <iostream>
+#include <iterator>
+#include <vector>
+#include <sstream>
 #include "ex2.h"
 
 flightTable::flightTable(std::list<Flight *> list) {
@@ -22,6 +25,10 @@ void flightTable::saveTable() {
 }
 
 void flightTable::loadTable() {
+
+}
+
+void flightTable::listToStringList() {
 
 }
 
@@ -59,18 +66,43 @@ void EmploeeTable::saveTable() {
 
 void EmploeeTable::listToStringList() {
     for (auto emp : this->list) {
-        string empBosId = "";
+        string empBosId = "NULL";
         if (emp->getEmployer() != NULL) {
             empBosId = emp->getEmployer()->getID();
         }
-        string s = "@ID:" + emp->getID() + " @Jobs:" + to_string(emp->getTitle()) + " @Birth:"
-                   + to_string(emp->getBirthYear()) + " @EmployerID:" + empBosId + " @Seniority:" +
-                   to_string(emp->getSeniority()) + "~";
+        string s = emp->getID() + " " + to_string(emp->getTitle()) + " "
+                   + to_string(emp->getBirthYear()) + " " + empBosId + " " +
+                   to_string(emp->getSeniority());
 
         slist.push_back(s);
     }
 }
 
 void EmploeeTable::loadTable() {
+    string s = "1";
+    ifstream myfile;
+    myfile.open(EMP_FILE);
+    if (!myfile.is_open()) {
+        return;
+    }
+    while (s != "") {
+        s = "";
+        getline(myfile, s);
+//        myfile >> s;
+        this->list.push_back(this->loadFromString(s));
+    }
+    myfile.close();
+}
 
+Employee *EmploeeTable::loadFromString(string s) {
+    Employee *emp;//todo
+    std::istringstream iss(s);
+    std::vector<std::string> results(std::istream_iterator<std::string>{iss},
+                                     std::istream_iterator<std::string>());
+
+    Jobs job;
+    int senyority;
+    int birth;
+    string bossID;
+    string ID;
 }

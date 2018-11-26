@@ -249,6 +249,8 @@ public:
 
     void loadTable() override;
 
+    void listToStringList() override;
+
     void printTable() override;
 };
 
@@ -266,6 +268,9 @@ public:
     void loadTable() override;
 
     void printTable() override;
+
+    Employee *loadFromString(string s);
+
 };
 
 
