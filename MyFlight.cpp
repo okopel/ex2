@@ -40,4 +40,12 @@ MyFlight::MyFlight(int model, const Date &date, const string &from, const string
     this->id = company->generate(OTHER);
 }
 
+MyFlight::MyFlight(string id, int model, const string &date, const string &from, const string &des) : model(model),
+                                                                                                      id(id),
+                                                                                                      from(from),
+                                                                                                      des(des),
+                                                                                                      date(Date(date)) {
+
+}
+
 MyFlight::~MyFlight() = default;

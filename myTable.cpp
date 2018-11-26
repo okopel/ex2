@@ -21,11 +21,24 @@ void flightTable::printTable() {
 }
 
 Flight *flightTable::loadFromString(string s) {
-    return nullptr; //todo
+    std::istringstream iss(s);
+    std::vector<std::string> results(std::istream_iterator<std::string>{iss},
+                                     std::istream_iterator<std::string>());
+    string id = results.at(0);
+    int model = stoi(results.at(1));
+    string date = results.at(2);
+    string from = results.at(3);
+    string to = results.at(4);
+    Flight *tmp = new MyFlight(id, model, date, from, to);
+    return tmp;
 }
 
 string flightTable::makeString(Flight *tmp) {
-    return std::__cxx11::string();//todo
+    string s =
+            tmp->getID() + " " + to_string(tmp->getModelNumber()) + " " + tmp->getDate().getDate() + " " +
+            tmp->getSource() + " " +
+            tmp->getDestination() + "\n";
+    return s;
 }
 
 
@@ -136,11 +149,39 @@ void Table<T>::listToStringList() {
 
 
 string PlanTable::makeString(Plane *tmp) {
-    return "moshe";//todo
+    string s = tmp->getID() + " " + to_string(tmp->getModelNumber()) + " " + to_string(tmp->getMaxFirstClass()) + " " +
+               to_string(tmp->getMaxEconomyClass()) +
+               " " + to_string(tmp->getCrewNeeded().at(MANAGER)) + " " + to_string(tmp->getCrewNeeded().at(NAVIGATOR)) +
+               " " + to_string(tmp->getCrewNeeded().at(FLY_ATTENDANT)) + " " +
+               to_string(tmp->getCrewNeeded().at(PILOT)) +
+               " " + to_string(tmp->getCrewNeeded().at(OTHER));
+    return s;
 }
 
 Plane *PlanTable::loadFromString(string s) {
-    return nullptr;//todo
+    std::istringstream iss(s);
+    std::vector<std::string> results(std::istream_iterator<std::string>{iss},
+                                     std::istream_iterator<std::string>());
+    string id = results.at(0);
+    int model = stoi(results.at(1));
+    int fClass = stoi(results.at(2));
+    int sClass = stoi(results.at(3));
+    Jobs manager = this->stringToJobs(results.at(4));
+    Jobs navigator = this->stringToJobs(results.at(5));
+    Jobs flyAtten = this->stringToJobs(results.at(6));
+    Jobs pilot = this->stringToJobs(results.at(7));
+    Jobs other = this->stringToJobs(results.at(8));
+
+    map<Jobs, int> crew;
+
+    crew.insert(std::pair<Jobs, int>(MANAGER, manager));
+    crew.insert(std::pair<Jobs, int>(NAVIGATOR, navigator));
+    crew.insert(std::pair<Jobs, int>(FLY_ATTENDANT, flyAtten));
+    crew.insert(std::pair<Jobs, int>(PILOT, pilot));
+    crew.insert(std::pair<Jobs, int>(OTHER, other));
+
+    Plane *tmp = new myPlane(id, model, fClass, sClass, crew);
+    return tmp;
 }
 
 void PlanTable::printTable() {
@@ -156,11 +197,29 @@ ResTable::ResTable(std::list<Reservation *> list) {
 }
 
 Reservation *ResTable::loadFromString(string s) {
-    return nullptr;//toto
+    std::istringstream iss(s);
+    std::vector<std::string> results(std::istream_iterator<std::string>{iss},
+                                     std::istream_iterator<std::string>());
+    string id = results.at(0);
+    string cust = results.at(1);
+    string flyId = results.at(2);
+    int cases = stoi(results.at(3));
+    Classes c;
+    string classNum = results.at(4);
+    if (classNum == "0") {
+        c = FIRST_CLASS;
+    } else {
+        c = SECOND_CLASS;
+    }
+
+    Reservation *tmp = new MyReservation(id, cust, flyId, cases, c);
+    return tmp;
 }
 
 string ResTable::makeString(Reservation *tmp) {
-    return "ori";//todo
+    string s = tmp->getID() + " " + tmp->getCustomer()->getID() + " " + tmp->getFlight()->getID() + " " +
+               to_string(tmp->getMaxBaggage()) + " " + to_string(tmp->getClass());
+    return s;
 }
 
 

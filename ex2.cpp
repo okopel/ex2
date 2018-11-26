@@ -69,7 +69,6 @@ Customer *MyEx2::getCustomer(string id) {
 }
 
 Reservation *MyEx2::addResevation(string customerId, string flightId, Classes cls, int max_baggage) {
-
     Reservation *myres = new MyReservation(this->getCustomer(customerId), this->getFlight(flightId), max_baggage, cls,
                                            this->company);
     this->reservs.push_back(myres);

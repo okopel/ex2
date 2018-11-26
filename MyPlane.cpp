@@ -34,3 +34,15 @@ int myPlane::getMaxEconomyClass() {
 string myPlane::getID() {
     return this->id;
 }
+
+myPlane::myPlane(string id, int model, int maxFirstClass, int maxSecondClass, map<Jobs, int> neededCrew) : id(id),
+                                                                                                           model(model),
+                                                                                                           maxFirstClass(
+                                                                                                                   maxFirstClass),
+                                                                                                           maxSecondClass(
+                                                                                                                   maxSecondClass),
+                                                                                                           neededCrew(
+                                                                                                                   neededCrew) {
+
+
+}

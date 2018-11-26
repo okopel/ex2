@@ -54,6 +54,8 @@ class myPlane : virtual public Plane {
 public:
     myPlane(int model, int maxFirstClass, int maxSecondClass, map<Jobs, int> neededCrew, AllId company);
 
+    myPlane(string id, int model, int maxFirstClass, int maxSecondClass, map<Jobs, int> neededCrew);
+
     string getID() override;
 
     int getModelNumber() override;
@@ -74,7 +76,9 @@ class MyReservation : virtual public Reservation {
     Classes classes;
     string id;
 public:
-    MyReservation(Customer *customer, Flight *flight, int cases, Classes classes, AllId comp);
+    explicit MyReservation(Customer *customer, Flight *flight, int cases, Classes classes, AllId comp);
+
+    explicit MyReservation(string id, string customer, string flight, int cases, Classes classes);
 
     Customer *getCustomer() override;
 
@@ -159,6 +163,8 @@ class MyFlight : virtual public Flight {
 
 public:
     MyFlight(int model, const Date &date, const string &from, const string &des, AllId *company);
+
+    explicit MyFlight(string id, int model, const string &date, const string &from, const string &des);
 
     int getModelNumber() override;
 

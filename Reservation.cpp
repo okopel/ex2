@@ -30,3 +30,7 @@ int MyReservation::getMaxBaggage() {
 string MyReservation::getID() {
     return this->id;
 }
+
+MyReservation::MyReservation(string id, string customer, string flight, int cases, Classes classes) {
+//todo
+}
