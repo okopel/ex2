@@ -75,7 +75,6 @@ public:
 
     list<Reservation *> &getReservs();;
 
-
     Employee *addEmployee(int seniority, int birth_year, string employer_id, Jobs title) override;
 
     Employee *getEmployee(const string id) override;
@@ -100,6 +99,4 @@ public:
 
     ~MyEx2() override;
 };
-
-
 #endif //EX2_EX2_H

@@ -67,7 +67,6 @@ Customer *MyEx2::getCustomer(string id) {
         if (cust->getID() == id) {
             return cust;
         }
-
     }
     return nullptr;
 }
@@ -78,7 +77,6 @@ Reservation *MyEx2::addResevation(string customerId, string flightId, Classes cl
     this->reservs.push_back(myres);
     return this->getReservation(myres->getID());
 }
-
 Reservation *MyEx2::getReservation(string id) {
     for (auto const &res : this->reservs) {
         if (res->getID() == id) {
@@ -87,13 +85,10 @@ Reservation *MyEx2::getReservation(string id) {
     }
     return nullptr;
 }
-
 void MyEx2::exit() {
-
 }
 
 MyEx2::~MyEx2() = default;
-
 
 list<Employee *> &MyEx2::getEemployees() {
     return this->employees;
