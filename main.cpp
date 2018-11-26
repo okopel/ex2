@@ -3,10 +3,10 @@
 //
 
 #include "ex2.h"
+#include "MyTabels.h"
 
 int main() {
-    AllId company(0, 0, 0, 0, 0);
-    MyEx2 my(company);
+    MyEx2 my;
     my.addEmployee(2, 1994, "", MANAGER);
     my.addEmployee(4, 1974, "", PILOT);
     my.addEmployee(5, 1850, "", FLY_ATTENDANT);
@@ -51,7 +51,7 @@ int main() {
     EmploeeTable e(my.getEemployees());
 //    e.printTable();
     e.saveTable(EMP_FILE);
-    e.loadTable(EMP_FILE);
+    e.loadTable(EMP_FILE, &my);
     cout << "Good Job!";
     return 0;
 }

@@ -2,7 +2,7 @@
 // Created by okopel on 11/22/18.
 //
 
-#include "ex2.h"
+#include "MyFlight.h"
 
 string MyFlight::getID() {
     return this->id;
@@ -40,11 +40,13 @@ MyFlight::MyFlight(int model, const Date &date, const string &from, const string
     this->id = company->generate(OTHER);
 }
 
-MyFlight::MyFlight(string id, int model, const string &date, const string &from, const string &des) : model(model),
-                                                                                                      id(id),
-                                                                                                      from(from),
-                                                                                                      des(des),
-                                                                                                      date(Date(date)) {
+MyFlight::MyFlight(const string &id, int model, const string &date, const string &from, const string &des) : model(
+        model),
+                                                                                                             id(id),
+                                                                                                             from(from),
+                                                                                                             des(des),
+                                                                                                             date(Date(
+                                                                                                                     date)) {
 
 }
 

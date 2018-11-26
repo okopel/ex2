@@ -22,13 +22,6 @@
 #include <iostream>
 #include <fstream>
 
-class MyCustomer;
-
-class MyFlight;
-
-class MyReservation;
-
-class myPlane;
 
 class MyEx2;
 
@@ -44,54 +37,7 @@ class EmploeeTable;
 
 class PlaneTable;
 
-
-class myPlane : virtual public Plane {
-    int model;
-    int maxFirstClass;
-    int maxSecondClass;
-    map<Jobs, int> neededCrew;
-    string id;
-public:
-    myPlane(int model, int maxFirstClass, int maxSecondClass, map<Jobs, int> neededCrew, AllId company);
-
-    myPlane(string id, int model, int maxFirstClass, int maxSecondClass, map<Jobs, int> neededCrew);
-
-    string getID() override;
-
-    int getModelNumber() override;
-
-    map<Jobs, int> getCrewNeeded() override;
-
-    int getMaxFirstClass() override;
-
-    int getMaxEconomyClass() override;
-
-    ~myPlane() override;
-};
-
-class MyReservation : virtual public Reservation {
-    Customer *customer;
-    Flight *flight;
-    int baggage;
-    Classes classes;
-    string id;
-public:
-    explicit MyReservation(Customer *customer, Flight *flight, int cases, Classes classes, AllId comp);
-
-    explicit MyReservation(string id, string customer, string flight, int cases, Classes classes);
-
-    Customer *getCustomer() override;
-
-    Flight *getFlight() override;
-
-    Classes getClass() override;
-
-    int getMaxBaggage() override;
-
-
-    string getID() override;
-};
-
+class flightTable;
 
 class AllId {
     int mangers;
@@ -107,85 +53,9 @@ public:
     int getCount(Jobs type);
 };
 
-class myEmploee : virtual public Employee {
-    Jobs type;
-    string id;
-    int seniority;
-    int birthYead;
-    Employee *employer;
-public:
-    myEmploee(Jobs type, int seniority, int birthYear, Employee *employee, AllId company);
-
-    myEmploee(string ID, Jobs type, int seniority, int birthYear, Employee *employee);
-
-    int getSeniority() override;
-
-    int getBirthYear() override;
-
-    Jobs getTitle() override;
-
-    string getID() override;
-
-    string toString();
-
-    Employee *getEmployer() override;
-
-    ostream &operator<<(ostream &os) {
-        return os << this->toString();
-    }
-};
-
-class MyCustomer : virtual public Customer {
-    string name;
-    int priority;
-    string id;
-    list<Reservation *> reserv;
-public:
-    list<Reservation *> getReservations() override;
-
-    string getID() override;
-
-    int getPriority() override;
-
-    string getFullName() override;
-
-    MyCustomer(const string name, int priority, AllId company);
-};
-
-class MyFlight : virtual public Flight {
-    string id;
-    int model;
-    list<Reservation *> reser;
-    list<Employee *> team;
-    Date date;
-    string from;
-    string des;
-
-public:
-    MyFlight(int model, const Date &date, const string &from, const string &des, AllId *company);
-
-    explicit MyFlight(string id, int model, const string &date, const string &from, const string &des);
-
-    int getModelNumber() override;
-
-    list<Reservation *> getReservations() override;
-
-    list<Employee *> getAssignedCrew() override;
-
-    Date getDate() override;
-
-    ~MyFlight() override;
-
-    string getSource() override;
-
-    string getDestination() override;
-
-    string getID() override;
-
-};
 
 class MyEx2 : virtual public Ex2 {
-    AllId company;
+    AllId *company;
     list<Employee *> employees;
     list<Plane *> planes;
     list<Flight *> flight;
@@ -193,28 +63,17 @@ class MyEx2 : virtual public Ex2 {
     list<Reservation *> reservs;
 
 public:
-    explicit MyEx2(AllId company);
+    explicit MyEx2();
 
+    list<Employee *> &getEemployees();
 
-    list<Employee *> getEemployees() {
-        return this->employees;
-    }
+    list<Plane *> &getPlanes();
 
-    list<Plane *> getPlanes() {
-        return this->planes;
-    }
+    list<Flight *> &getFlight();
 
-    list<Flight *> getFlight() {
-        return this->flight;
-    }
+    list<Customer *> &getCustomer();
 
-    list<Customer *> getCustomer() {
-        return this->customer;
-    }
-
-    list<Reservation *> getReservs() {
-        return this->reservs;
-    };
+    list<Reservation *> &getReservs();;
 
 
     Employee *addEmployee(int seniority, int birth_year, string employer_id, Jobs title) override;
@@ -242,73 +101,5 @@ public:
     ~MyEx2() override;
 };
 
-template<typename T>
-
-class Table {
-protected:
-    std::list<string> slist;
-    std::list<T *> list;
-public:
-    virtual void saveTable(const string file);
-
-    virtual void loadTable(const string file);
-
-    virtual void listToStringList();
-
-    virtual string makeString(T *tmp) = 0;
-
-    virtual T *loadFromString(string s) = 0;
-
-    //virtual void printTable() = 0;
-
-    Jobs stringToJobs(string s);
-
-};
-
-
-class flightTable : public Table<Flight> {
-public:
-    explicit flightTable(std::list<Flight *> list);
-
-    Flight *loadFromString(string s) override;
-
-    string makeString(Flight *tmp) override;
-
-    void printTable();
-};
-
-
-class EmploeeTable : virtual public Table<Employee> {
-public:
-    explicit EmploeeTable(std::list<Employee *> list);
-
-    void printTable();
-
-    string makeString(Employee *tmp) override;
-
-    Employee *findBoss(string s);
-
-    Employee *loadFromString(string s) override;
-};
-
-class PlanTable : virtual public Table<Plane> {
-public:
-    explicit PlanTable(std::list<Plane *> list);
-
-    string makeString(Plane *tmp) override;
-
-    void printTable();
-
-    Plane *loadFromString(string s) override;
-};
-
-class ResTable : virtual public Table<Reservation> {
-public:
-    explicit ResTable(std::list<Reservation *> list);
-
-    string makeString(Reservation *tmp) override;
-
-    Reservation *loadFromString(string s) override;
-};
 
 #endif //EX2_EX2_H

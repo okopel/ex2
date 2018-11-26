@@ -1,16 +1,16 @@
 //
 // Created by okopel on 11/22/18.
 //
-#include "ex2.h"
+#include "MyPlane.h"
 
-myPlane::myPlane(int model, int maxFirstClass, int maxSecondClass, map<Jobs, int> neededCrew, AllId company)
+myPlane::myPlane(int model, int maxFirstClass, int maxSecondClass, map<Jobs, int> &neededCrew, AllId *company)
         : model(model),
           maxFirstClass(
                   maxFirstClass),
           maxSecondClass(
                   maxSecondClass), neededCrew(
                 neededCrew) {
-    this->id = company.generate(OTHER);
+    this->id = company->generate(OTHER);
 }
 
 myPlane::~myPlane() = default;
@@ -35,13 +35,14 @@ string myPlane::getID() {
     return this->id;
 }
 
-myPlane::myPlane(string id, int model, int maxFirstClass, int maxSecondClass, map<Jobs, int> neededCrew) : id(id),
-                                                                                                           model(model),
-                                                                                                           maxFirstClass(
+myPlane::myPlane(const string &id, int model, int maxFirstClass, int maxSecondClass, map<Jobs, int> &neededCrew) : id(
+        id),
+                                                                                                                   model(model),
+                                                                                                                   maxFirstClass(
                                                                                                                    maxFirstClass),
-                                                                                                           maxSecondClass(
+                                                                                                                   maxSecondClass(
                                                                                                                    maxSecondClass),
-                                                                                                           neededCrew(
+                                                                                                                   neededCrew(
                                                                                                                    neededCrew) {
 
 

@@ -1,9 +1,9 @@
 //
 // Created by okopel on 11/22/18.
 //
-#include "ex2.h"
+#include "MyCustomer.h"
 
-MyCustomer::MyCustomer(const string name, int priority, AllId company) {
+MyCustomer::MyCustomer(const string &name, int priority, AllId *company) {
     this->name = name;
     this->priority = priority;
     if (this->priority > 5) {
@@ -11,7 +11,7 @@ MyCustomer::MyCustomer(const string name, int priority, AllId company) {
     } else if (this->priority < 1) {
         this->priority = 1;
     }
-    this->id = company.generate(OTHER);
+    this->id = company->generate(OTHER);
 }
 
 int MyCustomer::getPriority() {
@@ -30,3 +30,4 @@ list<Reservation *> MyCustomer::getReservations() {
 string MyCustomer::getID() {
     return this->id;
 }
+

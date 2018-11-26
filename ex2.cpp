@@ -1,10 +1,14 @@
 #include <iostream>
 #include "ex2.h"
-
+#include "MyEmployee.h"
+#include "MyPlane.h"
+#include "MyFlight.h"
+#include "MyCustomer.h"
+#include "MyReservation.h"
 
 Employee *MyEx2::addEmployee(int seniority, int birth_year, string employer_id, Jobs title) {
     Employee *boss = this->getEmployee(employer_id);
-    Employee *emp = new myEmploee(title, seniority, birth_year, boss, this->company);
+    Employee *emp = new MyEmployee(title, seniority, birth_year, boss, this->company);
     this->employees.push_back(emp);
     return this->getEmployee(emp->getID());
 }
@@ -38,7 +42,7 @@ Plane *MyEx2::getPlane(string id) {
 }
 
 Flight *MyEx2::addFlight(int model_number, Date date, string source, string destination) {
-    Flight *myFlight = new MyFlight(model_number, date, source, destination, &this->company);
+    Flight *myFlight = new MyFlight(model_number, date, source, destination, this->company);
     this->flight.push_back(myFlight);
     return this->getFlight(myFlight->getID());
 }
@@ -90,8 +94,29 @@ void MyEx2::exit() {
 
 MyEx2::~MyEx2() = default;
 
-MyEx2::MyEx2(AllId company) {
-    this->company = company;
+
+list<Employee *> &MyEx2::getEemployees() {
+    return this->employees;
+}
+
+list<Plane *> &MyEx2::getPlanes() {
+    return this->planes;
+}
+
+list<Flight *> &MyEx2::getFlight() {
+    return this->flight;
+}
+
+list<Customer *> &MyEx2::getCustomer() {
+    return this->customer;
+}
+
+list<Reservation *> &MyEx2::getReservs() {
+    return this->reservs;
+}
+
+MyEx2::MyEx2() {
+    this->company = new AllId(0, 0, 0, 0, 0);
 }
 
 

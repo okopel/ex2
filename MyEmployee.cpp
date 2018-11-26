@@ -2,44 +2,44 @@
 // Created by okopel on 11/25/18.
 //
 
-#include "ex2.h"
+#include "MyEmployee.h"
 
-myEmploee::myEmploee(Jobs type, int seniority, int birthYear, Employee *employer, AllId company) {
+MyEmployee::MyEmployee(Jobs type, int seniority, int birthYear, Employee *employer, AllId *company) {
     this->type = type;
     this->seniority = seniority;
     this->birthYead = birthYear;
     this->employer = employer;
-    this->id = company.generate(type);
+    this->id = company->generate(type);
 }
 
-int myEmploee::getSeniority() {
+int MyEmployee::getSeniority() {
     return this->seniority;
 }
 
-int myEmploee::getBirthYear() {
+int MyEmployee::getBirthYear() {
     return this->birthYead;
 }
 
-Employee *myEmploee::getEmployer() {
+Employee *MyEmployee::getEmployer() {
     return this->employer;
 }
 
-string myEmploee::getID() {
+string MyEmployee::getID() {
     return this->id;
 }
 
-Jobs myEmploee::getTitle() {
+Jobs MyEmployee::getTitle() {
     return this->type;
 }
 
-string myEmploee::toString() {
+string MyEmployee::toString() {
     string s = this->getID();
 
     return s;
 }
 
-myEmploee::myEmploee(string ID, Jobs type, int seniority, int birthYear, Employee *employer) {
-    this->id = id;
+MyEmployee::MyEmployee(const string &ID, Jobs type, int seniority, int birthYear, Employee *employer) {
+    this->id = ID;
     this->type = type;
     this->seniority = seniority;
     this->birthYead = birthYear;

@@ -5,9 +5,13 @@
 #include <vector>
 #include <iterator>
 #include <sstream>
-#include "ex2.h"
+#include "MyTabels.h"
+#include "MyFlight.h"
+#include "MyEmployee.h"
+#include "MyPlane.h"
+#include "MyReservation.h"
 
-flightTable::flightTable(std::list<Flight *> list) {
+flightTable::flightTable(std::list<Flight *> &list) {
     this->list = list;
 }
 
@@ -20,7 +24,7 @@ void flightTable::printTable() {
     }
 }
 
-Flight *flightTable::loadFromString(string s) {
+Flight *flightTable::loadFromString(const string &s, MyEx2 *lists) {
     std::istringstream iss(s);
     std::vector<std::string> results(std::istream_iterator<std::string>{iss},
                                      std::istream_iterator<std::string>());
@@ -42,7 +46,7 @@ string flightTable::makeString(Flight *tmp) {
 }
 
 
-EmploeeTable::EmploeeTable(std::list<Employee *> list) {
+EmploeeTable::EmploeeTable(std::list<Employee *> &list) {
     this->list = list;
 }
 
@@ -71,7 +75,7 @@ string EmploeeTable::makeString(Employee *tmp) {
 }
 
 
-Employee *EmploeeTable::loadFromString(string s) {
+Employee *EmploeeTable::loadFromString(const string &s, MyEx2 *lists) {
     std::istringstream iss(s);
     std::vector<std::string> results(std::istream_iterator<std::string>{iss},
                                      std::istream_iterator<std::string>());
@@ -81,11 +85,11 @@ Employee *EmploeeTable::loadFromString(string s) {
     string bossID = results.at(3);
     int senyority = stoi(results.at(4));
     Employee *boss = this->findBoss(bossID);
-    Employee *emp = new myEmploee(ID, job, senyority, birth, boss);
+    Employee *emp = new MyEmployee(ID, job, senyority, birth, boss);
     return emp;
 }
 
-Employee *EmploeeTable::findBoss(string s) {
+Employee *EmploeeTable::findBoss(const string &s) {
     for (auto const &emp : this->list) {
         if (emp->getID() == s) {
             return emp;
@@ -95,7 +99,7 @@ Employee *EmploeeTable::findBoss(string s) {
 }
 
 template<typename T>
-Jobs Table<T>::stringToJobs(string s) {
+Jobs Table<T>::stringToJobs(const string &s) const {
     if (s == "0")
         return MANAGER;
     if (s == "1")
@@ -108,7 +112,7 @@ Jobs Table<T>::stringToJobs(string s) {
 }
 
 template<typename T>
-void Table<T>::saveTable(const string file) {
+void Table<T>::saveTable(const string &file) {
     this->listToStringList();
     ofstream myfile;
     myfile.open(file);
@@ -122,7 +126,7 @@ void Table<T>::saveTable(const string file) {
 }
 
 template<typename T>
-void Table<T>::loadTable(const string file) {
+void Table<T>::loadTable(const string &file, MyEx2 *lists) {
     string s = "1";
     ifstream myfile;
     myfile.open(file);
@@ -133,7 +137,7 @@ void Table<T>::loadTable(const string file) {
         s = "";
         getline(myfile, s);
         if (!s.empty()) {
-            this->list.push_back(this->loadFromString(s));
+            this->list.push_back(this->loadFromString(s, lists));
         }
     }
     myfile.close();
@@ -158,7 +162,7 @@ string PlanTable::makeString(Plane *tmp) {
     return s;
 }
 
-Plane *PlanTable::loadFromString(string s) {
+Plane *PlanTable::loadFromString(const string &s, MyEx2 *lists) {
     std::istringstream iss(s);
     std::vector<std::string> results(std::istream_iterator<std::string>{iss},
                                      std::istream_iterator<std::string>());
@@ -184,19 +188,16 @@ Plane *PlanTable::loadFromString(string s) {
     return tmp;
 }
 
-void PlanTable::printTable() {
-//todo
-}
 
-PlanTable::PlanTable(std::list<Plane *> list) {
+PlanTable::PlanTable(std::list<Plane *> &list) {
     this->list = list;
 }
 
-ResTable::ResTable(std::list<Reservation *> list) {
+ResTable::ResTable(std::list<Reservation *> &list) {
     this->list = list;
 }
 
-Reservation *ResTable::loadFromString(string s) {
+Reservation *ResTable::loadFromString(const string &s, MyEx2 *lists) {
     std::istringstream iss(s);
     std::vector<std::string> results(std::istream_iterator<std::string>{iss},
                                      std::istream_iterator<std::string>());
@@ -212,7 +213,7 @@ Reservation *ResTable::loadFromString(string s) {
         c = SECOND_CLASS;
     }
 
-    Reservation *tmp = new MyReservation(id, cust, flyId, cases, c);
+    Reservation *tmp = new MyReservation(id, lists->getCustomer(cust), lists->getFlight(flyId), cases, c);
     return tmp;
 }
 
