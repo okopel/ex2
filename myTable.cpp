@@ -148,6 +148,19 @@ void PlanTable::printTable() {
 }
 
 PlanTable::PlanTable(std::list<Plane *> list) {
-
+    this->list = list;
 }
+
+ResTable::ResTable(std::list<Reservation *> list) {
+    this->list = list;
+}
+
+Reservation *ResTable::loadFromString(string s) {
+    return nullptr;//toto
+}
+
+string ResTable::makeString(Reservation *tmp) {
+    return "ori";//todo
+}
+
 

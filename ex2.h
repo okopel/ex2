@@ -26,6 +26,8 @@ class MyCustomer;
 
 class MyFlight;
 
+class MyReservation;
+
 class myPlane;
 
 class MyEx2;
@@ -35,6 +37,8 @@ class myID;
 class AllId;
 
 class MyDate;
+
+class ResTable;
 
 class EmploeeTable;
 
@@ -289,7 +293,7 @@ public:
 
     void printTable();
 
-    Plane *loadFromString(string s);
+    Plane *loadFromString(string s) override;
 };
 
 class ResTable : virtual public Table<Reservation> {
