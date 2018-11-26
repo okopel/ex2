@@ -102,6 +102,8 @@ class myEmploee : virtual public Employee {
 public:
     myEmploee(Jobs type, int seniority, int birthYear, Employee *employee, AllId company);
 
+    myEmploee(string ID, Jobs type, int seniority, int birthYear, string employeeID);
+
     int getSeniority() override;
 
     int getBirthYear() override;
@@ -234,6 +236,8 @@ public:
     virtual void listToStringList() = 0;
 
     virtual void printTable() = 0;
+
+    Jobs stringToJobs(string s);
 
 };
 

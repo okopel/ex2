@@ -2,8 +2,8 @@
 // Created by okopel on 11/25/18.
 //
 #include <iostream>
-#include <iterator>
 #include <vector>
+#include <iterator>
 #include <sstream>
 #include "ex2.h"
 
@@ -88,21 +88,33 @@ void EmploeeTable::loadTable() {
     while (s != "") {
         s = "";
         getline(myfile, s);
-//        myfile >> s;
         this->list.push_back(this->loadFromString(s));
     }
     myfile.close();
 }
 
 Employee *EmploeeTable::loadFromString(string s) {
-    Employee *emp;//todo
     std::istringstream iss(s);
     std::vector<std::string> results(std::istream_iterator<std::string>{iss},
                                      std::istream_iterator<std::string>());
+    string ID = results.at(0);
+    Jobs job = stringToJobs(results.at(1));
+    int birth = stoi(results.at(2));
+    string bossID = results.at(3);
+    int senyority = stoi(results.at(4));
+    Employee *emp = new myEmploee(ID, job, senyority, birth, bossID);
+    return emp;
+}
 
-    Jobs job;
-    int senyority;
-    int birth;
-    string bossID;
-    string ID;
+
+Jobs Table::stringToJobs(string s) {
+    if (s == "0")
+        return MANAGER;
+    if (s == "1")
+        return NAVIGATOR;
+    if (s == "2")
+        return FLY_ATTENDANT;
+    if (s == "3")
+        return PILOT;
+    return OTHER;
 }

@@ -37,3 +37,11 @@ string myEmploee::toString() {
 
     return s;
 }
+
+myEmploee::myEmploee(string ID, Jobs type, int seniority, int birthYear, string employeeID) {
+    this->id = id;
+    this->type = type;
+    this->seniority = seniority;
+    this->birthYead = birthYear;
+//this->employer= //todo
+}
