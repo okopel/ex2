@@ -40,6 +40,4 @@ MyFlight::MyFlight(int model, const Date &date, const string &from, const string
     this->id = company->generate(OTHER);
 }
 
-MyFlight::~MyFlight() {
-
-}
+MyFlight::~MyFlight() = default;

@@ -13,9 +13,7 @@ myPlane::myPlane(int model, int maxFirstClass, int maxSecondClass, map<Jobs, int
     this->id = company.generate(OTHER);
 }
 
-myPlane::~myPlane() {
-
-}
+myPlane::~myPlane() = default;
 
 int myPlane::getModelNumber() {
     return this->model;

@@ -89,11 +89,20 @@ void MyEx2::exit() {
 
 }
 
-MyEx2::~MyEx2() {
-
-}
+MyEx2::~MyEx2() = default;
 
 MyEx2::MyEx2(AllId company) {
     this->company = company;
 }
 
+ResTable::ResTable(std::list<Reservation *> list) {
+    this->list = list;
+}
+
+Reservation *ResTable::loadFromString(string s) {
+    return nullptr;//toto
+}
+
+string ResTable::makeString(Reservation *tmp) {
+    return "ori";//todo
+}

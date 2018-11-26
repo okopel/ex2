@@ -27,7 +27,7 @@ class ID {
 public:
     virtual string getID() = 0;
 
-    virtual ~ID() {}
+    virtual ~ID() = default;
 };
 
 

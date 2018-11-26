@@ -36,7 +36,7 @@ EmploeeTable::EmploeeTable(std::list<Employee *> list) {
 void EmploeeTable::printTable() {
     cout << "this is Employee Table:" << endl;
     for (auto emp : this->list) {
-        string empBosId = "";
+        string empBosId = "NULL";
         if (emp->getEmployer() != NULL) {
             empBosId = emp->getEmployer()->getID();
         }
@@ -95,7 +95,7 @@ Jobs Table<T>::stringToJobs(string s) {
 }
 
 template<typename T>
-void Table<T>::saveTable(string file) {
+void Table<T>::saveTable(const string file) {
     this->listToStringList();
     ofstream myfile;
     myfile.open(file);
@@ -109,17 +109,17 @@ void Table<T>::saveTable(string file) {
 }
 
 template<typename T>
-void Table<T>::loadTable(string file) {
+void Table<T>::loadTable(const string file) {
     string s = "1";
     ifstream myfile;
     myfile.open(file);
     if (!myfile.is_open()) {
         return;
     }
-    while (s != "") {
+    while (!s.empty()) {
         s = "";
         getline(myfile, s);
-        if (s != "") {
+        if (!s.empty()) {
             this->list.push_back(this->loadFromString(s));
         }
     }
@@ -145,5 +145,9 @@ Plane *PlanTable::loadFromString(string s) {
 
 void PlanTable::printTable() {
 //todo
+}
+
+PlanTable::PlanTable(std::list<Plane *> list) {
+
 }
 

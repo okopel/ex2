@@ -18,7 +18,7 @@
 #include <string>
 #include <cstring>
 #include <cstdio>
-#include <stdlib.h>
+#include <cstdlib>
 #include <iostream>
 #include <fstream>
 
@@ -183,7 +183,7 @@ class MyEx2 : virtual public Ex2 {
     list<Reservation *> reservs;
 
 public:
-    MyEx2(AllId company);
+    explicit MyEx2(AllId company);
 
 
     list<Employee *> getEemployees() {
@@ -239,9 +239,9 @@ protected:
     std::list<string> slist;
     std::list<T *> list;
 public:
-    virtual void saveTable(string file);
+    virtual void saveTable(const string file);
 
-    virtual void loadTable(string file);
+    virtual void loadTable(const string file);
 
     virtual void listToStringList();
 
@@ -249,7 +249,7 @@ public:
 
     virtual T *loadFromString(string s) = 0;
 
-    virtual void printTable() = 0;
+    //virtual void printTable() = 0;
 
     Jobs stringToJobs(string s);
 
@@ -272,40 +272,33 @@ class EmploeeTable : virtual public Table<Employee> {
 public:
     explicit EmploeeTable(std::list<Employee *> list);
 
+    void printTable();
 
-    void printTable() override;
-
-    string makeString(Employee *tmp);
+    string makeString(Employee *tmp) override;
 
     Employee *findBoss(string s);
 
-    Employee *loadFromString(string s);
+    Employee *loadFromString(string s) override;
 };
 
-class PlanTable : public Table<Plane> {
+class PlanTable : virtual public Table<Plane> {
 public:
     explicit PlanTable(std::list<Plane *> list);
 
     string makeString(Plane *tmp) override;
 
-    void printTable() override;
+    void printTable();
 
     Plane *loadFromString(string s);
 };
 
-class ResTable : public Table<Reservation> {
-    std::list<Reservation *> list;
-
+class ResTable : virtual public Table<Reservation> {
 public:
     explicit ResTable(std::list<Reservation *> list);
 
-    void listToStringList();
+    string makeString(Reservation *tmp) override;
 
-
-    void printTable() override;
-
-    Reservation *loadFromString(string s);
-
+    Reservation *loadFromString(string s) override;
 };
 
 #endif //EX2_EX2_H
