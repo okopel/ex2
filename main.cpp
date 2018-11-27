@@ -14,10 +14,10 @@ int main() {
     my.addEmployee(3, 1994, "", MANAGER);
     my.addEmployee(4, 1974, "", PILOT);
     my.addEmployee(5, 1850, "", FLY_ATTENDANT);
-    my.addEmployee(7, 1950, "", PILOT);
-    my.addEmployee(1, 1840, "", FLY_ATTENDANT);
-    my.addEmployee(0, 1999, "", NAVIGATOR);
-    my.addEmployee(19, 2019, "", NAVIGATOR);
+    my.addEmployee(7, 1950, "m-4", PILOT);
+    my.addEmployee(1, 1840, "m-1", FLY_ATTENDANT);
+    my.addEmployee(0, 1999, "m-4", NAVIGATOR);
+    my.addEmployee(19, 2019, "m-1", NAVIGATOR);
 
     map<Jobs, int> crew;
     crew.insert(std::pair<Jobs, int>(MANAGER, 2));
