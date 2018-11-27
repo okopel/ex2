@@ -8,8 +8,8 @@ myPlane::myPlane(int model, int maxFirstClass, int maxSecondClass, map<Jobs, int
           maxFirstClass(
                   maxFirstClass),
           maxSecondClass(
-                  maxSecondClass), neededCrew(
-                neededCrew) {
+                  maxSecondClass) {
+    this->neededCrew = this->arrangeCrew(neededCrew);
     this->id = company->generate(OTHER);
 }
 
@@ -39,11 +39,31 @@ myPlane::myPlane(const string &id, int model, int maxFirstClass, int maxSecondCl
         id),
                                                                                                                    model(model),
                                                                                                                    maxFirstClass(
-                                                                                                                   maxFirstClass),
+                                                                                                                           maxFirstClass),
                                                                                                                    maxSecondClass(
-                                                                                                                   maxSecondClass),
+                                                                                                                           maxSecondClass),
                                                                                                                    neededCrew(
-                                                                                                                   neededCrew) {
+                                                                                                                           neededCrew) {
 
+
+}
+
+map<Jobs, int> &myPlane::arrangeCrew(map<Jobs, int> &map) {
+    if (map.count(FLY_ATTENDANT) == 0) {
+        map.insert(std::pair<Jobs, int>(FLY_ATTENDANT, 0));
+    }
+    if (map.count(MANAGER) == 0) {
+        map.insert(std::pair<Jobs, int>(MANAGER, 0));
+    }
+    if (map.count(NAVIGATOR) == 0) {
+        map.insert(std::pair<Jobs, int>(NAVIGATOR, 0));
+    }
+    if (map.count(PILOT) == 0) {
+        map.insert(std::pair<Jobs, int>(PILOT, 0));
+    }
+    if (map.count(OTHER) == 0) {
+        map.insert(std::pair<Jobs, int>(OTHER, 0));
+    }
+    return map;
 
 }

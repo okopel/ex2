@@ -135,31 +135,13 @@ void MyImplementation::exit() {
     res->saveTable(RES_FILE);
     Table<Customer> *cust = new CusTable(this->customer);
     cust->saveTable(CUS_FILE);
-    Table<Flight> *fly = new flightTable(this->flight);
+    Table<Flight> *fly = new FlightTable(this->flight);
     fly->saveTable(FLY_FILE);
 
 }
 
 MyImplementation::~MyImplementation() {
     delete this->company;
-    for (auto tmp : this->customer) {
-        delete tmp;
-    }
-    for (auto tmp : this->reservs) {
-        delete tmp;
-    }
-
-    for (auto tmp : this->planes) {
-        delete tmp;
-    }
-
-//    for (auto tmp : this->flight) {
-//        delete tmp;
-//    }
-//    for (auto tmp : this->employees) {
-//        delete tmp;
-//    }
-
 }
 
 list<Employee *> &MyImplementation::getEemployees() {
@@ -349,7 +331,7 @@ void MyImplementation::loadFromFile(const LoadTableType &num) {
             break;
         }
         case FLY: {
-            Table<Flight> *table4 = new flightTable(this->flight);
+            Table<Flight> *table4 = new FlightTable(this->flight);
             file = FLY_FILE;
             table4->loadTable(file, this);
             if (table4 != nullptr)

@@ -39,7 +39,7 @@ class ResTable;
 
 class EmploeeTable;
 
-class flightTable;
+class FlightTable;
 
 class AllId {
     int mangers;

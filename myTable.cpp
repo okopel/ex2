@@ -12,11 +12,11 @@
 #include "MyReservation.h"
 #include "MyCustomer.h"
 
-flightTable::flightTable(std::list<Flight *> &list) {
+FlightTable::FlightTable(std::list<Flight *> &list) {
     this->list = list;
 }
 
-void flightTable::printTable() {
+void FlightTable::printTable() {
     cout << "this is Flight Table:" << endl;
     for (auto fly : this->list) {
         cout << "ID: " << fly->getID() << "\t\t Date:" << fly->getDate().getDate() << "\t\t Model: "
@@ -25,7 +25,7 @@ void flightTable::printTable() {
     }
 }
 
-Flight *flightTable::loadFromString(const string &s, MyImplementation *lists) {
+Flight *FlightTable::loadFromString(const string &s, MyImplementation *lists) {
     std::istringstream iss(s);
     std::vector<std::string> results(std::istream_iterator<std::string>{iss},
                                      std::istream_iterator<std::string>());
@@ -38,7 +38,7 @@ Flight *flightTable::loadFromString(const string &s, MyImplementation *lists) {
     return tmp;
 }
 
-string flightTable::makeString(Flight *tmp) {
+string FlightTable::makeString(Flight *tmp) {
     string s =
             tmp->getID() + " " + to_string(tmp->getModelNumber()) + " " + tmp->getDate().getDate() + " " +
             tmp->getSource() + " " +

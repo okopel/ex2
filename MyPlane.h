@@ -13,6 +13,9 @@ class myPlane : virtual public Plane {
     int maxSecondClass;
     map<Jobs, int> neededCrew;
     string id;
+
+    map<Jobs, int> &arrangeCrew(map<Jobs, int> &map);
+
 public:
     myPlane(int model, int maxFirstClass, int maxSecondClass, map<Jobs, int> &neededCrew, AllId *company);
 

@@ -30,9 +30,9 @@ public:
 };
 
 
-class flightTable : public Table<Flight> {
+class FlightTable : public Table<Flight> {
 public:
-    explicit flightTable(std::list<Flight *> &list);
+    explicit FlightTable(std::list<Flight *> &list);
 
     Flight *loadFromString(const string &s, MyImplementation *lists) override;
 

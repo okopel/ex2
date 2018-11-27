@@ -53,11 +53,19 @@ int main() {
     my.addResevation("o-10", "o-16", FIRST_CLASS, 2);
 
 
-    flightTable t(my.getFlight());
+    FlightTable t(my.getFlight());
+    t.saveTable(FLY_FILE);
     EmploeeTable e(my.getEemployees());
-//    e.printTable();
     e.saveTable(EMP_FILE);
-    e.loadTable(EMP_FILE, &my);
+    CusTable c(my.getCustomer());
+    c.saveTable(CUS_FILE);
+    ResTable r(my.getReservs());
+    r.saveTable(RES_FILE);
+    PlanTable p(my.getPlanes());
+    p.saveTable(PLAN_FILE);
+
+
+    //e.loadTable(EMP_FILE, &my);
     cout << "Good Job!";
     return 0;
 }
