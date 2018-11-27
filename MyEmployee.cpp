@@ -45,3 +45,4 @@ MyEmployee::MyEmployee(const string &ID, Jobs type, int seniority, int birthYear
     this->birthYead = birthYear;
     this->employer = employer;
 }
+

@@ -32,7 +32,7 @@ Plane *MyImplementation::addPlane(int model_number, map<Jobs, int> crew_needed, 
     Plane *mp = new myPlane(model_number, max_passangers.at(FIRST_CLASS), max_passangers.at(SECOND_CLASS), crew_needed,
                             this->company);
     this->planes.push_back(mp);
-    return this->getPlane(mp->getID());
+    return mp;
 }
 
 Plane *MyImplementation::getPlane(string id) {
@@ -77,7 +77,7 @@ Customer *MyImplementation::addCustomer(string full_name, int priority) {
 
     Customer *myCustomer = new MyCustomer(full_name, priority, this->company);
     this->customer.push_back(myCustomer);
-    return this->getCustomer(myCustomer->getID());
+    return myCustomer;
 }
 
 Customer *MyImplementation::getCustomer(string id) {
@@ -140,7 +140,27 @@ void MyImplementation::exit() {
 
 }
 
-MyImplementation::~MyImplementation() = default;
+MyImplementation::~MyImplementation() {
+    delete this->company;
+    for (auto tmp : this->customer) {
+        delete tmp;
+    }
+    for (auto tmp : this->reservs) {
+        delete tmp;
+    }
+
+    for (auto tmp : this->planes) {
+        delete tmp;
+    }
+
+//    for (auto tmp : this->flight) {
+//        delete tmp;
+//    }
+//    for (auto tmp : this->employees) {
+//        delete tmp;
+//    }
+
+}
 
 list<Employee *> &MyImplementation::getEemployees() {
     return this->employees;
@@ -308,30 +328,40 @@ void MyImplementation::loadFromFile(const LoadTableType &num) {
             Table<Employee> *table = new EmploeeTable(this->employees);
             file = EMP_FILE;
             table->loadTable(file, this);
+            if (table != nullptr)
+                delete table;
             break;
         }
         case CUS: {
             Table<Customer> *table2 = new CusTable(this->customer);
             file = CUS_FILE;
             table2->loadTable(file, this);
+            if (table2 != nullptr)
+                delete table2;
             break;
         }
         case PLAN: {
             Table<Plane> *table3 = new PlanTable(this->planes);
             file = PLAN_FILE;
             table3->loadTable(file, this);
+            if (table3 != nullptr)
+                delete table3;
             break;
         }
         case FLY: {
             Table<Flight> *table4 = new flightTable(this->flight);
             file = FLY_FILE;
             table4->loadTable(file, this);
+            if (table4 != nullptr)
+                delete table4;
             break;
         }
         case RES: {
             Table<Reservation> *table5 = new ResTable(this->reservs);
             file = RES_FILE;
             table5->loadTable(file, this);
+            if (table5 != nullptr)
+                delete table5;
             break;
         }
         default:

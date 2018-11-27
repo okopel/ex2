@@ -32,6 +32,8 @@ public:
 
     Employee *getEmployer() override;
 
+    ~MyEmployee() override = default;
+
     ostream &operator<<(ostream &os) {
         return os << this->toString();
     }

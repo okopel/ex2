@@ -15,6 +15,8 @@ protected:
 public:
     virtual void saveTable(const string &file);
 
+    virtual ~Table();
+
     virtual void loadTable(const string &file, MyImplementation *lists);
 
     virtual void listToStringList();
@@ -50,6 +52,8 @@ public:
 
     Employee *findBoss(const string &s);
 
+    ~EmploeeTable() override;
+
     Employee *loadFromString(const string &s, MyImplementation *lists) override;
 };
 
@@ -67,6 +71,8 @@ public:
     explicit ResTable(std::list<Reservation *> &list);
 
     string makeString(Reservation *tmp) override;
+
+    ~ResTable() override;
 
     Reservation *loadFromString(const string &s, MyImplementation *lists) override;
 };

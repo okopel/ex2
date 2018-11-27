@@ -99,6 +99,8 @@ Employee *EmploeeTable::findBoss(const string &s) {
     return nullptr;
 }
 
+EmploeeTable::~EmploeeTable() = default;
+
 template<typename T>
 Jobs Table<T>::stringToJobs(const string &s) const {
     if (s == "0")
@@ -152,6 +154,14 @@ void Table<T>::listToStringList() {
     }
 }
 
+template<typename T>
+Table<T>::~Table() {
+    for (auto tmp : this->list) {
+        delete tmp;
+    }
+
+
+};
 
 string PlanTable::makeString(Plane *tmp) {
     string s = tmp->getID() + " " + to_string(tmp->getModelNumber()) + " " + to_string(tmp->getMaxFirstClass()) + " " +
@@ -223,6 +233,8 @@ string ResTable::makeString(Reservation *tmp) {
                to_string(tmp->getMaxBaggage()) + " " + to_string(tmp->getClass());
     return s;
 }
+
+ResTable::~ResTable() = default;
 
 
 CusTable::CusTable(std::list<Customer *> &list) {

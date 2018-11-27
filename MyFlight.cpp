@@ -36,7 +36,6 @@ MyFlight::MyFlight(int model, const Date &date, const string &from, const string
                                                                                                          date(date),
                                                                                                          from(from),
                                                                                                          des(des) {
-
     this->id = company->generate(OTHER);
 }
 
