@@ -29,7 +29,6 @@ Employee *MyImplementation::getEmployee(const string id) {
 
 Plane *MyImplementation::addPlane(int model_number, map<Jobs, int> crew_needed, map<Classes, int> max_passangers) {
     this->loadFromFile(PLAN);
-
     Plane *mp = new myPlane(model_number, max_passangers.at(FIRST_CLASS), max_passangers.at(SECOND_CLASS), crew_needed,
                             this->company);
     this->planes.push_back(mp);
@@ -50,13 +49,15 @@ Plane *MyImplementation::getPlane(string id) {
 
 Flight *MyImplementation::addFlight(int model_number, Date date, string source, string destination) {
     this->loadFromFile(FLY);
-
+    this->loadFromFile(EMP);
     if (!this->checkAvailiblePlanAndCrew(date, model_number)) {
-        throw "There isnt free plan or free crew";
+        throw "There isn't free plan or free crew";
     }
     Flight *myFlight = new MyFlight(model_number, date, source, destination, this->company);
     this->flight.push_back(myFlight);
-    return this->getFlight(myFlight->getID());
+    //todo update employee list
+
+    return myFlight;
 }
 
 Flight *MyImplementation::getFlight(string id) {
@@ -102,10 +103,15 @@ Reservation *MyImplementation::addResevation(string customerId, string flightId,
     if (!this->checkForPlaceInFlightInClass(fly, cls)) {
         throw "There is not place in this fly";
     }
-    Reservation *myres = new MyReservation(this->getCustomer(customerId), fly, max_baggage, cls,
-                                           this->company);
+    Customer *cus = this->getCustomer(customerId);
+    if (cus == nullptr) {
+        throw "There is not customer:" + customerId;
+    }
+    Reservation *myres = new MyReservation(cus, fly, max_baggage, cls, this->company);
     this->reservs.push_back(myres);
-    return this->getReservation(myres->getID());
+    cus->getReservations().push_back(myres);//update cus res list.
+    fly->getReservations().push_back(myres);//update fly res list.
+    return myres;
 }
 
 Reservation *MyImplementation::getReservation(string id) {

@@ -47,10 +47,10 @@ int main() {
     my.addFlight(153, Date("2019-02-02"), "london", "israel");
     my.addFlight(993, Date("2019-01-13"), "Poland", "berlin");
     my.addFlight(1113, Date("2019-01-13"), "Poland", "berlin");
-    my.addResevation("o-1", "o-13", FIRST_CLASS, 2);
-    my.addResevation("o-2", "o-14", FIRST_CLASS, 2);
-    my.addResevation("o-3", "o-15", SECOND_CLASS, 2);
-    my.addResevation("o-4", "o-16", FIRST_CLASS, 2);
+    my.addResevation("o-7", "o-13", FIRST_CLASS, 2);
+    my.addResevation("o-8", "o-14", FIRST_CLASS, 2);
+    my.addResevation("o-9", "o-15", SECOND_CLASS, 2);
+    my.addResevation("o-10", "o-16", FIRST_CLASS, 2);
 
 
     flightTable t(my.getFlight());

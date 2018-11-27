@@ -98,7 +98,7 @@ public:
 
     list<Customer *> &getCustomer();
 
-    list<Reservation *> &getReservs();;
+    list<Reservation *> &getReservs();
 
     Employee *addEmployee(int seniority, int birth_year, string employer_id, Jobs title) override;
 

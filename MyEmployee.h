@@ -14,6 +14,7 @@ class MyEmployee : virtual public Employee {
     int seniority;
     int birthYead;
     Employee *employer;
+
 public:
     explicit MyEmployee(Jobs type, int seniority, int birthYear, Employee *employee, AllId *company);
 

@@ -14,6 +14,12 @@ MyCustomer::MyCustomer(const string &name, int priority, AllId *company) {
     this->id = company->generate(OTHER);
 }
 
+MyCustomer::MyCustomer(const string &id, const string &name, int priority) {
+    this->id = id;
+    this->name = name;
+    this->priority = priority;
+}
+
 int MyCustomer::getPriority() {
     return this->priority;
 }
@@ -21,7 +27,6 @@ int MyCustomer::getPriority() {
 string MyCustomer::getFullName() {
     return this->name;
 }
-
 
 list<Reservation *> MyCustomer::getReservations() {
     return this->reserv;
@@ -31,9 +36,7 @@ string MyCustomer::getID() {
     return this->id;
 }
 
-MyCustomer::MyCustomer(const string &id, const string &name, int priority) {
-    this->id = id;
-    this->name = name;
-    this->priority = priority;
-}
+
+
+
 
