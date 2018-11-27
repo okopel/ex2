@@ -27,7 +27,6 @@ public:
 
     string getFullName() override;
 
-    void addReservToCustomer(Reservation *res);
 };
 
 #endif //EX2_MYCUSTOMER_H

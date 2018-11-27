@@ -12,8 +12,8 @@
 #include "MyReservation.h"
 #include "MyCustomer.h"
 
-FlightTable::FlightTable(std::list<Flight *> &list) {
-    this->list = list;
+FlightTable::FlightTable(list<Flight *> &list) : list(list) {
+
 }
 
 void FlightTable::printTable() {

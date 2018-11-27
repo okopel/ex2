@@ -24,15 +24,15 @@ int main() {
     crew.insert(std::pair<Jobs, int>(MANAGER, 2));
     crew.insert(std::pair<Jobs, int>(NAVIGATOR, 1));
     crew.insert(std::pair<Jobs, int>(PILOT, 1));
-    map<Classes, int> clas;
-    clas.insert(std::pair<Classes, int>(FIRST_CLASS, 102));
-    clas.insert(std::pair<Classes, int>(SECOND_CLASS, 19));
-    my.addPlane(123, crew, clas);
-    my.addPlane(153, crew, clas);
-    my.addPlane(3333, crew, clas);
-    my.addPlane(993, crew, clas);
-    my.addPlane(3363, crew, clas);
-    my.addPlane(1113, crew, clas);
+    map<Classes, int> classSeats;
+    classSeats.insert(std::pair<Classes, int>(FIRST_CLASS, 102));
+    classSeats.insert(std::pair<Classes, int>(SECOND_CLASS, 19));
+    my.addPlane(123, crew, classSeats);
+    my.addPlane(153, crew, classSeats);
+    my.addPlane(3333, crew, classSeats);
+    my.addPlane(993, crew, classSeats);
+    my.addPlane(3363, crew, classSeats);
+    my.addPlane(1113, crew, classSeats);
 
     my.addCustomer("ori kopel", 3);
     my.addCustomer("shlomo", 5);
