@@ -42,8 +42,8 @@ Plane *MyImplementation::getPlane(string id) {
 }
 
 Flight *MyImplementation::addFlight(int model_number, Date date, string source, string destination) {
-    if (!this->checkAvailiblePlan(date, model_number)) {
-        cout << "There isnt free plan" << endl;
+    if (!this->checkAvailiblePlanAndCrew(date, model_number)) {
+        cout << "There isnt free plan or free crew" << endl;
         return nullptr;
     }
     Flight *myFlight = new MyFlight(model_number, date, source, destination, this->company);
@@ -123,20 +123,25 @@ MyImplementation::MyImplementation() {
     this->company = new AllId(0, 0, 0, 0, 0);
 }
 
-bool MyImplementation::checkAvailiblePlan(Date date, int model) {
+bool MyImplementation::checkAvailiblePlanAndCrew(Date date, int model) {
+    //check for free plan
     int res = this->getResPerDatePerModel(date, model);
     int plan = this->numOfPlanesFromModel(model);
     //if there are 1 free plan at least to do this resev (not >= becouse we want 1 free plan).
-    if (plan > res) {
-        return true;
+    if (plan <= res) {
+        return false;
     }
-    return false;
+    //check for free crew //todo
+    if (!this->checkForCrew(model, date)) {
+        return false;
+    }
+    return true;
 }
 
 unsigned long MyImplementation::getResPerDatePerModel(Date date, int model) {
-    list<Reservation *> list;
-    for (auto const &res : this->reservs) {
-        if ((res->getFlight()->getDate() == date) && (res->getFlight()->getModelNumber() == model)) {
+    list<Flight *> list;
+    for (auto const &res : this->flight) {
+        if ((res->getDate() == date) && (res->getModelNumber() == model)) {
             list.push_back(res);
         }
     }
@@ -151,6 +156,58 @@ int MyImplementation::numOfPlanesFromModel(const int model) const {
         }
     }
     return counter;
+}
+
+bool MyImplementation::checkForCrew(int model, Date date) {
+    map<Jobs, int> nedded;
+    for (auto const &plan : this->planes) {
+        if (plan->getModelNumber() == model) {
+            nedded = plan->getCrewNeeded();
+            break;
+        }
+    }
+    if (nedded.empty()) {
+        //there isnt model.
+        return false;
+    }
+    map<Jobs, int> busy;
+    //check for any free crew.
+    for (auto const &fly : this->flight) {
+        if (fly->getDate() == date) {
+            map<Jobs, int> thisPlanCrew = this->getPlaneByModel(fly->getModelNumber())->getCrewNeeded();
+            busy[MANAGER] += thisPlanCrew[MANAGER];
+            busy[FLY_ATTENDANT] += thisPlanCrew[FLY_ATTENDANT];
+            busy[NAVIGATOR] += thisPlanCrew[NAVIGATOR];
+            busy[OTHER] += thisPlanCrew[OTHER];
+            busy[PILOT] += thisPlanCrew[PILOT];
+        }
+    }
+    map<Jobs, int> existing = this->existing();
+    if ((existing[MANAGER] - busy[MANAGER]) < nedded[MANAGER]) {
+        return false;
+    }
+    if ((existing[FLY_ATTENDANT] - busy[FLY_ATTENDANT]) < nedded[FLY_ATTENDANT]) {
+        return false;
+    }
+    if ((existing[NAVIGATOR] - busy[NAVIGATOR]) < nedded[NAVIGATOR]) {
+        return false;
+    }
+    if ((existing[OTHER] - busy[OTHER]) < nedded[OTHER]) {
+        return false;
+    }
+    if ((existing[PILOT] - busy[PILOT]) < nedded[PILOT]) {
+        return false;
+    }
+    return true;
+}
+
+Plane *MyImplementation::getPlaneByModel(int model) {
+    for (auto const &plane : this->planes) {
+        if (plane->getModelNumber() == model) {
+            return plane;
+        }
+    }
+    return nullptr;
 }
 
 

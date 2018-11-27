@@ -62,10 +62,16 @@ class MyImplementation : virtual public Ex2 {
     list<Customer *> customer;
     list<Reservation *> reservs;
 
+    bool checkForCrew(int model, Date date);
+
+    bool checkAvailiblePlanAndCrew(Date date, int model);
+
+    Plane *getPlaneByModel(int model);
+
+    map<Jobs, int> existing();
 public:
     explicit MyImplementation();
 
-    bool checkAvailiblePlan(Date date, int model);
 
     unsigned long getResPerDatePerModel(Date date, int model);
 
