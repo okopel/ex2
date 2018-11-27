@@ -23,7 +23,7 @@
 #include <fstream>
 
 
-class MyEx2;
+class MyImplementation;
 
 class myID;
 
@@ -54,7 +54,7 @@ public:
 };
 
 
-class MyEx2 : virtual public Ex2 {
+class MyImplementation : virtual public Ex2 {
     AllId *company;
     list<Employee *> employees;
     list<Plane *> planes;
@@ -63,7 +63,13 @@ class MyEx2 : virtual public Ex2 {
     list<Reservation *> reservs;
 
 public:
-    explicit MyEx2();
+    explicit MyImplementation();
+
+    bool checkAvailiblePlan(Date date, int model);
+
+    unsigned long getResPerDatePerModel(Date date, int model);
+
+    int numOfPlanesFromModel(const int model) const;
 
     list<Employee *> &getEemployees();
 
@@ -97,6 +103,7 @@ public:
 
     void exit() override;
 
-    ~MyEx2() override;
+    ~MyImplementation() override;
 };
+
 #endif //EX2_EX2_H

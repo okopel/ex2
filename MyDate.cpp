@@ -1,7 +1,7 @@
 //
 // Created by okopel on 11/25/18.
 //
-#include "ex2.h"
+#include "MyImplementation.h"
 
 
 bool Date::operator<(const Date &d) const {

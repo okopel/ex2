@@ -31,3 +31,9 @@ string MyCustomer::getID() {
     return this->id;
 }
 
+MyCustomer::MyCustomer(const string &id, const string &name, int priority) {
+    this->id = id;
+    this->name = name;
+    this->priority = priority;
+}
+

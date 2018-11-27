@@ -10,6 +10,7 @@
 #include "MyEmployee.h"
 #include "MyPlane.h"
 #include "MyReservation.h"
+#include "MyCustomer.h"
 
 flightTable::flightTable(std::list<Flight *> &list) {
     this->list = list;
@@ -24,7 +25,7 @@ void flightTable::printTable() {
     }
 }
 
-Flight *flightTable::loadFromString(const string &s, MyEx2 *lists) {
+Flight *flightTable::loadFromString(const string &s, MyImplementation *lists) {
     std::istringstream iss(s);
     std::vector<std::string> results(std::istream_iterator<std::string>{iss},
                                      std::istream_iterator<std::string>());
@@ -75,7 +76,7 @@ string EmploeeTable::makeString(Employee *tmp) {
 }
 
 
-Employee *EmploeeTable::loadFromString(const string &s, MyEx2 *lists) {
+Employee *EmploeeTable::loadFromString(const string &s, MyImplementation *lists) {
     std::istringstream iss(s);
     std::vector<std::string> results(std::istream_iterator<std::string>{iss},
                                      std::istream_iterator<std::string>());
@@ -126,7 +127,7 @@ void Table<T>::saveTable(const string &file) {
 }
 
 template<typename T>
-void Table<T>::loadTable(const string &file, MyEx2 *lists) {
+void Table<T>::loadTable(const string &file, MyImplementation *lists) {
     string s = "1";
     ifstream myfile;
     myfile.open(file);
@@ -162,7 +163,7 @@ string PlanTable::makeString(Plane *tmp) {
     return s;
 }
 
-Plane *PlanTable::loadFromString(const string &s, MyEx2 *lists) {
+Plane *PlanTable::loadFromString(const string &s, MyImplementation *lists) {
     std::istringstream iss(s);
     std::vector<std::string> results(std::istream_iterator<std::string>{iss},
                                      std::istream_iterator<std::string>());
@@ -197,7 +198,7 @@ ResTable::ResTable(std::list<Reservation *> &list) {
     this->list = list;
 }
 
-Reservation *ResTable::loadFromString(const string &s, MyEx2 *lists) {
+Reservation *ResTable::loadFromString(const string &s, MyImplementation *lists) {
     std::istringstream iss(s);
     std::vector<std::string> results(std::istream_iterator<std::string>{iss},
                                      std::istream_iterator<std::string>());
@@ -224,3 +225,42 @@ string ResTable::makeString(Reservation *tmp) {
 }
 
 
+CusTable::CusTable(std::list<Customer *> &list) {
+    this->list = list;
+}
+
+string CusTable::makeString(Customer *tmp) {
+    string s = tmp->getID() + " " + this->space2underscore(tmp->getFullName()) + " " +
+               to_string(tmp->getPriority());
+    return s;
+}
+
+Customer *CusTable::loadFromString(const string &s, MyImplementation *lists) {
+    std::istringstream iss(s);
+    std::vector<std::string> results(std::istream_iterator<std::string>{iss},
+                                     std::istream_iterator<std::string>());
+    string id = results.at(0);
+    string name = this->underscore2space(results.at(1));
+    int priority = stoi(results.at(2));
+
+    Customer *tmp = new MyCustomer(id, name, priority);
+    return tmp;
+}
+
+string CusTable::space2underscore(string text) {
+    for (std::string::iterator it = text.begin(); it != text.end(); ++it) {
+        if (*it == ' ') {
+            *it = '_';
+        }
+    }
+    return text;
+}
+
+string CusTable::underscore2space(string text) {
+    for (std::string::iterator it = text.begin(); it != text.end(); ++it) {
+        if (*it == '_') {
+            *it = ' ';
+        }
+    }
+    return text;
+}

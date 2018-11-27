@@ -5,7 +5,7 @@
 #ifndef EX2_MYEMPLOYEE_H
 #define EX2_MYEMPLOYEE_H
 
-#include "ex2.h"
+#include "MyImplementation.h"
 
 
 class MyEmployee : virtual public Employee {

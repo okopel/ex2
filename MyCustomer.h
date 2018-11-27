@@ -5,7 +5,7 @@
 #ifndef EX2_MYCUSTOMER_H
 #define EX2_MYCUSTOMER_H
 
-#include "ex2.h"
+#include "MyImplementation.h"
 
 class MyCustomer : virtual public Customer {
     string name;
@@ -14,6 +14,8 @@ class MyCustomer : virtual public Customer {
     list<Reservation *> reserv;
 public:
     MyCustomer(const string &name, int priority, AllId *company);
+
+    MyCustomer(const string &id, const string &name, int priority);
 
     list<Reservation *> getReservations() override;
 

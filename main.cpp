@@ -2,11 +2,11 @@
 // Created by okopel on 11/26/18.
 //
 
-#include "ex2.h"
+#include "MyImplementation.h"
 #include "MyTabels.h"
 
 int main() {
-    MyEx2 my;
+    MyImplementation my;
     my.addEmployee(2, 1994, "", MANAGER);
     my.addEmployee(4, 1974, "", PILOT);
     my.addEmployee(5, 1850, "", FLY_ATTENDANT);

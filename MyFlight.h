@@ -5,7 +5,7 @@
 #ifndef EX2_MYFLIGHT_H
 #define EX2_MYFLIGHT_H
 
-#include "ex2.h"
+#include "MyImplementation.h"
 
 
 class MyFlight : virtual public Flight {

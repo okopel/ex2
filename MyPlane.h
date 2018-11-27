@@ -5,7 +5,7 @@
 #ifndef EX2_MYPLANE_H
 #define EX2_MYPLANE_H
 
-#include "ex2.h"
+#include "MyImplementation.h"
 
 class myPlane : virtual public Plane {
     int model;

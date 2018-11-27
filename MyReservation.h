@@ -5,7 +5,7 @@
 #ifndef EX2_MYRESERVATION_H
 #define EX2_MYRESERVATION_H
 
-#include "ex2.h"
+#include "MyImplementation.h"
 
 class MyReservation : virtual public Reservation {
     Customer *customer;
