@@ -170,19 +170,9 @@ bool MyImplementation::checkForCrew(int model, Date date) {
         //there isnt model.
         return false;
     }
-    map<Jobs, int> busy;
-    //check for any free crew.
-    for (auto const &fly : this->flight) {
-        if (fly->getDate() == date) {
-            map<Jobs, int> thisPlanCrew = this->getPlaneByModel(fly->getModelNumber())->getCrewNeeded();
-            busy[MANAGER] += thisPlanCrew[MANAGER];
-            busy[FLY_ATTENDANT] += thisPlanCrew[FLY_ATTENDANT];
-            busy[NAVIGATOR] += thisPlanCrew[NAVIGATOR];
-            busy[OTHER] += thisPlanCrew[OTHER];
-            busy[PILOT] += thisPlanCrew[PILOT];
-        }
-    }
+    map<Jobs, int> busy = this->busyAtDate(date);
     map<Jobs, int> existing = this->existing();
+
     if ((existing[MANAGER] - busy[MANAGER]) < nedded[MANAGER]) {
         return false;
     }
@@ -208,6 +198,29 @@ Plane *MyImplementation::getPlaneByModel(int model) {
         }
     }
     return nullptr;
+}
+
+map<Jobs, int> MyImplementation::busyAtDate(Date date) {
+    map<Jobs, int> busy;
+    for (auto const &fly : this->flight) {
+        if (fly->getDate() == date) {
+            map<Jobs, int> thisPlanCrew = this->getPlaneByModel(fly->getModelNumber())->getCrewNeeded();
+            busy[MANAGER] += thisPlanCrew[MANAGER];
+            busy[FLY_ATTENDANT] += thisPlanCrew[FLY_ATTENDANT];
+            busy[NAVIGATOR] += thisPlanCrew[NAVIGATOR];
+            busy[OTHER] += thisPlanCrew[OTHER];
+            busy[PILOT] += thisPlanCrew[PILOT];
+        }
+    }
+    return busy;
+}
+
+map<Jobs, int> MyImplementation::existing() {
+    map<Jobs, int> exist;
+    for (auto const &emp : this->employees) {
+        exist[emp->getTitle()]++;//todo check if new title is adding
+    }
+    return exist;
 }
 
 

@@ -69,6 +69,8 @@ class MyImplementation : virtual public Ex2 {
     Plane *getPlaneByModel(int model);
 
     map<Jobs, int> existing();
+
+    map<Jobs, int> busyAtDate(Date date);
 public:
     explicit MyImplementation();
 
