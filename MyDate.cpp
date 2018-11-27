@@ -40,13 +40,15 @@ bool Date::operator==(const Date &d) const {
 }
 
 Date::Date(string date) {
+    if (date.length() != 10) {
+        throw "Error in date";
+    }
     //format: YYYY-MM-DD
     int year = stoi(date.substr(0, 4));
     int month = stoi(date.substr(5, 2));
     int day = stoi(date.substr(8, 2));
     if (year < 1000 || year > 9999 || month < 1 || month > 12 || day > 31 || day < 1) {
-        cout << "Error in date!" << endl;
-        return;
+        throw "Error in date";
     }
 
     this->date = to_string(year) + "-" + to_string(month) + "-" + to_string(day);

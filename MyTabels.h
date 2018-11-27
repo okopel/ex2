@@ -59,8 +59,6 @@ public:
 
     string makeString(Plane *tmp) override;
 
-    void printTable();
-
     Plane *loadFromString(const string &s, MyImplementation *lists) override;
 };
 

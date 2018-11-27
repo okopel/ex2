@@ -12,6 +12,7 @@
 #define CUS_FILE "Custemer.txt"
 #define PLAN_FILE "Plans.txt"
 #define RES_FILE "Reservation.txt"
+#define FLY_FILE "Fly.txt"
 
 
 #include "interface.h"
@@ -22,6 +23,9 @@
 #include <iostream>
 #include <fstream>
 
+enum LoadTableType {
+    EMP, CUS, PLAN, FLY, RES
+};
 
 class MyImplementation;
 
@@ -34,8 +38,6 @@ class MyDate;
 class ResTable;
 
 class EmploeeTable;
-
-class PlaneTable;
 
 class flightTable;
 
@@ -61,26 +63,29 @@ class MyImplementation : virtual public Ex2 {
     list<Flight *> flight;
     list<Customer *> customer;
     list<Reservation *> reservs;
+    map<LoadTableType, bool> hasloaded;
 
-    bool checkForCrew(int model, Date date);
+    void loadFromFile(const LoadTableType &num);
 
-    bool checkAvailiblePlanAndCrew(Date date, int model);
+    bool checkForCrew(const int &model, const Date &date);
 
-    Plane *getPlaneByModel(int model);
+    bool checkAvailiblePlanAndCrew(const Date &date, const int &model);
+
+    Plane *getPlaneByModel(const int &model);
 
     map<Jobs, int> existing();
 
-    map<Jobs, int> busyAtDate(Date date);
+    map<Jobs, int> busyAtDate(const Date &date);
 
-    bool checkForPlaceInFlightInClass(Flight *fly, Classes cls);
+    bool checkForPlaceInFlightInClass(Flight *fly, const Classes &cls);
 
-    unsigned long getResPerDatePerModel(Date date, int model);
+    unsigned long getResPerDatePerModel(const Date &date, const int &model);
 
-    int numOfPlanesFromModel(const int model) const;
+    int numOfPlanesFromModel(const int &model) const;
 
-    int numOfSeatsFromModel(const int model, Classes cls);
+    int numOfSeatsFromModel(const int &model, const Classes &cls);
 
-    int numOfCatch(Flight *fly, Classes cls);
+    int numOfCatch(Flight *fly, const Classes &cls);
 
 public:
     explicit MyImplementation();

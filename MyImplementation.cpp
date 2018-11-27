@@ -1,12 +1,14 @@
 #include <iostream>
 #include "MyImplementation.h"
+#include "MyTabels.h"
 #include "MyEmployee.h"
-#include "MyPlane.h"
-#include "MyFlight.h"
 #include "MyCustomer.h"
 #include "MyReservation.h"
+#include "MyFlight.h"
+#include "MyPlane.h"
 
 Employee *MyImplementation::addEmployee(int seniority, int birth_year, string employer_id, Jobs title) {
+    this->loadFromFile(EMP);
     Employee *boss = this->getEmployee(employer_id);
     Employee *emp = new MyEmployee(title, seniority, birth_year, boss, this->company);
     this->employees.push_back(emp);
@@ -26,6 +28,8 @@ Employee *MyImplementation::getEmployee(const string id) {
 }
 
 Plane *MyImplementation::addPlane(int model_number, map<Jobs, int> crew_needed, map<Classes, int> max_passangers) {
+    this->loadFromFile(PLAN);
+
     Plane *mp = new myPlane(model_number, max_passangers.at(FIRST_CLASS), max_passangers.at(SECOND_CLASS), crew_needed,
                             this->company);
     this->planes.push_back(mp);
@@ -45,9 +49,10 @@ Plane *MyImplementation::getPlane(string id) {
 }
 
 Flight *MyImplementation::addFlight(int model_number, Date date, string source, string destination) {
+    this->loadFromFile(FLY);
+
     if (!this->checkAvailiblePlanAndCrew(date, model_number)) {
-        cout << "There isnt free plan or free crew" << endl;
-        return nullptr;
+        throw "There isnt free plan or free crew";
     }
     Flight *myFlight = new MyFlight(model_number, date, source, destination, this->company);
     this->flight.push_back(myFlight);
@@ -67,6 +72,8 @@ Flight *MyImplementation::getFlight(string id) {
 }
 
 Customer *MyImplementation::addCustomer(string full_name, int priority) {
+    this->loadFromFile(CUS);
+
     Customer *myCustomer = new MyCustomer(full_name, priority, this->company);
     this->customer.push_back(myCustomer);
     return this->getCustomer(myCustomer->getID());
@@ -85,12 +92,16 @@ Customer *MyImplementation::getCustomer(string id) {
 }
 
 Reservation *MyImplementation::addResevation(string customerId, string flightId, Classes cls, int max_baggage) {
+    this->loadFromFile(RES);
+    this->loadFromFile(FLY);
+    this->loadFromFile(CUS);
     Flight *fly = this->getFlight(flightId);
     if (fly == nullptr) {
-        cout << "there isnt that fly ID:" << flightId << endl;
-        return nullptr;
+        throw "there isnt that fly ID:" + flightId;
     }
-    this->checkForPlaceInFlightInClass(fly, cls);
+    if (!this->checkForPlaceInFlightInClass(fly, cls)) {
+        throw "There is not place in this fly";
+    }
     Reservation *myres = new MyReservation(this->getCustomer(customerId), fly, max_baggage, cls,
                                            this->company);
     this->reservs.push_back(myres);
@@ -110,7 +121,17 @@ Reservation *MyImplementation::getReservation(string id) {
 }
 
 void MyImplementation::exit() {
-    //todo saving
+    Table<Employee> *emp = new EmploeeTable(this->employees);
+    emp->saveTable(EMP_FILE);
+    Table<Plane> *plan = new PlanTable(this->planes);
+    plan->saveTable(PLAN_FILE);
+    Table<Reservation> *res = new ResTable(this->reservs);
+    res->saveTable(RES_FILE);
+    Table<Customer> *cust = new CusTable(this->customer);
+    cust->saveTable(CUS_FILE);
+    Table<Flight> *fly = new flightTable(this->flight);
+    fly->saveTable(FLY_FILE);
+
 }
 
 MyImplementation::~MyImplementation() = default;
@@ -137,11 +158,16 @@ list<Reservation *> &MyImplementation::getReservs() {
 
 MyImplementation::MyImplementation() {
     this->company = new AllId(0, 0, 0, 0, 0);
+    this->hasloaded.insert(std::pair<LoadTableType, bool>(EMP, false));
+    this->hasloaded.insert(std::pair<LoadTableType, bool>(CUS, false));
+    this->hasloaded.insert(std::pair<LoadTableType, bool>(PLAN, false));
+    this->hasloaded.insert(std::pair<LoadTableType, bool>(FLY, false));
+    this->hasloaded.insert(std::pair<LoadTableType, bool>(RES, false));
 }
 
-bool MyImplementation::checkAvailiblePlanAndCrew(Date date, int model) {
+bool MyImplementation::checkAvailiblePlanAndCrew(const Date &date, const int &model) {
     //check for free plan
-    int res = this->getResPerDatePerModel(date, model);
+    int res = (int) this->getResPerDatePerModel(date, model);
     int plan = this->numOfPlanesFromModel(model);
     //if there are 1 free plan at least to do this resev (not >= becouse we want 1 free plan).
     if (plan <= res) {
@@ -154,7 +180,7 @@ bool MyImplementation::checkAvailiblePlanAndCrew(Date date, int model) {
     return true;
 }
 
-unsigned long MyImplementation::getResPerDatePerModel(Date date, int model) {
+unsigned long MyImplementation::getResPerDatePerModel(const Date &date, const int &model) {
     list<Flight *> list;
     for (auto const &res : this->flight) {
         if ((res->getDate() == date) && (res->getModelNumber() == model)) {
@@ -165,7 +191,7 @@ unsigned long MyImplementation::getResPerDatePerModel(Date date, int model) {
 }
 
 
-bool MyImplementation::checkForCrew(int model, Date date) {
+bool MyImplementation::checkForCrew(const int &model, const Date &date) {
     map<Jobs, int> needded;
     for (auto const &plan : this->planes) {
         if (plan->getModelNumber() == model) {
@@ -198,7 +224,7 @@ bool MyImplementation::checkForCrew(int model, Date date) {
     return true;
 }
 
-Plane *MyImplementation::getPlaneByModel(int model) {
+Plane *MyImplementation::getPlaneByModel(const int &model) {
     for (auto const &plane : this->planes) {
         if (plane->getModelNumber() == model) {
             return plane;
@@ -207,7 +233,7 @@ Plane *MyImplementation::getPlaneByModel(int model) {
     return nullptr;
 }
 
-map<Jobs, int> MyImplementation::busyAtDate(Date date) {
+map<Jobs, int> MyImplementation::busyAtDate(const Date &date) {
     map<Jobs, int> busy;
     for (auto const &fly : this->flight) {
         if (fly->getDate() == date) {
@@ -230,13 +256,13 @@ map<Jobs, int> MyImplementation::existing() {
     return exist;
 }
 
-bool MyImplementation::checkForPlaceInFlightInClass(Flight *fly, Classes cls) {
+bool MyImplementation::checkForPlaceInFlightInClass(Flight *fly, const Classes &cls) {
     int places = this->numOfSeatsFromModel(fly->getModelNumber(), cls);
     int numOfCatch = this->numOfCatch(fly, cls);
     return (places > numOfCatch);
 }
 
-int MyImplementation::numOfSeatsFromModel(const int model, Classes cls) {
+int MyImplementation::numOfSeatsFromModel(const int &model, const Classes &cls) {
     if (cls == SECOND_CLASS) {
         return this->getPlaneByModel(model)->getMaxEconomyClass();
     } else {
@@ -244,7 +270,7 @@ int MyImplementation::numOfSeatsFromModel(const int model, Classes cls) {
     }
 }
 
-int MyImplementation::numOfCatch(Flight *fly, Classes cls) {
+int MyImplementation::numOfCatch(Flight *fly, const Classes &cls) {
     int counter = 0;
     for (auto const &res : fly->getReservations()) {
         if (res->getClass() == cls) {
@@ -254,7 +280,7 @@ int MyImplementation::numOfCatch(Flight *fly, Classes cls) {
     return counter;
 }
 
-int MyImplementation::numOfPlanesFromModel(const int model) const {
+int MyImplementation::numOfPlanesFromModel(const int &model) const {
     int counter = 0;
     for (auto const &plan : this->planes) {
         if (plan->getModelNumber() == model) {
@@ -262,6 +288,51 @@ int MyImplementation::numOfPlanesFromModel(const int model) const {
         }
     }
     return counter;
+}
+
+
+void MyImplementation::loadFromFile(const LoadTableType &num) {
+    //check if the value has already loaded.
+    if (this->hasloaded.at(num)) {
+        return;
+    }
+    string file;
+    switch (num) {
+        case EMP: {
+            Table<Employee> *table = new EmploeeTable(this->employees);
+            file = EMP_FILE;
+            table->loadTable(file, this);
+            break;
+        }
+        case CUS: {
+            Table<Customer> *table2 = new CusTable(this->customer);
+            file = CUS_FILE;
+            table2->loadTable(file, this);
+            break;
+        }
+        case PLAN: {
+            Table<Plane> *table3 = new PlanTable(this->planes);
+            file = PLAN_FILE;
+            table3->loadTable(file, this);
+            break;
+        }
+        case FLY: {
+            Table<Flight> *table4 = new flightTable(this->flight);
+            file = FLY_FILE;
+            table4->loadTable(file, this);
+            break;
+        }
+        case RES: {
+            Table<Reservation> *table5 = new ResTable(this->reservs);
+            file = RES_FILE;
+            table5->loadTable(file, this);
+            break;
+        }
+        default:
+            throw "Error in loading type";
+    }
+    this->hasloaded.at(num) = true;
+
 }
 
 

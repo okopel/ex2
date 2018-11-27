@@ -6,6 +6,7 @@
 #include "MyTabels.h"
 
 int main() {
+
     MyImplementation my;
     my.addEmployee(2, 1994, "", MANAGER);
     my.addEmployee(2, 1914, "", MANAGER);

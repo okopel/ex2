@@ -55,7 +55,7 @@ void EmploeeTable::printTable() {
     cout << "this is Employee Table:" << endl;
     for (auto emp : this->list) {
         string empBosId = "NULL";
-        if (emp->getEmployer() != NULL) {
+        if (emp->getEmployer() != nullptr) {
             empBosId = emp->getEmployer()->getID();
         }
         cout << "ID: " << emp->getID() << "\t\t Jobs:" << emp->getTitle() << "\t\t Birth: "
@@ -66,7 +66,7 @@ void EmploeeTable::printTable() {
 
 string EmploeeTable::makeString(Employee *tmp) {
     string empBosId = "NULL";
-    if (tmp->getEmployer() != NULL) {
+    if (tmp->getEmployer() != nullptr) {
         empBosId = tmp->getEmployer()->getID();
     }
     string s = tmp->getID() + " " + to_string(tmp->getTitle()) + " "
@@ -118,9 +118,9 @@ void Table<T>::saveTable(const string &file) {
     ofstream myfile;
     myfile.open(file);
     if (!myfile.is_open()) {
-        return;
+        throw "Error in saving";
     }
-    for (string s:this->slist) {
+    for (const string &s:this->slist) {
         myfile << s + "\n";
     }
     myfile.close();
@@ -248,16 +248,16 @@ Customer *CusTable::loadFromString(const string &s, MyImplementation *lists) {
 }
 
 string CusTable::space2underscore(string text) {
-    for (std::string::iterator it = text.begin(); it != text.end(); ++it) {
-        if (*it == ' ') {
-            *it = '_';
+    for (char &it : text) {
+        if (it == ' ') {
+            it = '_';
         }
     }
     return text;
 }
 
 string CusTable::underscore2space(string text) {
-    for (std::string::iterator it = text.begin(); it != text.end(); ++it) {
+    for (string::iterator it = text.begin(); it != text.end(); ++it) {
         if (*it == '_') {
             *it = ' ';
         }
