@@ -71,13 +71,19 @@ class MyImplementation : virtual public Ex2 {
     map<Jobs, int> existing();
 
     map<Jobs, int> busyAtDate(Date date);
-public:
-    explicit MyImplementation();
 
+    bool checkForPlaceInFlightInClass(Flight *fly, Classes cls);
 
     unsigned long getResPerDatePerModel(Date date, int model);
 
     int numOfPlanesFromModel(const int model) const;
+
+    int numOfSeatsFromModel(const int model, Classes cls);
+
+    int numOfCatch(Flight *fly, Classes cls);
+
+public:
+    explicit MyImplementation();
 
     list<Employee *> &getEemployees();
 

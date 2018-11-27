@@ -33,6 +33,9 @@ Plane *MyImplementation::addPlane(int model_number, map<Jobs, int> crew_needed, 
 }
 
 Plane *MyImplementation::getPlane(string id) {
+    if (id.empty()) {
+        return nullptr;
+    }
     for (auto const &plane : this->planes) {
         if (plane->getID() == id) {
             return plane;
@@ -70,6 +73,9 @@ Customer *MyImplementation::addCustomer(string full_name, int priority) {
 }
 
 Customer *MyImplementation::getCustomer(string id) {
+    if (id.empty()) {
+        return nullptr;
+    }
     for (auto const &cust : this->customer) {
         if (cust->getID() == id) {
             return cust;
@@ -79,13 +85,22 @@ Customer *MyImplementation::getCustomer(string id) {
 }
 
 Reservation *MyImplementation::addResevation(string customerId, string flightId, Classes cls, int max_baggage) {
-    Reservation *myres = new MyReservation(this->getCustomer(customerId), this->getFlight(flightId), max_baggage, cls,
+    Flight *fly = this->getFlight(flightId);
+    if (fly == nullptr) {
+        cout << "there isnt that fly ID:" << flightId << endl;
+        return nullptr;
+    }
+    this->checkForPlaceInFlightInClass(fly, cls);
+    Reservation *myres = new MyReservation(this->getCustomer(customerId), fly, max_baggage, cls,
                                            this->company);
     this->reservs.push_back(myres);
     return this->getReservation(myres->getID());
 }
 
 Reservation *MyImplementation::getReservation(string id) {
+    if (id.empty()) {
+        return nullptr;
+    }
     for (auto const &res : this->reservs) {
         if (res->getID() == id) {
             return res;
@@ -95,6 +110,7 @@ Reservation *MyImplementation::getReservation(string id) {
 }
 
 void MyImplementation::exit() {
+    //todo saving
 }
 
 MyImplementation::~MyImplementation() = default;
@@ -131,7 +147,7 @@ bool MyImplementation::checkAvailiblePlanAndCrew(Date date, int model) {
     if (plan <= res) {
         return false;
     }
-    //check for free crew //todo
+    //check for free crew
     if (!this->checkForCrew(model, date)) {
         return false;
     }
@@ -148,44 +164,35 @@ unsigned long MyImplementation::getResPerDatePerModel(Date date, int model) {
     return list.size();
 }
 
-int MyImplementation::numOfPlanesFromModel(const int model) const {
-    int counter = 0;
-    for (auto const &plan : this->planes) {
-        if (plan->getModelNumber() == model) {
-            counter++;
-        }
-    }
-    return counter;
-}
 
 bool MyImplementation::checkForCrew(int model, Date date) {
-    map<Jobs, int> nedded;
+    map<Jobs, int> needded;
     for (auto const &plan : this->planes) {
         if (plan->getModelNumber() == model) {
-            nedded = plan->getCrewNeeded();
+            needded = plan->getCrewNeeded();
             break;
         }
     }
-    if (nedded.empty()) {
+    if (needded.empty()) {
         //there isnt model.
         return false;
     }
     map<Jobs, int> busy = this->busyAtDate(date);
     map<Jobs, int> existing = this->existing();
 
-    if ((existing[MANAGER] - busy[MANAGER]) < nedded[MANAGER]) {
+    if ((existing[MANAGER] - busy[MANAGER]) < needded[MANAGER]) {
         return false;
     }
-    if ((existing[FLY_ATTENDANT] - busy[FLY_ATTENDANT]) < nedded[FLY_ATTENDANT]) {
+    if ((existing[FLY_ATTENDANT] - busy[FLY_ATTENDANT]) < needded[FLY_ATTENDANT]) {
         return false;
     }
-    if ((existing[NAVIGATOR] - busy[NAVIGATOR]) < nedded[NAVIGATOR]) {
+    if ((existing[NAVIGATOR] - busy[NAVIGATOR]) < needded[NAVIGATOR]) {
         return false;
     }
-    if ((existing[OTHER] - busy[OTHER]) < nedded[OTHER]) {
+    if ((existing[OTHER] - busy[OTHER]) < needded[OTHER]) {
         return false;
     }
-    if ((existing[PILOT] - busy[PILOT]) < nedded[PILOT]) {
+    if ((existing[PILOT] - busy[PILOT]) < needded[PILOT]) {
         return false;
     }
     return true;
@@ -221,6 +228,40 @@ map<Jobs, int> MyImplementation::existing() {
         exist[emp->getTitle()]++;//todo check if new title is adding
     }
     return exist;
+}
+
+bool MyImplementation::checkForPlaceInFlightInClass(Flight *fly, Classes cls) {
+    int places = this->numOfSeatsFromModel(fly->getModelNumber(), cls);
+    int numOfCatch = this->numOfCatch(fly, cls);
+    return (places > numOfCatch);
+}
+
+int MyImplementation::numOfSeatsFromModel(const int model, Classes cls) {
+    if (cls == SECOND_CLASS) {
+        return this->getPlaneByModel(model)->getMaxEconomyClass();
+    } else {
+        return this->getPlaneByModel(model)->getMaxFirstClass();
+    }
+}
+
+int MyImplementation::numOfCatch(Flight *fly, Classes cls) {
+    int counter = 0;
+    for (auto const &res : fly->getReservations()) {
+        if (res->getClass() == cls) {
+            counter++;
+        }
+    }
+    return counter;
+}
+
+int MyImplementation::numOfPlanesFromModel(const int model) const {
+    int counter = 0;
+    for (auto const &plan : this->planes) {
+        if (plan->getModelNumber() == model) {
+            counter++;
+        }
+    }
+    return counter;
 }
 
 
