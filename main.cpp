@@ -1,6 +1,8 @@
-//
-// Created by okopel on 11/26/18.
-//
+/*****************
+ * Ori Kopel
+ * 205533151
+ * ex2 - nov 2018
+ ****************/
 
 #include "MyImplementation.h"
 #include "MyTabels.h"
@@ -54,17 +56,11 @@ int main() {
     my->addResevation("o-10", "o-16", FIRST_CLASS, 2);
 
     my->exit();
-//    FlightTable t(my->getFlight());
-//    t.saveTable(FLY_FILE);
-//    EmploeeTable e(my->getEemployees());
-//    e.saveTable(EMP_FILE);
-//    CusTable c(my->getCustomer());
-//    c.saveTable(CUS_FILE);
-//    ResTable r(my->getReservs());
-//    r.saveTable(RES_FILE);
-//    PlanTable p(my->getPlanes());
-//    p.saveTable(PLAN_FILE);
 
+    Ex2 *my2 = new MyImplementation();
+    my2->addCustomer("kok", 99);
+    my2->addEmployee(5, 2020, "", PILOT);
     cout << "Good Job!";
+    my2->exit();
     return 0;
 }

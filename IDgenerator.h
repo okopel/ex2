@@ -1,10 +1,12 @@
-//
-// Created by okopel on 11/28/18.
-//
-
+/*****************
+ * Ori Kopel
+ * 205533151
+ * ex2 - nov 2018
+ ****************/
 #ifndef EX2_ALLID_H
 #define EX2_ALLID_H
 
+#include "interface.h"
 /**
  * Class that generate new ID for new CUST/RESERV etc
  */

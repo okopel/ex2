@@ -1,6 +1,9 @@
-//
-// Created by okopel on 11/22/18.
-//
+/*****************
+ * Ori Kopel
+ * 205533151
+ * ex2 - nov 2018
+ ****************/
+
 #include "MyCustomer.h"
 
 MyCustomer::MyCustomer(const string &name, int priority, IDgenerator *company) : name(name) {

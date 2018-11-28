@@ -1,3 +1,9 @@
+/*****************
+ * Ori Kopel
+ * 205533151
+ * ex2 - nov 2018
+ ****************/
+
 #include <iostream>
 #include <iterator>
 #include <vector>
@@ -146,16 +152,26 @@ Reservation *MyImplementation::getReservation(string id) {
 }
 
 void MyImplementation::exit() {
-    Table<Employee> *emp = new EmploeeTable(this->employees);
-    emp->saveTable(EMP_FILE);
-    Table<Plane> *plan = new PlanTable(this->planes);
-    plan->saveTable(PLAN_FILE);
-    Table<Reservation> *res = new ResTable(this->reservs);
-    res->saveTable(RES_FILE);
-    Table<Customer> *cust = new CusTable(this->customer);
-    cust->saveTable(CUS_FILE);
-    Table<MyFlight> *fly = new FlightTable(this->flight);
-    fly->saveTable(FLY_FILE);
+    if (this->employees.size() > 0) {
+        Table<Employee> *emp = new EmploeeTable(this->employees);
+        emp->saveTable(EMP_FILE);
+    }
+    if (this->planes.size() > 0) {
+        Table<Plane> *plan = new PlanTable(this->planes);
+        plan->saveTable(PLAN_FILE);
+    }
+    if (this->reservs.size() > 0) {
+        Table<Reservation> *res = new ResTable(this->reservs);
+        res->saveTable(RES_FILE);
+    }
+    if (this->customer.size() > 0) {
+        Table<Customer> *cust = new CusTable(this->customer);
+        cust->saveTable(CUS_FILE);
+    }
+    if (this->flight.size() > 0) {
+        Table<MyFlight> *fly = new FlightTable(this->flight);
+        fly->saveTable(FLY_FILE);
+    }
     this->saveSetting();
 
 }
@@ -452,8 +468,8 @@ void MyImplementation::saveSetting() {
         throw "Error in saving";
     }
     myfile << to_string(this->company->getMangers()) + " " + to_string(this->company->getNavigators()) + " " +
-              to_string(this->company->getFly_attendant()) +
-              " " + to_string(this->company->getPilots()) + " " + to_string(this->company->getOther());
+            to_string(this->company->getFly_attendant()) +
+            " " + to_string(this->company->getPilots()) + " " + to_string(this->company->getOther());
 
     myfile.close();
 }

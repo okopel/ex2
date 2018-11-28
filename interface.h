@@ -1,9 +1,8 @@
-/******************************************************
-Change log:
-3.0
-Added getter to Date class
-Virtual destructor to ID class
-*******************************************************/
+/*****************
+ * Ori Kopel
+ * 205533151
+ * ex2 - nov 2018
+ ****************/
 
 #ifndef INTERFACE_H
 #define INTERFACE_H
