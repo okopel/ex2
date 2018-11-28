@@ -89,7 +89,6 @@ public:
 
 };
 
-
 class FlightTable : public Table<MyFlight> {
 public:
     explicit FlightTable(std::list<MyFlight *> &list);

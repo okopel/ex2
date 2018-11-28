@@ -79,13 +79,6 @@ class MyImplementation : virtual public Ex2 {
      */
     list<MyFlight *> myFlyList;
 
-    /**
-    * enter work to new flight
-    * @param crew  needed crew
-    * @param date date of flight
-    * @return list of worker to the flight
-    */
-    list<Employee *> *arrangeWorkers(map<Jobs, int> crew, Date &date);
 
     void loadSetting();
 
@@ -121,12 +114,6 @@ class MyImplementation : virtual public Ex2 {
      */
     bool checkAvailiblePlanAndCrew(const Date &date, const int &model);
 
-    /**
-     * get plan by model num
-     * @param model num
-     * @return plan of this model
-     */
-    Plane *getPlaneByModel(const int &model);
 
     /**
      * @return the whole workers who exist BY type
@@ -183,6 +170,21 @@ public:
      * C-TOR.
      */
     explicit MyImplementation();
+
+    /**
+     * get plan by model num
+     * @param model num
+     * @return plan of this model
+     */
+    Plane *getPlaneByModel(const int &model);
+
+    /**
+    * enter work to new flight
+    * @param crew  needed crew
+    * @param date date of flight
+    * @return list of worker to the flight
+    */
+    list<Employee *> *arrangeWorkers(map<Jobs, int> crew, Date &date);
 
     list<Employee *> &getEemployees();
 

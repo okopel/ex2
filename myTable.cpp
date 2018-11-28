@@ -14,6 +14,7 @@
 #include "MyPlane.h"
 #include "MyReservation.h"
 #include "MyCustomer.h"
+#include "interface.h"
 
 FlightTable::FlightTable(std::list<MyFlight *> &list) {
     this->list = list;
@@ -39,6 +40,8 @@ MyFlight *FlightTable::loadFromString(const string &s, MyImplementation *lists) 
     string from = this->underscore2space(results.at(3));
     string to = this->underscore2space(results.at(4));
     MyFlight *tmp = new MyFlight(id, model, date, from, to);
+    Date d(date);
+    tmp->setTeam(lists->arrangeWorkers(lists->getPlaneByModel(model)->getCrewNeeded(), d));
     //lists->getFlight().push_back(tmp);
     return tmp;
 }
