@@ -20,7 +20,7 @@ list<Reservation *> MyFlight::getReservations() {
 }
 
 list<Employee *> MyFlight::getAssignedCrew() {
-    return *this->team;
+    return this->team;
 }
 
 Date MyFlight::getDate() {
@@ -41,7 +41,7 @@ MyFlight::MyFlight(int model, const Date &date, const string &from, const string
                                             from(from),
                                             des(des) {
     this->id = company->generate(OTHER);
-    this->team = &list;
+    this->team = list;
 }
 
 MyFlight::MyFlight(const string &id, int model, const string &date, const string &from, const string &des) : model(
@@ -58,7 +58,7 @@ void MyFlight::addReserv(Reservation *res) {
     this->reser.push_back(res);
 }
 
-void MyFlight::setTeam(list<Employee *> *team) {
+void MyFlight::setTeam(list<Employee *> team) {
     MyFlight::team = team;
 }
 

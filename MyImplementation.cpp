@@ -87,17 +87,11 @@ Flight *MyImplementation::getFlight(string id) {
 
 Customer *MyImplementation::addCustomer(string full_name, int priority) {
     this->loadFromFile(CUS);
-
     MyCustomer *myCusto = new MyCustomer(full_name, priority, this->company);
-    Customer *y = myCusto;//todo
-
-    //this->customer.push_back(y);
+    Customer *y = myCusto;
     this->myCusList.push_back(myCusto);
     return y;
-    // Customer *myCustomer = new MyCustomer(full_name, priority, this->company);
-    // this->customer.push_back(myCustomer);
-    //this->myCusList.push_back(myCustomer);
-    // return myCustomer;
+
 }
 
 Customer *MyImplementation::getCustomer(string id) {
@@ -119,7 +113,7 @@ Reservation *MyImplementation::addResevation(string customerId, string flightId,
     this->loadFromFile(RES);
     Flight *fly = this->getMyFlight(flightId);
     if (fly == nullptr) {
-        throw "there isnt that fly ID:" + flightId;
+        throw "there isn't that fly ID:" + flightId;
     }
     if (!this->checkForPlaceInFlightInClass(fly, cls)) {
         throw "There is not place in this fly";
@@ -132,10 +126,8 @@ Reservation *MyImplementation::addResevation(string customerId, string flightId,
     this->reservs.push_back(myres);
     MyCustomer *myCus = this->getMyCustomer(customerId);
     myCus->addReserv(myres);
-    MyFlight *mf = this->getMyFlight(flightId);//todo
+    MyFlight *mf = this->getMyFlight(flightId);
     mf->addReserv(myres);
-//    cus->getReservations().push_back(myres);//update cus res list.//todo
-//    fly->getReservations().push_back(myres);//update fly res list.//todo
     return myres;
 }
 
@@ -152,32 +144,44 @@ Reservation *MyImplementation::getReservation(string id) {
 }
 
 void MyImplementation::exit() {
-    if (this->employees.size() > 0) {
-        Table<Employee> *emp = new EmploeeTable(this->employees);
+    if (!this->employees.empty()) {
+        Table<Employee> *emp = new EmployeeTable(this->employees);
         emp->saveTable(EMP_FILE);
+        delete emp;
     }
-    if (this->planes.size() > 0) {
+    if (!this->planes.empty()) {
         Table<Plane> *plan = new PlanTable(this->planes);
         plan->saveTable(PLAN_FILE);
+        delete plan;
     }
-    if (this->reservs.size() > 0) {
+    if (!this->reservs.empty()) {
         Table<Reservation> *res = new ResTable(this->reservs);
         res->saveTable(RES_FILE);
+        delete res;
     }
-    if (this->myCusList.size() > 0) {
+    if (!this->myCusList.empty()) {
         Table<MyCustomer> *cust = new CusTable(this->myCusList);
         cust->saveTable(CUS_FILE);
+        delete cust;
     }
-    if (this->flight.size() > 0) {
+    if (!this->flight.empty()) {
         Table<MyFlight> *fly = new FlightTable(this->flight);
         fly->saveTable(FLY_FILE);
+        delete fly;
     }
     this->saveSetting();
 
 }
 
 MyImplementation::~MyImplementation() {
-    delete this->company;
+    cout << "tfff" << endl;
+    printf("DD");
+//    delete this->company;
+//    for (auto &x:this->myCusList) {
+//        cout << "x" << endl;
+//        delete x;
+//    }
+    //  delete this;
 }
 
 list<Employee *> &MyImplementation::getEemployees() {
@@ -206,12 +210,13 @@ MyImplementation::MyImplementation() {
      * inition of id generator
      */
     this->company = new IDgenerator(0, 0, 0, 0, 0);
-    this->loadSetting();
-    this->hasloaded.insert(std::pair<LoadTableType, bool>(EMP, false));
-    this->hasloaded.insert(std::pair<LoadTableType, bool>(CUS, false));
-    this->hasloaded.insert(std::pair<LoadTableType, bool>(PLAN, false));
-    this->hasloaded.insert(std::pair<LoadTableType, bool>(FLY, false));
-    this->hasloaded.insert(std::pair<LoadTableType, bool>(RES, false));
+    bool b = this->loadSetting();
+    //b is true if there are files to load.
+    this->hasloaded.insert(std::pair<LoadTableType, bool>(EMP, !b));
+    this->hasloaded.insert(std::pair<LoadTableType, bool>(CUS, !b));
+    this->hasloaded.insert(std::pair<LoadTableType, bool>(PLAN, !b));
+    this->hasloaded.insert(std::pair<LoadTableType, bool>(FLY, !b));
+    this->hasloaded.insert(std::pair<LoadTableType, bool>(RES, !b));
 }
 
 bool MyImplementation::checkAvailiblePlanAndCrew(const Date &date, const int &model) {
@@ -267,10 +272,7 @@ bool MyImplementation::checkForCrew(const int &model, const Date &date) {
     if ((existing[OTHER] - busy[OTHER]) < needded[OTHER]) {
         return false;
     }
-    if ((existing[PILOT] - busy[PILOT]) < needded[PILOT]) {
-        return false;
-    }
-    return true;
+    return existing[PILOT] - busy[PILOT] >= needded[PILOT];
 }
 
 Plane *MyImplementation::getPlaneByModel(const int &model) {
@@ -300,7 +302,7 @@ map<Jobs, int> MyImplementation::busyAtDate(const Date &date) {
 map<Jobs, int> MyImplementation::existing() {
     map<Jobs, int> exist;
     for (auto const &emp : this->employees) {
-        exist[emp->getTitle()]++;//todo check if new title is adding
+        exist[emp->getTitle()]++;
     }
     return exist;
 }
@@ -346,42 +348,48 @@ void MyImplementation::loadFromFile(const LoadTableType &num) {
     }
     switch (num) {
         case EMP: {
-            Table<Employee> *table = new EmploeeTable(this->employees);
-            table->loadTable(EMP_FILE, this);
-            //now the list<T> is full from the file.
-            this->employees = table->getTlist();
+            EmployeeTable table(this->employees);
+            //Table<Employee> *table = new EmployeeTable(this->employees);
+            if (table.loadTable(EMP_FILE, this)) {
+                this->employees = table.getTlist();
+            }
+
+            // delete table;
             break;
         }
         case CUS: {
-            Table<MyCustomer> *table2 = new CusTable(this->myCusList);
-            table2->loadTable(CUS_FILE, this);
-            this->myCusList = table2->getTlist();
+//            Table<MyCustomer> *table2 = new CusTable(this->myCusList);
+            CusTable table2(this->myCusList);
+            table2.loadTable(CUS_FILE, this);
+            this->myCusList = table2.getTlist();
             break;
         }
         case PLAN: {
-            Table<Plane> *table3 = new PlanTable(this->planes);
-            table3->loadTable(PLAN_FILE, this);
-            this->planes = table3->getTlist();
+//            Table<Plane> *table3 = new PlanTable(this->planes);
+            PlanTable table3(this->planes);
+            table3.loadTable(PLAN_FILE, this);
+            this->planes = table3.getTlist();
             break;
         }
         case FLY: {
-            Table<MyFlight> *table4 = new FlightTable(this->flight);
-            table4->loadTable(FLY_FILE, this);
-            this->flight = table4->getTlist();
+//            Table<MyFlight> *table4 = new FlightTable(this->flight);
+            FlightTable table4(this->flight);
+            table4.loadTable(FLY_FILE, this);
+            this->flight = table4.getTlist();
             //this->myFlyList = table4->getTlist();
             break;
         }
         case RES: {
-            Table<Reservation> *table5 = new ResTable(this->reservs);
-            table5->loadTable(RES_FILE, this);
-            this->reservs = table5->getTlist();
+//            Table<Reservation> *table5 = new ResTable(this->reservs);
+            ResTable table5(this->reservs);
+            table5.loadTable(RES_FILE, this);
+            this->reservs = table5.getTlist();
             break;
         }
         default:
             throw "Error in loading type";
     }
     this->hasloaded.at(num) = true;
-
 }
 
 bool MyImplementation::isWorkerAvailible(const Employee *emp, const Date &date) {
@@ -397,16 +405,17 @@ bool MyImplementation::isWorkerAvailible(const Employee *emp, const Date &date) 
     return true;
 }
 
-list<Employee *> *MyImplementation::arrangeWorkers(map<Jobs, int> crew, Date &date) {
+list<Employee *> *MyImplementation::arrangeWorkers(map<Jobs, int> crew, Date date) {
     list<Employee *> *list = new ::list<Employee *>();
-    for (Employee *emp : this->employees) {
+    for (auto *emp : this->employees) {
         if (crew[emp->getTitle()] > 0) {
             if (this->isWorkerAvailible(emp, date)) {
                 list->push_back(emp);
+                crew[emp->getTitle()]--;
+
             }
-            crew[emp->getTitle()]--; //todo check if it destroy our map
         }
-    } //todo
+    }
     return list;
 }
 
@@ -443,12 +452,12 @@ Customer *MyImplementation::addMyCustomer(string id, string name, int pri) {
     return y;
 }
 
-void MyImplementation::loadSetting() {
+bool MyImplementation::loadSetting() {
     string s;
     ifstream myfile;
     myfile.open(SET_FILE);
     if (!myfile.is_open()) {
-        return;
+        return false;
     }
     getline(myfile, s);
     std::istringstream iss(s);
@@ -458,6 +467,7 @@ void MyImplementation::loadSetting() {
                        stoi(results.at(4)));
 
     myfile.close();
+    return true;
 
 
 }
@@ -469,8 +479,8 @@ void MyImplementation::saveSetting() {
         throw "Error in saving";
     }
     myfile << to_string(this->company->getMangers()) + " " + to_string(this->company->getNavigators()) + " " +
-            to_string(this->company->getFly_attendant()) +
-            " " + to_string(this->company->getPilots()) + " " + to_string(this->company->getOther());
+              to_string(this->company->getFly_attendant()) +
+              " " + to_string(this->company->getPilots()) + " " + to_string(this->company->getOther());
 
     myfile.close();
 }

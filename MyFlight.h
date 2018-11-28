@@ -16,7 +16,7 @@ class MyFlight : virtual public Flight {
     string id;
     int model;
     list<Reservation *> reser;
-    list<Employee *> *team;
+    list<Employee *> team;
     Date date;
     string from;
     string des;
@@ -28,8 +28,9 @@ public:
                       list<Employee *> list);
 
     explicit MyFlight(const string &id, int model, const string &date, const string &from,
-                      const string &des);//todo update list
-    void setTeam(list<Employee *> *team);
+                      const string &des);
+
+    void setTeam(list<Employee *> team);
 
     int getModelNumber() override;
 
