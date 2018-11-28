@@ -270,9 +270,9 @@ string Table<T>::space2underscore(string text) {
 
 template<typename T>
 string Table<T>::underscore2space(string text) {
-    for (string::iterator it = text.begin(); it != text.end(); ++it) {
-        if (*it == '_') {
-            *it = ' ';
+    for (char &it : text) {
+        if (it == '_') {
+            it = ' ';
         }
     }
     return text;
