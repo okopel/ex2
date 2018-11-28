@@ -1,8 +1,9 @@
-/*****************
- * Ori Kopel
- * 205533151
- * ex2 - nov 2018
- ****************/
+/******************************************************
+Change log:
+3.0
+Added getter to Date class
+Virtual destructor to ID class
+*******************************************************/
 
 #ifndef INTERFACE_H
 #define INTERFACE_H
@@ -26,7 +27,7 @@ class ID {
 public:
     virtual string getID() = 0;
 
-    virtual ~ID() = default;
+    virtual ~ID() {}
 };
 
 
@@ -44,7 +45,6 @@ public:
     virtual int getBirthYear() = 0;
 
     virtual Employee *getEmployer() = 0;
-
     virtual Jobs getTitle() = 0;
 
     virtual ~Employee() {}
@@ -111,9 +111,8 @@ class Date {
     string date;
 public:
     string getDate() const { return date; }
-
     Date(string date);    // format: YYYY-MM-DD
-    bool operator<(const Date &other) const;
+    bool operator<(const Date &d) const;
 
     bool operator>(const Date &d) const;
 

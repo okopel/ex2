@@ -41,7 +41,11 @@ MyFlight *FlightTable::loadFromString(const string &s, MyImplementation *lists) 
     string to = this->underscore2space(results.at(4));
     MyFlight *tmp = new MyFlight(id, model, date, from, to);
     Date d(date);
-    tmp->setTeam(lists->arrangeWorkers(lists->getPlaneByModel(model)->getCrewNeeded(), d));
+    std::list<Employee *> *l;
+//    l=lists->arrangeWorkers()
+    l = lists->arrangeWorkers(lists->getPlaneByModel(model)->getCrewNeeded(), d);
+    tmp->setTeam(*l);
+    delete l;
     //lists->getFlight().push_back(tmp);
     return tmp;
 }
@@ -55,11 +59,11 @@ string FlightTable::makeString(MyFlight *tmp) {
 }
 
 
-EmploeeTable::EmploeeTable(std::list<Employee *> &list) {
+EmployeeTable::EmployeeTable(std::list<Employee *> &list) {
     this->list = list;
 }
 
-void EmploeeTable::printTable() {
+void EmployeeTable::printTable() {
     cout << "this is Employee Table:" << endl;
     for (auto emp : this->list) {
         string empBosId = "NULL";
@@ -72,7 +76,7 @@ void EmploeeTable::printTable() {
     }
 }
 
-string EmploeeTable::makeString(Employee *tmp) {
+string EmployeeTable::makeString(Employee *tmp) {
     string empBosId = "NULL";
     if (tmp->getEmployer() != nullptr) {
         empBosId = tmp->getEmployer()->getID();
@@ -84,7 +88,7 @@ string EmploeeTable::makeString(Employee *tmp) {
 }
 
 
-Employee *EmploeeTable::loadFromString(const string &s, MyImplementation *lists) {
+Employee *EmployeeTable::loadFromString(const string &s, MyImplementation *lists) {
     std::istringstream iss(s);
     std::vector<std::string> results(std::istream_iterator<std::string>{iss},
                                      std::istream_iterator<std::string>());
@@ -99,7 +103,7 @@ Employee *EmploeeTable::loadFromString(const string &s, MyImplementation *lists)
     return emp;
 }
 
-Employee *EmploeeTable::findBoss(const string &s) {
+Employee *EmployeeTable::findBoss(const string &s) {
     for (auto const &emp : this->list) {
         if (emp->getID() == s) {
             return emp;
@@ -108,7 +112,7 @@ Employee *EmploeeTable::findBoss(const string &s) {
     return nullptr;
 }
 
-EmploeeTable::~EmploeeTable() = default;
+EmployeeTable::~EmployeeTable() = default;
 
 template<typename T>
 Jobs Table<T>::stringToJobs(const string &s) const {
@@ -138,12 +142,12 @@ void Table<T>::saveTable(const string &file) {
 }
 
 template<typename T>
-void Table<T>::loadTable(const string &file, MyImplementation *lists) {
+bool Table<T>::loadTable(const string &file, MyImplementation *lists) {
     string s = "1";
     ifstream myfile;
     myfile.open(file);
     if (!myfile.is_open()) {
-        return;
+        return false;
     }
     while (!s.empty()) {
         s = "";
@@ -153,6 +157,7 @@ void Table<T>::loadTable(const string &file, MyImplementation *lists) {
         }
     }
     myfile.close();
+    return true;
 }
 
 template<typename T>
@@ -164,12 +169,7 @@ void Table<T>::listToStringList() {
 }
 
 template<typename T>
-Table<T>::~Table() {
-    for (auto tmp : this->list) {
-        delete tmp;
-    }
-
-};
+Table<T>::~Table() = default;
 
 string PlanTable::makeString(Plane *tmp) {
     string s = tmp->getID() + " " + to_string(tmp->getModelNumber()) + " " + to_string(tmp->getMaxFirstClass()) + " " +
@@ -234,8 +234,6 @@ Reservation *ResTable::loadFromString(const string &s, MyImplementation *lists) 
     }
 
     Reservation *tmp = new MyReservation(id, lists->getMyCustomer(cust), lists->getMyFlight(flyId), cases, c);
-    //lists->addResevation(id, flyId, c, cases);//todo
-    //lists->getReservs().push_back(tmp);
     lists->getMyCustomer(cust)->addReserv(tmp);
     lists->getMyFlight(flyId)->addReserv(tmp);
     return tmp;
@@ -268,8 +266,7 @@ MyCustomer *CusTable::loadFromString(const string &s, MyImplementation *lists) {
     string name = this->underscore2space(results.at(1));
     int priority = stoi(results.at(2));
     MyCustomer *tmp = new MyCustomer(id, name, priority);
-    //lists->getCustomer().push_back(tmp);
-    lists->addMyCustomer(id, name, priority);//todo is it neccecery?
+    // lists->addMyCustomer(id, name, priority);//todo is it necessary?
     return tmp;
 }
 

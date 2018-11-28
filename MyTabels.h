@@ -58,7 +58,7 @@ public:
      * @param file the file name
      * @param lists the DB
      */
-    virtual void loadTable(const string &file, MyImplementation *lists);
+    virtual bool loadTable(const string &file, MyImplementation *lists);
 
     /**
      * make our list as string
@@ -101,9 +101,9 @@ public:
 };
 
 
-class EmploeeTable : virtual public Table<Employee> {
+class EmployeeTable : virtual public Table<Employee> {
 public:
-    explicit EmploeeTable(std::list<Employee *> &list);
+    explicit EmployeeTable(std::list<Employee *> &list);
 
     void printTable();
 
@@ -111,7 +111,7 @@ public:
 
     Employee *findBoss(const string &s);
 
-    ~EmploeeTable() override;
+    ~EmployeeTable() override;
 
     Employee *loadFromString(const string &s, MyImplementation *lists) override;
 };

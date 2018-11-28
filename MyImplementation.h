@@ -6,12 +6,12 @@
 
 #ifndef EX2_EX2_H
 #define EX2_EX2_H
-#define EMP_FILE "Employee.txt"
-#define CUS_FILE "Custemer.txt"
-#define PLAN_FILE "Plans.txt"
-#define RES_FILE "Reservation.txt"
-#define FLY_FILE "Fly.txt"
-#define SET_FILE "Setting.txt"
+#define EMP_FILE "DB_Employee.txt"
+#define CUS_FILE "DB_Custemer.txt"
+#define PLAN_FILE "DB_Plans.txt"
+#define RES_FILE "DB_Reservation.txt"
+#define FLY_FILE "DB_Fly.txt"
+#define SET_FILE "DB_Setting.txt"
 
 #include <string>
 #include <cstring>
@@ -25,7 +25,7 @@
  * enum of filesType - table
  */
 enum LoadTableType {
-    EMP, CUS, PLAN, FLY, RES, SETTING
+    EMP, CUS, PLAN, FLY, RES
 };
 
 class MyImplementation;
@@ -34,7 +34,7 @@ class IDgenerator;
 
 class ResTable;
 
-class EmploeeTable;
+class EmployeeTable;
 
 class FlightTable;
 
@@ -80,7 +80,7 @@ class MyImplementation : virtual public Ex2 {
     list<MyFlight *> myFlyList;
 
 
-    void loadSetting();
+    bool loadSetting();
 
     void saveSetting();
 
@@ -184,7 +184,7 @@ public:
     * @param date date of flight
     * @return list of worker to the flight
     */
-    list<Employee *> *arrangeWorkers(map<Jobs, int> crew, Date &date);
+    list<Employee *> *arrangeWorkers(map<Jobs, int> crew, Date date);
 
     list<Employee *> &getEemployees();
 
