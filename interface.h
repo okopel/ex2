@@ -32,10 +32,15 @@ public:
 
 
 class Employee;
+
 class Plane;
+
 class Flight;
+
 class Customer;
+
 class Reservation;
+
 class Date;
 
 class Employee : public ID {
