@@ -12,7 +12,8 @@
 #include "MyReservation.h"
 #include "MyCustomer.h"
 
-FlightTable::FlightTable(list<Flight *> &list) : list(list) {
+FlightTable::FlightTable(std::list<Flight *> &list) {
+    this->list = list;
 
 }
 
@@ -159,7 +160,6 @@ Table<T>::~Table() {
     for (auto tmp : this->list) {
         delete tmp;
     }
-
 
 };
 

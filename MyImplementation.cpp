@@ -9,10 +9,11 @@
 
 Employee *MyImplementation::addEmployee(int seniority, int birth_year, string employer_id, Jobs title) {
     this->loadFromFile(EMP);
+
     Employee *boss = this->getEmployee(employer_id);
     Employee *emp = new MyEmployee(title, seniority, birth_year, boss, this->company);
     this->employees.push_back(emp);
-    return this->getEmployee(emp->getID());
+    return emp;
 }
 
 Employee *MyImplementation::getEmployee(const string id) {
@@ -53,7 +54,10 @@ Flight *MyImplementation::addFlight(int model_number, Date date, string source, 
     if (!this->checkAvailiblePlanAndCrew(date, model_number)) {
         throw "There isn't free plan or free crew";
     }
-    Flight *myFlight = new MyFlight(model_number, date, source, destination, this->company);
+    list<Employee *> *l = this->arrangeWorkers(this->getPlaneByModel(model_number)->getCrewNeeded(), date);
+    Flight *myFlight = new MyFlight(model_number, date, source, destination, this->company, *l);
+    delete l;
+
     this->flight.push_back(myFlight);
     //todo update employee list
 
@@ -298,7 +302,6 @@ int MyImplementation::numOfPlanesFromModel(const int &model) const {
     return counter;
 }
 
-
 void MyImplementation::loadFromFile(const LoadTableType &num) {
     //check if the value has already loaded.
     if (this->hasloaded.at(num)) {
@@ -351,6 +354,32 @@ void MyImplementation::loadFromFile(const LoadTableType &num) {
     }
     this->hasloaded.at(num) = true;
 
+}
+
+bool MyImplementation::isWorkerAvailible(const Employee *emp, const Date &date) {
+    for (auto const &fly : this->flight) {
+        if (fly->getDate() == date) {
+            for (auto const &tmp: fly->getAssignedCrew()) {
+                if (tmp == emp) {
+                    return false;
+                }
+            }
+        }
+    }
+    return true;
+}
+
+list<Employee *> *MyImplementation::arrangeWorkers(map<Jobs, int> crew, Date &date) {
+    list<Employee *> *list = new ::list<Employee *>();
+    for (Employee *emp : this->employees) {
+        if (crew[emp->getTitle()] > 0) {
+            if (this->isWorkerAvailible(emp, date)) {
+                list->push_back(emp);
+            }
+            crew[emp->getTitle()]--; //todo check if it destroy our map
+        }
+    } //todo
+    return list;
 }
 
 

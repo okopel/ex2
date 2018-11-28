@@ -14,6 +14,8 @@
 #define RES_FILE "Reservation.txt"
 #define FLY_FILE "Fly.txt"
 
+#include "interface.h"
+
 
 #include "interface.h"
 #include <string>
@@ -64,6 +66,10 @@ class MyImplementation : virtual public Ex2 {
     list<Customer *> customer;
     list<Reservation *> reservs;
     map<LoadTableType, bool> hasloaded;
+
+    list<Employee *> *arrangeWorkers(map<Jobs, int> crew, Date &date);
+
+    bool isWorkerAvailible(const Employee *emp, const Date &date);
 
     void loadFromFile(const LoadTableType &num);
 

@@ -32,11 +32,13 @@ string MyFlight::getDestination() {
     return this->des;
 }
 
-MyFlight::MyFlight(int model, const Date &date, const string &from, const string &des, AllId *company) : model(model),
-                                                                                                         date(date),
-                                                                                                         from(from),
-                                                                                                         des(des) {
+MyFlight::MyFlight(int model, const Date &date, const string &from, const string &des, AllId *company,
+                   list<Employee *> list) : model(model),
+                                            date(date),
+                                            from(from),
+                                            des(des) {
     this->id = company->generate(OTHER);
+    this->team = list;
 }
 
 MyFlight::MyFlight(const string &id, int model, const string &date, const string &from, const string &des) : model(
