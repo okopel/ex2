@@ -63,12 +63,8 @@ class MyImplementation : virtual public Ex2 {
      */
     list<MyFlight *> flight;
     /**
-     * list of customers of the company
-     */
-    list<Customer *> customer;
-    /**
-     * list of Reservation of the company
-     */
+ * list of Reservation of the company
+ */
     list<Reservation *> reservs;
     /**
      * map of "has load" to avoid double loading
@@ -194,7 +190,7 @@ public:
 
     list<MyFlight *> &getFlight();
 
-    list<Customer *> &getCustomer();
+    list<MyCustomer *> &getCustomer();
 
     list<Reservation *> &getReservs();
 

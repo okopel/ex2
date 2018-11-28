@@ -60,6 +60,10 @@ int main() {
     Ex2 *my2 = new MyImplementation();
     my2->addCustomer("kok", 99);
     my2->addEmployee(5, 2020, "", PILOT);
+    my2->addPlane(23, crew, classSeats);
+    my2->addResevation("o-7", "o-62", SECOND_CLASS, 1);
+    my2->addFlight(3333, Date("2014-05-08"), "givaat shmuel A", "ze good yaaad");
+
     cout << "Good Job!";
     my2->exit();
     return 0;

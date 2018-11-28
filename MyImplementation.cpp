@@ -91,7 +91,7 @@ Customer *MyImplementation::addCustomer(string full_name, int priority) {
     MyCustomer *myCusto = new MyCustomer(full_name, priority, this->company);
     Customer *y = myCusto;//todo
 
-    this->customer.push_back(y);
+    //this->customer.push_back(y);
     this->myCusList.push_back(myCusto);
     return y;
     // Customer *myCustomer = new MyCustomer(full_name, priority, this->company);
@@ -104,7 +104,7 @@ Customer *MyImplementation::getCustomer(string id) {
     if (id.empty()) {
         return nullptr;
     }
-    for (auto const &cust : this->customer) {
+    for (auto const &cust : this->myCusList) {
         if (cust->getID() == id) {
             return cust;
         }
@@ -117,7 +117,7 @@ Reservation *MyImplementation::addResevation(string customerId, string flightId,
     this->loadFromFile(PLAN);
     this->loadFromFile(FLY);
     this->loadFromFile(RES);
-    Flight *fly = this->getFlight(flightId);
+    Flight *fly = this->getMyFlight(flightId);
     if (fly == nullptr) {
         throw "there isnt that fly ID:" + flightId;
     }
@@ -164,8 +164,8 @@ void MyImplementation::exit() {
         Table<Reservation> *res = new ResTable(this->reservs);
         res->saveTable(RES_FILE);
     }
-    if (this->customer.size() > 0) {
-        Table<Customer> *cust = new CusTable(this->customer);
+    if (this->myCusList.size() > 0) {
+        Table<MyCustomer> *cust = new CusTable(this->myCusList);
         cust->saveTable(CUS_FILE);
     }
     if (this->flight.size() > 0) {
@@ -192,8 +192,9 @@ list<MyFlight *> &MyImplementation::getFlight() {
     return this->flight;
 }
 
-list<Customer *> &MyImplementation::getCustomer() {
-    return this->customer;
+list<MyCustomer *> &MyImplementation::getCustomer() {
+    return this->myCusList;
+    //return this->customer;
 }
 
 list<Reservation *> &MyImplementation::getReservs() {
@@ -352,9 +353,9 @@ void MyImplementation::loadFromFile(const LoadTableType &num) {
             break;
         }
         case CUS: {
-            Table<Customer> *table2 = new CusTable(this->customer);
+            Table<MyCustomer> *table2 = new CusTable(this->myCusList);
             table2->loadTable(CUS_FILE, this);
-            this->customer = table2->getTlist();
+            this->myCusList = table2->getTlist();
             break;
         }
         case PLAN: {
@@ -437,7 +438,7 @@ Customer *MyImplementation::addMyCustomer(string id, string name, int pri) {
     MyCustomer *myCusto = new MyCustomer(id, name, pri);
     Customer *y = myCusto;
 
-    this->customer.push_back(y);
+    //this->customer.push_back(y);
     this->myCusList.push_back(myCusto);
     return y;
 }

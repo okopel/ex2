@@ -137,16 +137,16 @@ public:
     Reservation *loadFromString(const string &s, MyImplementation *lists) override;
 };
 
-class CusTable : virtual public Table<Customer> {
+class CusTable : virtual public Table<MyCustomer> {
 
 
 public:
 
-    explicit CusTable(std::list<Customer *> &list);
+    explicit CusTable(std::list<MyCustomer *> &list);
 
-    string makeString(Customer *tmp) override;
+    string makeString(MyCustomer *tmp) override;
 
-    Customer *loadFromString(const string &s, MyImplementation *lists) override;
+    MyCustomer *loadFromString(const string &s, MyImplementation *lists) override;
 
 };
 

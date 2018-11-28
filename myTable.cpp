@@ -230,9 +230,11 @@ Reservation *ResTable::loadFromString(const string &s, MyImplementation *lists) 
         c = SECOND_CLASS;
     }
 
-    Reservation *tmp = new MyReservation(id, lists->getCustomer(cust), lists->getFlight(flyId), cases, c);
+    Reservation *tmp = new MyReservation(id, lists->getMyCustomer(cust), lists->getMyFlight(flyId), cases, c);
     //lists->addResevation(id, flyId, c, cases);//todo
     //lists->getReservs().push_back(tmp);
+    lists->getMyCustomer(cust)->addReserv(tmp);
+    lists->getMyFlight(flyId)->addReserv(tmp);
     return tmp;
 }
 
@@ -245,26 +247,26 @@ string ResTable::makeString(Reservation *tmp) {
 ResTable::~ResTable() = default;
 
 
-CusTable::CusTable(std::list<Customer *> &list) {
+CusTable::CusTable(std::list<MyCustomer *> &list) {
     this->list = list;
 }
 
-string CusTable::makeString(Customer *tmp) {
+string CusTable::makeString(MyCustomer *tmp) {
     string s = tmp->getID() + " " + this->space2underscore(tmp->getFullName()) + " " +
                to_string(tmp->getPriority());
     return s;
 }
 
-Customer *CusTable::loadFromString(const string &s, MyImplementation *lists) {
+MyCustomer *CusTable::loadFromString(const string &s, MyImplementation *lists) {
     std::istringstream iss(s);
     std::vector<std::string> results(std::istream_iterator<std::string>{iss},
                                      std::istream_iterator<std::string>());
     string id = results.at(0);
     string name = this->underscore2space(results.at(1));
     int priority = stoi(results.at(2));
-    Customer *tmp = new MyCustomer(id, name, priority);
+    MyCustomer *tmp = new MyCustomer(id, name, priority);
     //lists->getCustomer().push_back(tmp);
-    lists->addMyCustomer(id, name, priority);
+    lists->addMyCustomer(id, name, priority);//todo is it neccecery?
     return tmp;
 }
 
