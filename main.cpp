@@ -64,8 +64,6 @@ int main() {
     my2->addResevation("o-7", "o-13", SECOND_CLASS, 1);
     my2->addFlight(3333, Date("2014-05-08"), "givaat shmuel A", "ze good yaaad");
 
-    // cout << "Good Job!";
     my2->exit();
-    //my2->MyImplementation();
 
 }

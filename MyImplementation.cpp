@@ -67,8 +67,6 @@ Flight *MyImplementation::addFlight(int model_number, Date date, string source, 
     Flight *myFlight = mf;
     delete l;
 
-    //this->flight.push_back(myFlight);
-    //this->myFlyList.push_back(mf);
     this->flight.push_back(mf);
     return myFlight;
 }
@@ -173,21 +171,6 @@ void MyImplementation::exit() {
     delete this;
 }
 
-//Ex2::~Ex2() {
-//
-//}
-
-/*MyImplementation::~MyImplementation() {
-    delete (this);
-    cout << "tfff" << endl;
-    printf("DD");
-//    delete this->company;
-//    for (auto &x:this->myCusList) {
-//        cout << "x" << endl;
-//        delete x;
-//    }
-    //  delete this;
-}*/
 
 list<Employee *> &MyImplementation::getEemployees() {
     return this->employees;
@@ -203,7 +186,6 @@ list<MyFlight *> &MyImplementation::getFlight() {
 
 list<MyCustomer *> &MyImplementation::getCustomer() {
     return this->myCusList;
-    //return this->customer;
 }
 
 list<Reservation *> &MyImplementation::getReservs() {
@@ -354,38 +336,31 @@ void MyImplementation::loadFromFile(const LoadTableType &num) {
     switch (num) {
         case EMP: {
             EmployeeTable table(this->employees);
-            //Table<Employee> *table = new EmployeeTable(this->employees);
             if (table.loadTable(EMP_FILE, this)) {
                 this->employees = table.getTlist();
             }
 
-            // delete table;
             break;
         }
         case CUS: {
-//            Table<MyCustomer> *table2 = new CusTable(this->myCusList);
             CusTable table2(this->myCusList);
             table2.loadTable(CUS_FILE, this);
             this->myCusList = table2.getTlist();
             break;
         }
         case PLAN: {
-//            Table<Plane> *table3 = new PlanTable(this->planes);
             PlanTable table3(this->planes);
             table3.loadTable(PLAN_FILE, this);
             this->planes = table3.getTlist();
             break;
         }
         case FLY: {
-//            Table<MyFlight> *table4 = new FlightTable(this->flight);
             FlightTable table4(this->flight);
             table4.loadTable(FLY_FILE, this);
             this->flight = table4.getTlist();
-            //this->myFlyList = table4->getTlist();
             break;
         }
         case RES: {
-//            Table<Reservation> *table5 = new ResTable(this->reservs);
             ResTable table5(this->reservs);
             table5.loadTable(RES_FILE, this);
             this->reservs = table5.getTlist();
@@ -451,8 +426,6 @@ MyFlight *MyImplementation::getMyFlight(string id) {
 Customer *MyImplementation::addMyCustomer(string id, string name, int pri) {
     MyCustomer *myCusto = new MyCustomer(id, name, pri);
     Customer *y = myCusto;
-
-    //this->customer.push_back(y);
     this->myCusList.push_back(myCusto);
     return y;
 }

@@ -42,11 +42,9 @@ MyFlight *FlightTable::loadFromString(const string &s, MyImplementation *lists) 
     MyFlight *tmp = new MyFlight(id, model, date, from, to);
     Date d(date);
     std::list<Employee *> *l;
-//    l=lists->arrangeWorkers()
     l = lists->arrangeWorkers(lists->getPlaneByModel(model)->getCrewNeeded(), d);
     tmp->setTeam(*l);
     delete l;
-    //lists->getFlight().push_back(tmp);
     return tmp;
 }
 
@@ -266,7 +264,6 @@ MyCustomer *CusTable::loadFromString(const string &s, MyImplementation *lists) {
     string name = this->underscore2space(results.at(1));
     int priority = stoi(results.at(2));
     MyCustomer *tmp = new MyCustomer(id, name, priority);
-    // lists->addMyCustomer(id, name, priority);//todo is it necessary?
     return tmp;
 }
 
