@@ -55,12 +55,12 @@ Flight *MyImplementation::addFlight(int model_number, Date date, string source, 
         throw "There isn't free plan or free crew";
     }
     list<Employee *> *l = this->arrangeWorkers(this->getPlaneByModel(model_number)->getCrewNeeded(), date);
-    Flight *myFlight = new MyFlight(model_number, date, source, destination, this->company, *l);
+    MyFlight *mf = new MyFlight(model_number, date, source, destination, this->company, *l);
+    Flight *myFlight = mf;
     delete l;
 
     this->flight.push_back(myFlight);
-    //todo update employee list
-
+    this->myFlyList.push_back(mf);
     return myFlight;
 }
 
@@ -79,9 +79,16 @@ Flight *MyImplementation::getFlight(string id) {
 Customer *MyImplementation::addCustomer(string full_name, int priority) {
     this->loadFromFile(CUS);
 
-    Customer *myCustomer = new MyCustomer(full_name, priority, this->company);
-    this->customer.push_back(myCustomer);
-    return myCustomer;
+    MyCustomer *myCusto = new MyCustomer(full_name, priority, this->company);
+    Customer *y = myCusto;//todo
+
+    this->customer.push_back(y);
+    this->myCusList.push_back(myCusto);
+    return y;
+    // Customer *myCustomer = new MyCustomer(full_name, priority, this->company);
+    // this->customer.push_back(myCustomer);
+    //this->myCusList.push_back(myCustomer);
+    // return myCustomer;
 }
 
 Customer *MyImplementation::getCustomer(string id) {
@@ -113,8 +120,12 @@ Reservation *MyImplementation::addResevation(string customerId, string flightId,
     }
     Reservation *myres = new MyReservation(cus, fly, max_baggage, cls, this->company);
     this->reservs.push_back(myres);
-    cus->getReservations().push_back(myres);//update cus res list.
-    fly->getReservations().push_back(myres);//update fly res list.
+    MyCustomer *myCus = this->getMyCustomer(customerId);
+    myCus->addReserv(myres);
+    MyFlight *mf = this->getMyFlight(flightId);//todo
+    mf->addReserv(myres);
+//    cus->getReservations().push_back(myres);//update cus res list.//todo
+//    fly->getReservations().push_back(myres);//update fly res list.//todo
     return myres;
 }
 
@@ -380,6 +391,30 @@ list<Employee *> *MyImplementation::arrangeWorkers(map<Jobs, int> crew, Date &da
         }
     } //todo
     return list;
+}
+
+MyCustomer *MyImplementation::getMyCustomer(string id) {
+    if (id.empty()) {
+        return nullptr;
+    }
+    for (auto const &cust : this->myCusList) {
+        if (cust->getID() == id) {
+            return cust;
+        }
+    }
+    return nullptr;
+}
+
+MyFlight *MyImplementation::getMyFlight(string id) {
+    if (id.empty()) {
+        return nullptr;
+    }
+    for (auto const &flight : this->myFlyList) {
+        if (flight->getID() == id) {
+            return flight;
+        }
+    }
+    return nullptr;
 }
 
 

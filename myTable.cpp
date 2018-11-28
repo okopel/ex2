@@ -33,8 +33,8 @@ Flight *FlightTable::loadFromString(const string &s, MyImplementation *lists) {
     string id = results.at(0);
     int model = stoi(results.at(1));
     string date = results.at(2);
-    string from = results.at(3);
-    string to = results.at(4);
+    string from = this->underscore2space(results.at(3));
+    string to = this->underscore2space(results.at(4));
     Flight *tmp = new MyFlight(id, model, date, from, to);
     return tmp;
 }
@@ -42,8 +42,8 @@ Flight *FlightTable::loadFromString(const string &s, MyImplementation *lists) {
 string FlightTable::makeString(Flight *tmp) {
     string s =
             tmp->getID() + " " + to_string(tmp->getModelNumber()) + " " + tmp->getDate().getDate() + " " +
-            tmp->getSource() + " " +
-            tmp->getDestination() + "\n";
+            this->space2underscore(tmp->getSource()) + " " +
+            this->space2underscore(tmp->getDestination()) + "\n";
     return s;
 }
 
@@ -254,12 +254,12 @@ Customer *CusTable::loadFromString(const string &s, MyImplementation *lists) {
     string id = results.at(0);
     string name = this->underscore2space(results.at(1));
     int priority = stoi(results.at(2));
-
     Customer *tmp = new MyCustomer(id, name, priority);
     return tmp;
 }
 
-string CusTable::space2underscore(string text) {
+template<typename T>
+string Table<T>::space2underscore(string text) {
     for (char &it : text) {
         if (it == ' ') {
             it = '_';
@@ -268,7 +268,8 @@ string CusTable::space2underscore(string text) {
     return text;
 }
 
-string CusTable::underscore2space(string text) {
+template<typename T>
+string Table<T>::underscore2space(string text) {
     for (string::iterator it = text.begin(); it != text.end(); ++it) {
         if (*it == '_') {
             *it = ' ';

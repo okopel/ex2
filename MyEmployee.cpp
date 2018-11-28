@@ -3,6 +3,7 @@
 //
 
 #include "MyEmployee.h"
+#include "AllID.h"
 
 MyEmployee::MyEmployee(Jobs type, int seniority, int birthYear, Employee *employer, AllId *company) {
     this->type = type;

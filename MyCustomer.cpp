@@ -35,6 +35,10 @@ string MyCustomer::getID() {
     return this->id;
 }
 
+void MyCustomer::addReserv(Reservation *res) {
+    this->reserv.push_back(res);
+}
+
 
 
 

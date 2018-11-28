@@ -2,6 +2,7 @@
 // Created by okopel on 11/22/18.
 //
 #include "MyPlane.h"
+#include "AllID.h"
 
 myPlane::myPlane(int model, int maxFirstClass, int maxSecondClass, map<Jobs, int> &neededCrew, AllId *company)
         : model(model),

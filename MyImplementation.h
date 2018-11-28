@@ -14,16 +14,13 @@
 #define RES_FILE "Reservation.txt"
 #define FLY_FILE "Fly.txt"
 
-#include "interface.h"
-
-
-#include "interface.h"
 #include <string>
 #include <cstring>
 #include <cstdio>
 #include <cstdlib>
 #include <iostream>
 #include <fstream>
+#include "interface.h"
 
 enum LoadTableType {
     EMP, CUS, PLAN, FLY, RES
@@ -31,11 +28,7 @@ enum LoadTableType {
 
 class MyImplementation;
 
-class myID;
-
 class AllId;
-
-class MyDate;
 
 class ResTable;
 
@@ -43,20 +36,9 @@ class EmploeeTable;
 
 class FlightTable;
 
-class AllId {
-    int mangers;
-    int navigators;
-    int fly_attendant;
-    int pilots;
-    int other;
-public:
-    explicit AllId(int managers = 0, int navigators = 0, int fly_attendant = 0, int pilots = 0, int other = 0);
+class MyCustomer;
 
-    string generate(Jobs type);
-
-    int getCount(Jobs type);
-};
-
+class MyFlight;
 
 class MyImplementation : virtual public Ex2 {
     AllId *company;
@@ -66,6 +48,8 @@ class MyImplementation : virtual public Ex2 {
     list<Customer *> customer;
     list<Reservation *> reservs;
     map<LoadTableType, bool> hasloaded;
+    list<MyCustomer *> myCusList;
+    list<MyFlight *> myFlyList;
 
     list<Employee *> *arrangeWorkers(map<Jobs, int> crew, Date &date);
 
@@ -104,6 +88,7 @@ public:
 
     list<Customer *> &getCustomer();
 
+
     list<Reservation *> &getReservs();
 
     Employee *addEmployee(int seniority, int birth_year, string employer_id, Jobs title) override;
@@ -118,9 +103,15 @@ public:
 
     Flight *getFlight(string id) override;
 
+    MyFlight *getMyFlight(string id);
+
+
     Customer *addCustomer(string full_name, int priority) override;
 
     Customer *getCustomer(string id) override;
+
+    MyCustomer *getMyCustomer(string id);
+
 
     Reservation *addResevation(string customerId, string flightId, Classes cls, int max_baggage) override;
 

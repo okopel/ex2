@@ -5,7 +5,9 @@
 #ifndef EX2_MYCUSTOMER_H
 #define EX2_MYCUSTOMER_H
 
-#include "MyImplementation.h"
+#include "interface.h"
+#include "AllID.h"
+#include "MyFlight.h"
 
 class MyCustomer : virtual public Customer {
     string name;
@@ -19,13 +21,16 @@ public:
 
     list<Reservation *> getReservations() override;
 
-    ~MyCustomer() override = default;
-
     string getID() override;
 
     int getPriority() override;
 
     string getFullName() override;
+
+    void addReserv(Reservation *res);
+
+    ~MyCustomer() override = default;
+
 
 };
 

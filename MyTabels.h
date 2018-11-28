@@ -12,6 +12,11 @@ class Table {
 protected:
     std::list<string> slist;
     std::list<T *> list;
+
+    string space2underscore(string text);
+
+    string underscore2space(string text);
+
 public:
     virtual void saveTable(const string &file);
 
@@ -79,9 +84,6 @@ public:
 
 class CusTable : virtual public Table<Customer> {
 
-    string space2underscore(string text);
-
-    string underscore2space(string text);
 
 public:
 

@@ -3,7 +3,7 @@
 //
 
 #include "MyImplementation.h"
-
+#include "AllID.h"
 
 string AllId::generate(Jobs type) {
     string c;

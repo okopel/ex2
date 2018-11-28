@@ -3,6 +3,7 @@
 //
 
 #include "MyFlight.h"
+#include "AllID.h"
 
 string MyFlight::getID() {
     return this->id;
@@ -49,6 +50,10 @@ MyFlight::MyFlight(const string &id, int model, const string &date, const string
                                                                                                              date(Date(
                                                                                                                      date)) {
 
+}
+
+void MyFlight::addReserv(Reservation *res) {
+    this->reser.push_back(res);
 }
 
 MyFlight::~MyFlight() = default;

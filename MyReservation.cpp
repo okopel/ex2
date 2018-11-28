@@ -3,7 +3,7 @@
 //
 
 #include "MyReservation.h"
-
+#include "AllID.h"
 MyReservation::MyReservation(Customer *customer, Flight *flight, int baggage, Classes classes, AllId *comp) :
         baggage(baggage), classes(classes), customer(customer), flight(flight) {
     this->id = comp->generate(OTHER);

@@ -64,8 +64,6 @@ int main() {
     PlanTable p(my.getPlanes());
     p.saveTable(PLAN_FILE);
 
-
-    //e.loadTable(EMP_FILE, &my);
     cout << "Good Job!";
     return 0;
 }
