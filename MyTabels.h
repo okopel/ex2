@@ -38,6 +38,8 @@ protected:
     string underscore2space(string text);
 
 public:
+    virtual std::list<T *> &getTlist();
+
     /**
      * save table in file
      * @param file file name
@@ -86,13 +88,13 @@ public:
 };
 
 
-class FlightTable : public Table<Flight> {
+class FlightTable : public Table<MyFlight> {
 public:
-    explicit FlightTable(std::list<Flight *> &list);
+    explicit FlightTable(std::list<MyFlight *> &list);
 
-    Flight *loadFromString(const string &s, MyImplementation *lists) override;
+    MyFlight *loadFromString(const string &s, MyImplementation *lists) override;
 
-    string makeString(Flight *tmp) override;
+    string makeString(MyFlight *tmp) override;
 
     void printTable();
 };

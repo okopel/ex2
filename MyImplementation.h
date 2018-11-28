@@ -13,6 +13,7 @@
 #define PLAN_FILE "Plans.txt"
 #define RES_FILE "Reservation.txt"
 #define FLY_FILE "Fly.txt"
+#define SET_FILE "Setting.txt"
 
 #include <string>
 #include <cstring>
@@ -26,7 +27,7 @@
  * enum of filesType - table
  */
 enum LoadTableType {
-    EMP, CUS, PLAN, FLY, RES
+    EMP, CUS, PLAN, FLY, RES, SETTING
 };
 
 class MyImplementation;
@@ -62,7 +63,7 @@ class MyImplementation : virtual public Ex2 {
     /**
      * * list of flies of the company
      */
-    list<Flight *> flight;
+    list<MyFlight *> flight;
     /**
      * list of customers of the company
      */
@@ -91,6 +92,10 @@ class MyImplementation : virtual public Ex2 {
     * @return list of worker to the flight
     */
     list<Employee *> *arrangeWorkers(map<Jobs, int> crew, Date &date);
+
+    void loadSetting();
+
+    void saveSetting();
 
     /**
     * check for availible worker
@@ -189,7 +194,7 @@ public:
 
     list<Plane *> &getPlanes();
 
-    list<Flight *> &getFlight();
+    list<MyFlight *> &getFlight();
 
     list<Customer *> &getCustomer();
 
@@ -213,6 +218,8 @@ public:
      * @return myflight pointer
      */
     MyFlight *getMyFlight(string id);
+
+    Customer *addMyCustomer(string id, string name, int pri);
 
     Customer *addCustomer(string full_name, int priority) override;
 

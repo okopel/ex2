@@ -12,7 +12,7 @@
 #include "MyReservation.h"
 #include "MyCustomer.h"
 
-FlightTable::FlightTable(std::list<Flight *> &list) {
+FlightTable::FlightTable(std::list<MyFlight *> &list) {
     this->list = list;
 
 }
@@ -26,7 +26,7 @@ void FlightTable::printTable() {
     }
 }
 
-Flight *FlightTable::loadFromString(const string &s, MyImplementation *lists) {
+MyFlight *FlightTable::loadFromString(const string &s, MyImplementation *lists) {
     std::istringstream iss(s);
     std::vector<std::string> results(std::istream_iterator<std::string>{iss},
                                      std::istream_iterator<std::string>());
@@ -35,15 +35,16 @@ Flight *FlightTable::loadFromString(const string &s, MyImplementation *lists) {
     string date = results.at(2);
     string from = this->underscore2space(results.at(3));
     string to = this->underscore2space(results.at(4));
-    Flight *tmp = new MyFlight(id, model, date, from, to);
+    MyFlight *tmp = new MyFlight(id, model, date, from, to);
+    //lists->getFlight().push_back(tmp);
     return tmp;
 }
 
-string FlightTable::makeString(Flight *tmp) {
+string FlightTable::makeString(MyFlight *tmp) {
     string s =
             tmp->getID() + " " + to_string(tmp->getModelNumber()) + " " + tmp->getDate().getDate() + " " +
             this->space2underscore(tmp->getSource()) + " " +
-            this->space2underscore(tmp->getDestination()) + "\n";
+            this->space2underscore(tmp->getDestination());
     return s;
 }
 
@@ -88,6 +89,7 @@ Employee *EmploeeTable::loadFromString(const string &s, MyImplementation *lists)
     int senyority = stoi(results.at(4));
     Employee *boss = this->findBoss(bossID);
     Employee *emp = new MyEmployee(ID, job, senyority, birth, boss);
+    lists->getEemployees().push_back(emp);
     return emp;
 }
 
@@ -196,6 +198,7 @@ Plane *PlanTable::loadFromString(const string &s, MyImplementation *lists) {
     crew.insert(std::pair<Jobs, int>(OTHER, other));
 
     Plane *tmp = new myPlane(id, model, fClass, sClass, crew);
+    lists->getPlanes().push_back(tmp);
     return tmp;
 }
 
@@ -225,6 +228,8 @@ Reservation *ResTable::loadFromString(const string &s, MyImplementation *lists) 
     }
 
     Reservation *tmp = new MyReservation(id, lists->getCustomer(cust), lists->getFlight(flyId), cases, c);
+    //lists->addResevation(id, flyId, c, cases);//todo
+    //lists->getReservs().push_back(tmp);
     return tmp;
 }
 
@@ -255,6 +260,8 @@ Customer *CusTable::loadFromString(const string &s, MyImplementation *lists) {
     string name = this->underscore2space(results.at(1));
     int priority = stoi(results.at(2));
     Customer *tmp = new MyCustomer(id, name, priority);
+    //lists->getCustomer().push_back(tmp);
+    lists->addMyCustomer(id, name, priority);
     return tmp;
 }
 
@@ -276,4 +283,9 @@ string Table<T>::underscore2space(string text) {
         }
     }
     return text;
+}
+
+template<typename T>
+list<T *> &Table<T>::getTlist() {
+    return this->list;
 }

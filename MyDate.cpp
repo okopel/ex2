@@ -59,5 +59,5 @@ Date::Date(string date) {
         throw "Error in date";
     }
 
-    this->date = to_string(year) + "-" + to_string(month) + "-" + to_string(day);
+    this->date = date.substr(0, 4) + "-" + date.substr(5, 2) + "-" + date.substr(8, 2);
 }

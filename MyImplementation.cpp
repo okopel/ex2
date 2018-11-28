@@ -1,4 +1,7 @@
 #include <iostream>
+#include <iterator>
+#include <vector>
+#include <sstream>
 #include "MyImplementation.h"
 #include "MyTabels.h"
 #include "MyEmployee.h"
@@ -58,8 +61,9 @@ Flight *MyImplementation::addFlight(int model_number, Date date, string source, 
     Flight *myFlight = mf;
     delete l;
 
-    this->flight.push_back(myFlight);
-    this->myFlyList.push_back(mf);
+    //this->flight.push_back(myFlight);
+    //this->myFlyList.push_back(mf);
+    this->flight.push_back(mf);
     return myFlight;
 }
 
@@ -103,9 +107,10 @@ Customer *MyImplementation::getCustomer(string id) {
 }
 
 Reservation *MyImplementation::addResevation(string customerId, string flightId, Classes cls, int max_baggage) {
-    this->loadFromFile(RES);
-    this->loadFromFile(FLY);
     this->loadFromFile(CUS);
+    this->loadFromFile(PLAN);
+    this->loadFromFile(FLY);
+    this->loadFromFile(RES);
     Flight *fly = this->getFlight(flightId);
     if (fly == nullptr) {
         throw "there isnt that fly ID:" + flightId;
@@ -149,8 +154,9 @@ void MyImplementation::exit() {
     res->saveTable(RES_FILE);
     Table<Customer> *cust = new CusTable(this->customer);
     cust->saveTable(CUS_FILE);
-    Table<Flight> *fly = new FlightTable(this->flight);
+    Table<MyFlight> *fly = new FlightTable(this->flight);
     fly->saveTable(FLY_FILE);
+    this->saveSetting();
 
 }
 
@@ -166,7 +172,7 @@ list<Plane *> &MyImplementation::getPlanes() {
     return this->planes;
 }
 
-list<Flight *> &MyImplementation::getFlight() {
+list<MyFlight *> &MyImplementation::getFlight() {
     return this->flight;
 }
 
@@ -183,6 +189,7 @@ MyImplementation::MyImplementation() {
      * inition of id generator
      */
     this->company = new IDgenerator(0, 0, 0, 0, 0);
+    this->loadSetting();
     this->hasloaded.insert(std::pair<LoadTableType, bool>(EMP, false));
     this->hasloaded.insert(std::pair<LoadTableType, bool>(CUS, false));
     this->hasloaded.insert(std::pair<LoadTableType, bool>(PLAN, false));
@@ -320,46 +327,37 @@ void MyImplementation::loadFromFile(const LoadTableType &num) {
     if (this->hasloaded.at(num)) {
         return;
     }
-    string file;
     switch (num) {
         case EMP: {
             Table<Employee> *table = new EmploeeTable(this->employees);
-            file = EMP_FILE;
-            table->loadTable(file, this);
-            if (table != nullptr)
-                delete table;
+            table->loadTable(EMP_FILE, this);
+            //now the list<T> is full from the file.
+            this->employees = table->getTlist();
             break;
         }
         case CUS: {
             Table<Customer> *table2 = new CusTable(this->customer);
-            file = CUS_FILE;
-            table2->loadTable(file, this);
-            if (table2 != nullptr)
-                delete table2;
+            table2->loadTable(CUS_FILE, this);
+            this->customer = table2->getTlist();
             break;
         }
         case PLAN: {
             Table<Plane> *table3 = new PlanTable(this->planes);
-            file = PLAN_FILE;
-            table3->loadTable(file, this);
-            if (table3 != nullptr)
-                delete table3;
+            table3->loadTable(PLAN_FILE, this);
+            this->planes = table3->getTlist();
             break;
         }
         case FLY: {
-            Table<Flight> *table4 = new FlightTable(this->flight);
-            file = FLY_FILE;
-            table4->loadTable(file, this);
-            if (table4 != nullptr)
-                delete table4;
+            Table<MyFlight> *table4 = new FlightTable(this->flight);
+            table4->loadTable(FLY_FILE, this);
+            this->flight = table4->getTlist();
+            //this->myFlyList = table4->getTlist();
             break;
         }
         case RES: {
             Table<Reservation> *table5 = new ResTable(this->reservs);
-            file = RES_FILE;
-            table5->loadTable(file, this);
-            if (table5 != nullptr)
-                delete table5;
+            table5->loadTable(RES_FILE, this);
+            this->reservs = table5->getTlist();
             break;
         }
         default:
@@ -411,12 +409,53 @@ MyFlight *MyImplementation::getMyFlight(string id) {
     if (id.empty()) {
         return nullptr;
     }
-    for (auto const &flight : this->myFlyList) {
+    for (auto const &flight : this->flight) {
         if (flight->getID() == id) {
             return flight;
         }
     }
     return nullptr;
+}
+
+Customer *MyImplementation::addMyCustomer(string id, string name, int pri) {
+    MyCustomer *myCusto = new MyCustomer(id, name, pri);
+    Customer *y = myCusto;
+
+    this->customer.push_back(y);
+    this->myCusList.push_back(myCusto);
+    return y;
+}
+
+void MyImplementation::loadSetting() {
+    string s;
+    ifstream myfile;
+    myfile.open(SET_FILE);
+    if (!myfile.is_open()) {
+        return;
+    }
+    getline(myfile, s);
+    std::istringstream iss(s);
+    std::vector<std::string> results(std::istream_iterator<std::string>{iss},
+                                     std::istream_iterator<std::string>());
+    this->company->set(stoi(results.at(0)), stoi(results.at(1)), stoi(results.at(2)), stoi(results.at(3)),
+                       stoi(results.at(4)));
+
+    myfile.close();
+
+
+}
+
+void MyImplementation::saveSetting() {
+    ofstream myfile;
+    myfile.open(SET_FILE);
+    if (!myfile.is_open()) {
+        throw "Error in saving";
+    }
+    myfile << to_string(this->company->getMangers()) + " " + to_string(this->company->getNavigators()) + " " +
+              to_string(this->company->getFly_attendant()) +
+              " " + to_string(this->company->getPilots()) + " " + to_string(this->company->getOther());
+
+    myfile.close();
 }
 
 

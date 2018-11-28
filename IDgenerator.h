@@ -34,6 +34,18 @@ public:
      */
     explicit IDgenerator(int managers = 0, int navigators = 0, int fly_attendant = 0, int pilots = 0, int other = 0);
 
+    int getMangers() const;
+
+    int getNavigators() const;
+
+    int getFly_attendant() const;
+
+    int getPilots() const;
+
+    int getOther() const;
+
+    void set(int managers = 0, int navigators = 0, int fly_attendant = 0, int pilots = 0, int other = 0);
+
     /**
      * generate ID
      * @param type

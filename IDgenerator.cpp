@@ -68,3 +68,31 @@ IDgenerator::IDgenerator(int managers, int navigators, int fly_attendant, int pi
     this->pilots = 0;
     this->other = 0;
 }
+
+void IDgenerator::set(int managers, int navigators, int fly_attendant, int pilots, int other) {
+    this->mangers = managers;
+    this->navigators = navigators;
+    this->fly_attendant = fly_attendant;
+    this->pilots = pilots;
+    this->other = other;
+}
+
+int IDgenerator::getMangers() const {
+    return mangers;
+}
+
+int IDgenerator::getNavigators() const {
+    return navigators;
+}
+
+int IDgenerator::getFly_attendant() const {
+    return fly_attendant;
+}
+
+int IDgenerator::getPilots() const {
+    return pilots;
+}
+
+int IDgenerator::getOther() const {
+    return other;
+}
