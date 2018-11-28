@@ -3,9 +3,9 @@
 //
 
 #include "MyEmployee.h"
-#include "AllID.h"
+#include "IDgenerator.h"
 
-MyEmployee::MyEmployee(Jobs type, int seniority, int birthYear, Employee *employer, AllId *company) {
+MyEmployee::MyEmployee(Jobs type, int seniority, int birthYear, Employee *employer, IDgenerator *company) {
     this->type = type;
     this->seniority = seniority;
     this->birthYead = birthYear;

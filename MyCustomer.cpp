@@ -3,7 +3,7 @@
 //
 #include "MyCustomer.h"
 
-MyCustomer::MyCustomer(const string &name, int priority, AllId *company) : name(name) {
+MyCustomer::MyCustomer(const string &name, int priority, IDgenerator *company) : name(name) {
     this->priority = priority;
     if (this->priority > 5) {
         this->priority = 5;

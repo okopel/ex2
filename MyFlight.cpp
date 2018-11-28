@@ -3,7 +3,7 @@
 //
 
 #include "MyFlight.h"
-#include "AllID.h"
+#include "IDgenerator.h"
 
 string MyFlight::getID() {
     return this->id;
@@ -33,7 +33,7 @@ string MyFlight::getDestination() {
     return this->des;
 }
 
-MyFlight::MyFlight(int model, const Date &date, const string &from, const string &des, AllId *company,
+MyFlight::MyFlight(int model, const Date &date, const string &from, const string &des, IDgenerator *company,
                    list<Employee *> list) : model(model),
                                             date(date),
                                             from(from),

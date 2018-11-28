@@ -9,7 +9,6 @@
 
 Employee *MyImplementation::addEmployee(int seniority, int birth_year, string employer_id, Jobs title) {
     this->loadFromFile(EMP);
-
     Employee *boss = this->getEmployee(employer_id);
     Employee *emp = new MyEmployee(title, seniority, birth_year, boss, this->company);
     this->employees.push_back(emp);
@@ -180,7 +179,10 @@ list<Reservation *> &MyImplementation::getReservs() {
 }
 
 MyImplementation::MyImplementation() {
-    this->company = new AllId(0, 0, 0, 0, 0);
+    /**
+     * inition of id generator
+     */
+    this->company = new IDgenerator(0, 0, 0, 0, 0);
     this->hasloaded.insert(std::pair<LoadTableType, bool>(EMP, false));
     this->hasloaded.insert(std::pair<LoadTableType, bool>(CUS, false));
     this->hasloaded.insert(std::pair<LoadTableType, bool>(PLAN, false));

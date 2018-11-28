@@ -2,9 +2,9 @@
 // Created by okopel on 11/22/18.
 //
 #include "MyPlane.h"
-#include "AllID.h"
+#include "IDgenerator.h"
 
-myPlane::myPlane(int model, int maxFirstClass, int maxSecondClass, map<Jobs, int> &neededCrew, AllId *company)
+myPlane::myPlane(int model, int maxFirstClass, int maxSecondClass, map<Jobs, int> &neededCrew, IDgenerator *company)
         : model(model),
           maxFirstClass(
                   maxFirstClass),

@@ -3,11 +3,15 @@
 //
 #include "MyImplementation.h"
 
-
-bool Date::operator<(const Date &d) const {
+/**
+ * Implimation of date
+ * @param other the date
+ * @return if date<other date
+ */
+bool Date::operator<(const Date &other) const {
 
     string thisDate = this->date.substr(0, 4);
-    string otherDate = d.date.substr(0, 4);
+    string otherDate = other.date.substr(0, 4);
     if (thisDate < otherDate) {
         return true;
     } else if (thisDate < otherDate) {
@@ -15,14 +19,14 @@ bool Date::operator<(const Date &d) const {
     }
 
     thisDate = this->date.substr(5, 2);
-    otherDate = d.date.substr(5, 2);
+    otherDate = other.date.substr(5, 2);
     if (thisDate < otherDate) {
         return true;
     } else if (thisDate < otherDate) {
         return false;
     }
     thisDate = this->date.substr(8, 2);
-    otherDate = d.date.substr(8, 2);
+    otherDate = other.date.substr(8, 2);
     if (thisDate < otherDate) {
         return true;
     } else if (thisDate < otherDate) {
@@ -39,6 +43,10 @@ bool Date::operator==(const Date &d) const {
     return (this->date == d.date);
 }
 
+/**
+ * Ctor
+ * @param date the string of the date
+ */
 Date::Date(string date) {
     if (date.length() != 10) {
         throw "Error in date";

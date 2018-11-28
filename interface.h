@@ -114,7 +114,7 @@ public:
     string getDate() const { return date; }
 
     Date(string date);    // format: YYYY-MM-DD
-    bool operator<(const Date &d) const;
+    bool operator<(const Date &other) const;
 
     bool operator>(const Date &d) const;
 

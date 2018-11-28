@@ -3,9 +3,14 @@
 //
 
 #include "MyImplementation.h"
-#include "AllID.h"
+#include "IDgenerator.h"
 
-string AllId::generate(Jobs type) {
+/**
+ * generate new ID
+ * @param type type of wanted ID
+ * @return new ID
+ */
+string IDgenerator::generate(Jobs type) {
     string c;
     switch (type) {
         case MANAGER:
@@ -29,7 +34,12 @@ string AllId::generate(Jobs type) {
     return "" + c + "-" + to_string(this->getCount(type));
 }
 
-int AllId::getCount(Jobs type) {
+/**
+ * inner func of generator
+ * @param type
+ * @return
+ */
+int IDgenerator::getCount(Jobs type) {
     switch (type) {
         case MANAGER:
             this->mangers++;
@@ -37,25 +47,21 @@ int AllId::getCount(Jobs type) {
         case NAVIGATOR:
             this->navigators++;
             return this->navigators;
-
         case FLY_ATTENDANT:
             this->fly_attendant++;
             return this->fly_attendant;
-
         case PILOT:
             this->pilots++;
             return this->pilots;
-
         case OTHER:
             this->other++;
             return this->other;
-
         default:
             return -1;
     }
 }
 
-AllId::AllId(int managers, int navigators, int fly_attendant, int pilots, int other) {
+IDgenerator::IDgenerator(int managers, int navigators, int fly_attendant, int pilots, int other) {
     this->mangers = 0;
     this->navigators = 0;
     this->fly_attendant = 0;

@@ -7,6 +7,9 @@
 
 #include "MyEmployee.h"
 
+/**
+ * impliment of flight.
+ */
 class MyFlight : virtual public Flight {
     string id;
     int model;
@@ -19,7 +22,7 @@ class MyFlight : virtual public Flight {
 
 public:
 
-    explicit MyFlight(int model, const Date &date, const string &from, const string &des, AllId *company,
+    explicit MyFlight(int model, const Date &date, const string &from, const string &des, IDgenerator *company,
                       list<Employee *> list);
 
     explicit MyFlight(const string &id, int model, const string &date, const string &from,
@@ -27,6 +30,10 @@ public:
 
     int getModelNumber() override;
 
+    /**
+     * add reserv to the flight
+     * @param res the reservetaion
+     */
     void addReserv(Reservation *res);
 
     list<Reservation *> getReservations() override;

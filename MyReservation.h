@@ -7,6 +7,9 @@
 
 #include "MyImplementation.h"
 
+/**
+ * implement of reserrvetation
+ */
 class MyReservation : virtual public Reservation {
     Customer *customer;
     Flight *flight;
@@ -14,7 +17,7 @@ class MyReservation : virtual public Reservation {
     Classes classes;
     string id;
 public:
-    explicit MyReservation(Customer *customer, Flight *flight, int cases, Classes classes, AllId *comp);
+    explicit MyReservation(Customer *customer, Flight *flight, int cases, Classes classes, IDgenerator *comp);
 
     explicit MyReservation(const string &id, Customer *customer, Flight *flight, int cases, Classes classes);
 

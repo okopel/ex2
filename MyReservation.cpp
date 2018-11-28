@@ -3,8 +3,9 @@
 //
 
 #include "MyReservation.h"
-#include "AllID.h"
-MyReservation::MyReservation(Customer *customer, Flight *flight, int baggage, Classes classes, AllId *comp) :
+#include "IDgenerator.h"
+
+MyReservation::MyReservation(Customer *customer, Flight *flight, int baggage, Classes classes, IDgenerator *comp) :
         baggage(baggage), classes(classes), customer(customer), flight(flight) {
     this->id = comp->generate(OTHER);
 }

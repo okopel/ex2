@@ -7,7 +7,9 @@
 
 #include "MyImplementation.h"
 
-
+/**
+ * implimation of employee
+ */
 class MyEmployee : virtual public Employee {
     Jobs type;
     string id;
@@ -16,7 +18,7 @@ class MyEmployee : virtual public Employee {
     Employee *employer;
 
 public:
-    explicit MyEmployee(Jobs type, int seniority, int birthYear, Employee *employee, AllId *company);
+    explicit MyEmployee(Jobs type, int seniority, int birthYear, Employee *employee, IDgenerator *company);
 
     explicit MyEmployee(const string &ID, Jobs type, int seniority, int birthYear, Employee *employee);
 
