@@ -25,6 +25,7 @@ Employee *MyImplementation::addEmployee(int seniority, int birth_year, string em
 }
 
 Employee *MyImplementation::getEmployee(const string id) {
+    this->loadFromFile(EMP);
     if (id.empty()) {
         return nullptr;
     }
@@ -45,6 +46,7 @@ Plane *MyImplementation::addPlane(int model_number, map<Jobs, int> crew_needed, 
 }
 
 Plane *MyImplementation::getPlane(string id) {
+    this->loadFromFile(PLAN);
     if (id.empty()) {
         return nullptr;
     }
@@ -72,6 +74,8 @@ Flight *MyImplementation::addFlight(int model_number, Date date, string source, 
 }
 
 Flight *MyImplementation::getFlight(string id) {
+    this->loadFromFile(FLY);
+    this->loadFromFile(EMP);
     if (id.empty()) {
         return nullptr;
     }
@@ -93,6 +97,7 @@ Customer *MyImplementation::addCustomer(string full_name, int priority) {
 }
 
 Customer *MyImplementation::getCustomer(string id) {
+    this->loadFromFile(CUS);
     if (id.empty()) {
         return nullptr;
     }
@@ -130,6 +135,10 @@ Reservation *MyImplementation::addResevation(string customerId, string flightId,
 }
 
 Reservation *MyImplementation::getReservation(string id) {
+    this->loadFromFile(CUS);
+    this->loadFromFile(PLAN);
+    this->loadFromFile(FLY);
+    this->loadFromFile(RES);
     if (id.empty()) {
         return nullptr;
     }
