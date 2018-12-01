@@ -490,6 +490,7 @@ void MyImplementation::saveSetting() {
 
 MyImplementation::~MyImplementation() {
     delete this->company;
+    delete this->schedule;
     for (auto *x:this->flight) {
         delete x;
     }

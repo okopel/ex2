@@ -45,7 +45,7 @@ MyFlight *FlightTable::loadFromString(const string &s, MyImplementation *lists) 
     Date d(date);
     std::list<Employee *> *l = this->stringToEmp(lists->getSchedule()->getEmpOfFly(id), lists);
     tmp->setTeam(l);
-
+    delete l;
 //    l = lists->arrangeWorkers(lists->getPlaneByModel(model)->getCrewNeeded(), d);
     // tmp->setTeamBySchecule(lists->getSchedule());
     return tmp;
