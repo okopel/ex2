@@ -30,8 +30,9 @@ Employee *MyImplementation::getEmployee(const string id) {
         return nullptr;
     }
     for (auto const &employee : this->employees) {
-        if (employee->getID() == (id)) { continue; }
-        return employee;
+        if (employee->getID() == id) {
+            return employee;
+        }
     }
     return nullptr;
 
@@ -59,14 +60,18 @@ Plane *MyImplementation::getPlane(string id) {
 }
 
 Flight *MyImplementation::addFlight(int model_number, Date date, string source, string destination) {
-    this->loadFromFile(FLY);
+    this->loadFromFile(PLAN);
     this->loadFromFile(EMP);
+    this->loadFromFile(FLY);
     if (!this->checkAvailiblePlanAndCrew(date, model_number)) {
         throw "There isn't free plan or free crew";
     }
     list<Employee *> *l = this->arrangeWorkers(this->getPlaneByModel(model_number)->getCrewNeeded(), date);
     MyFlight *mf = new MyFlight(model_number, date, source, destination, this->company, *l);
     Flight *myFlight = mf;
+    this->schedule->addToMap(mf->getID(), l);
+    mf->setTeam(l);
+
     delete l;
 
     this->flight.push_back(mf);
@@ -74,8 +79,11 @@ Flight *MyImplementation::addFlight(int model_number, Date date, string source, 
 }
 
 Flight *MyImplementation::getFlight(string id) {
-    this->loadFromFile(FLY);
+    //we need plans, fliight and employee to build flight.
+    this->loadFromFile(PLAN);
     this->loadFromFile(EMP);
+    this->loadFromFile(FLY);
+
     if (id.empty()) {
         return nullptr;
     }
@@ -88,6 +96,9 @@ Flight *MyImplementation::getFlight(string id) {
 }
 
 Customer *MyImplementation::addCustomer(string full_name, int priority) {
+    if (priority > 5 || priority < 0) {
+        throw "error in priority";
+    }
     this->loadFromFile(CUS);
     MyCustomer *myCusto = new MyCustomer(full_name, priority, this->company);
     Customer *y = myCusto;
@@ -174,10 +185,12 @@ void MyImplementation::exit() {
     if (!this->flight.empty()) {
         Table<MyFlight> *fly = new FlightTable(this->flight);
         fly->saveTable(FLY_FILE);
+        this->schedule->save();
+
         delete fly;
     }
+
     this->saveSetting();
-    delete this;
 }
 
 
@@ -206,6 +219,7 @@ MyImplementation::MyImplementation() {
      * inition of id generator
      */
     this->company = new IDgenerator(0, 0, 0, 0, 0);
+    this->schedule = new Schedule();
     bool b = this->loadSetting();
     //b is true if there are files to load.
     this->hasloaded.insert(std::pair<LoadTableType, bool>(EMP, !b));
@@ -364,6 +378,7 @@ void MyImplementation::loadFromFile(const LoadTableType &num) {
             break;
         }
         case FLY: {
+            this->schedule->load();
             FlightTable table4(this->flight);
             table4.loadTable(FLY_FILE, this);
             this->flight = table4.getTlist();
@@ -400,6 +415,7 @@ list<Employee *> *MyImplementation::arrangeWorkers(map<Jobs, int> crew, Date dat
         if (crew[emp->getTitle()] > 0) {
             if (this->isWorkerAvailible(emp, date)) {
                 list->push_back(emp);
+
                 crew[emp->getTitle()]--;
 
             }
@@ -490,6 +506,14 @@ MyImplementation::~MyImplementation() {
         delete x;
     }
 
+}
+
+void MyImplementation::addToSche(string flyId, string empId) {
+    this->schedule->addToMap(flyId, empId);
+}
+
+Schedule *MyImplementation::getSchedule() {
+    return this->schedule;
 }
 
 

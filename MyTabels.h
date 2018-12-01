@@ -8,6 +8,7 @@
 #define EX2_MYTABELS_H
 
 #include "MyImplementation.h"
+#include "Schedule.h"
 
 /**
  * class of tables in order to save and load from files to our DB
@@ -89,11 +90,14 @@ public:
 
 };
 
+
 class FlightTable : public Table<MyFlight> {
 public:
     explicit FlightTable(std::list<MyFlight *> &list);
 
     MyFlight *loadFromString(const string &s, MyImplementation *lists) override;
+
+    std::list<Employee *> *stringToEmp(std::list<string> l, MyImplementation *lists);
 
     string makeString(MyFlight *tmp) override;
 

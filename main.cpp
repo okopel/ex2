@@ -1,69 +1,259 @@
-/*****************
- * Ori Kopel
- * 205533151
- * ex2 - nov 2018
- ****************/
-
+#include "interface.h"
 #include "MyImplementation.h"
-#include "MyTabels.h"
 
-int main() {
+#include <iostream>
+#include <fstream>
 
-//    Ex2 *my = new MyImplementation();  // This line must work!
-//
-//    my->addEmployee(2, 1994, "", MANAGER);
-//    my->addEmployee(2, 1914, "", MANAGER);
-//    my->addEmployee(2, 1094, "", MANAGER);
-//    my->addEmployee(2, 1900, "", MANAGER);
-//    my->addEmployee(3, 1994, "", MANAGER);
-//    my->addEmployee(4, 1974, "", PILOT);
-//    my->addEmployee(5, 1850, "", FLY_ATTENDANT);
-//    my->addEmployee(7, 1950, "m-4", PILOT);
-//    my->addEmployee(1, 1840, "m-1", FLY_ATTENDANT);
-//    my->addEmployee(0, 1999, "m-4", NAVIGATOR);
-//    my->addEmployee(19, 2019, "m-1", NAVIGATOR);
-//
-//    map<Jobs, int> crew;
-//    crew.insert(std::pair<Jobs, int>(MANAGER, 2));
-//    crew.insert(std::pair<Jobs, int>(NAVIGATOR, 1));
-//    crew.insert(std::pair<Jobs, int>(PILOT, 1));
-//    map<Classes, int> classSeats;
-//    classSeats.insert(std::pair<Classes, int>(FIRST_CLASS, 102));
-//    classSeats.insert(std::pair<Classes, int>(SECOND_CLASS, 19));
-//    my->addPlane(123, crew, classSeats);
-//    my->addPlane(153, crew, classSeats);
-//    my->addPlane(3333, crew, classSeats);
-//    my->addPlane(993, crew, classSeats);
-//    my->addPlane(3363, crew, classSeats);
-//    my->addPlane(1113, crew, classSeats);
-//
-//    my->addCustomer("ori kopel", 3);
-//    my->addCustomer("shlomo", 5);
-//    my->addCustomer("moshe", 6);
-//    my->addCustomer("dowi", 1);
-//    my->addCustomer("renana", 6);
-//    my->addCustomer("nushnushit", 6);
-//
-//    my->addFlight(123, Date("2018-11-25"), "israel", "los angeles");
-//    my->addFlight(153, Date("2019-01-25"), "Poland", "greece");
-//    my->addFlight(3333, Date("2019-01-26"), "USA", "greece");
-//    my->addFlight(153, Date("2019-02-02"), "london", "israel");
-//    my->addFlight(993, Date("2019-01-13"), "Poland", "berlin");
-//    my->addFlight(1113, Date("2019-01-13"), "Poland", "berlin");
-//    my->addResevation("o-7", "o-13", FIRST_CLASS, 2);
-//    my->addResevation("o-8", "o-14", FIRST_CLASS, 2);
-//    my->addResevation("o-9", "o-15", SECOND_CLASS, 2);
-//    my->addResevation("o-10", "o-16", FIRST_CLASS, 2);
-//
-//    my->exit();
+int session_number = 0;
+const char *test_file = "testing.txt";
 
-    Ex2 *my2 = new MyImplementation();
-    auto x = my2->getCustomer("o-9");
-    auto x1 = my2->getEmployee("m-4");
-    auto x2 = my2->getPlane("o-1");
-    auto x3 = my2->getReservation("o-20");
-    auto x4 = my2->getFlight(x3->getFlight()->getID());
+#ifndef TEST
+#define TEST
+const int titles_count = 5;
+const Jobs titles_array[] = {MANAGER, PILOT, FLY_ATTENDANT, NAVIGATOR, OTHER};
 
-    my2->exit();
+#endif
+
+const int classes_count = 2;
+const Classes classes_array[] = {SECOND_CLASS, FIRST_CLASS};
+
+int model1 = 1234;
+int model2 = 4321;
+
+int crew_map_1[] = {1, 0, 0, 1, 0};
+int crew_map_2[] = {4, 1, 2, 0, 2};
+int crew_map_3[] = {7, 1, 1, 1, 2};
+
+int classes_map_1[] = {200, 20};
+int classes_map_2[] = {3, 1};
+
+void success(int counter) {
+    printf("Session %d, test %d passed\n", session_number, counter);
+}
+
+void failure(int counter, const char *ext = "") {
+    printf("Session %d, test %d failed %s\n", session_number, counter, ext);
+}
+
+
+map<Jobs, int> createCrewMap(int *arr) {
+    map<Jobs, int> mp;
+    for (int i = 0; i < titles_count; ++i) {
+        mp.insert(pair<Jobs, int>(titles_array[i], arr[i]));
+    }
+
+    return mp;
+}
+
+map<Classes, int> createClassesMap(int *arr) {
+    map<Classes, int> mp;
+    for (int i = 0; i < classes_count; ++i) {
+        mp.insert(pair<Classes, int>(classes_array[i], arr[i]));
+    }
+    return mp;
+}
+
+void empFactory(Ex2 *ex2, Jobs title, int num) {
+    for (int i = 0; i < num; ++i) {
+        ex2->addEmployee(5, 1950, "", title);
+    }
+}
+
+void empFactory(Ex2 *ex2, map<Jobs, int> titles) {
+    for (int i = 0; i < titles_count; ++i) {
+        empFactory(ex2, titles_array[i], titles[titles_array[i]]);
+    }
+}
+
+void resFactory(Ex2 *ex2, Classes cls, string flight_id, string cust_id, int num) {
+    for (int i = 0; i < num; ++i) {
+        ex2->addResevation(cust_id, flight_id, cls, 2);
+    }
+
+}
+
+template<class T>
+void *should_succeed(Ex2 *ex2, T func, int test_number) {
+    void *result = NULL;
+    try {
+        result = func(ex2);
+        success(test_number);
+    }
+    catch (...) {
+        failure(test_number);
+    }
+    return result;
+}
+
+template<class T>
+void should_succeed_bool(Ex2 *ex2, T func, int test_num) {
+    try {
+        if (func(ex2)) {
+            success(test_num);
+        }
+        return;
+    }
+    catch (...) {
+        failure(test_num, " - WRONG EXCEPTION");
+    }
+    failure(test_num, " - WRONG TEST");
+}
+
+template<class T>
+void should_fail(Ex2 *ex2, T func, int test_number) {
+    try {
+        func(ex2);
+        failure(test_number);
+    }
+    catch (...) {
+        success(test_number);
+    }
+}
+
+
+void simple_test1(Ex2 *ex2) {
+    int counter = 0;
+    // invalid priority
+    should_fail(ex2, [](Ex2 *ex2) { ex2->addCustomer("John Hayha", 7); }, counter++);
+    should_succeed(ex2, [](Ex2 *ex2) { return (void *) ex2->addCustomer("John Hayha", 4); }, counter++);
+    // add employee - no employer
+    Employee *emp = (Employee *) should_succeed(ex2, [](Ex2 *ex2) {
+        return (void *) ex2->addEmployee(4, 6, "", titles_array[0]);
+    }, counter++);
+    ofstream file(test_file, ios_base::trunc);
+    file << emp->getID() << endl;
+    file.close();
+    // add plane
+    should_succeed(ex2, [](Ex2 *ex2) {
+        return (void *) ex2->addPlane(model1, createCrewMap(crew_map_1), createClassesMap(classes_map_1));
+    }, counter++);
+}
+
+void simple_test2(Ex2 *ex2) {
+    string id;
+    ifstream file(test_file, ios_base::in);
+    file >> id;
+    file.close();
+
+    int counter = 0;
+    Employee *emp = (Employee *) should_succeed(ex2, [id](Ex2 *ex2) {
+        return (void *) ex2->addEmployee(4, 6, id, titles_array[3]);
+    }, counter++);
+    should_succeed_bool(ex2, [id, emp](Ex2 *ex2) {
+        return emp->getEmployer()->getID() == id;
+    }, counter++);
+
+}
+
+void test3(Ex2 *ex2) {
+
+    int counter = 0;
+    Flight *flight = (Flight *) should_succeed(ex2, [](Ex2 *ex2) {
+        return (void *) ex2->addFlight(model1, Date("2019-10-10"), "ARL", "VAN");
+    }, counter++);
+    ofstream file(test_file, ios_base::out | ios_base::trunc);
+
+    file << flight->getID() << endl;
+
+    int verifier = 0;
+
+    auto assigned_c = flight->getAssignedCrew();
+
+    for (auto it = assigned_c.begin(); it != assigned_c.end(); ++it, ++verifier) {
+        if (verifier > 2) {
+            failure(counter++);
+        }
+        file << (*it)->getID() << endl;
+    }
+
+    file.close();
+}
+
+void test4(Ex2 *ex2) {
+    int counter = 0;
+    string ids[3];
+    ifstream file(test_file, ios_base::in);
+    for (int i = 0; i < 3; ++i) file >> ids[i];
+    file.close();
+
+    Flight *flight = (Flight *) should_succeed(ex2, [ids](Ex2 *ex2) { return (void *) ex2->getFlight(ids[0]); },
+                                               counter++);
+    list<Employee *> crew = flight->getAssignedCrew();
+    if (crew.size() != 2) {
+        failure(counter++);
+    } else {
+        string ids2[2];
+        auto itr = crew.begin();
+        ids2[0] = (*itr++)->getID();
+        ids2[1] = (*itr)->getID();
+
+        bool check1 = (ids2[0] == ids[1]) && (ids2[1] == ids[2]);
+        bool check2 = (ids2[0] == ids[2]) && (ids2[1] == ids[1]);
+        if (check1 || check2) {
+            success(counter++);
+        } else {
+            failure(counter++);
+        }
+
+    }
+
+    should_fail(ex2, [](Ex2 *ex2) { return (void *) ex2->addFlight(model1, Date("2019-10-10"), "ARL", "VAN"); },
+                counter++);
+    should_succeed(ex2, [](Ex2 *ex2) { return (void *) ex2->addFlight(model1, Date("2019-10-11"), "ARL", "VAN"); },
+                   counter++);
+}
+
+void test5(Ex2 *ex2) {
+    int counter = 0;
+    should_succeed(ex2, [](Ex2 *ex2) {
+        empFactory(ex2, createCrewMap(crew_map_1));
+        return nullptr;
+    }, counter++);
+    should_fail(ex2, [](Ex2 *ex2) { return (void *) ex2->addFlight(model1, Date("2019-10-10"), "ARL", "VAN"); },
+                counter++);
+    // NOTE THAT I SENT model1+1, so the plane is of wrong model!!
+    should_succeed(ex2, [](Ex2 *ex2) {
+        return (void *) ex2->addPlane(model1 + 1, createCrewMap(crew_map_1), createClassesMap(classes_map_1));
+    }, counter++);
+    should_fail(ex2, [](Ex2 *ex2) { return (void *) ex2->addFlight(model1, Date("2019-10-10"), "ARL", "VAN"); },
+                counter++);
+
+    should_succeed(ex2, [](Ex2 *ex2) {
+        return (void *) ex2->addPlane(model1, createCrewMap(crew_map_1), createClassesMap(classes_map_1));
+    }, counter++);
+    should_succeed(ex2, [](Ex2 *ex2) { return (void *) ex2->addFlight(model1, Date("2019-10-10"), "ARL", "VAN"); },
+                   counter++);
+}
+
+
+void (*tests[])(Ex2 *) = {simple_test1, simple_test2, test3, test4, test5};
+
+const int tests_number = 5;
+
+class Tester {
+    int session_number;
+public:
+    void operator()(int session_number) {
+        Ex2 *ex2 = new MyImplementation();
+        tests[session_number](ex2);
+        ex2->exit();
+        delete ex2;
+    }
+};
+
+
+int main(int argc, char *argv[]) {
+#ifdef DELETE_FIRST
+    // Make sure to delete all of your database files before
+    // you start my tests! You don't want old data to interfere
+#endif
+    Tester t;
+    for (int i = 0; i < tests_number; ++i) {
+        session_number = i;
+        t(i);
+    }
+
+    return 0;
+
 
 }

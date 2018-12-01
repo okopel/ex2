@@ -20,6 +20,7 @@
 #include <iostream>
 #include <fstream>
 #include "interface.h"
+#include "Schedule.h"
 
 /**
  * enum of filesType - table
@@ -46,6 +47,11 @@ class MyFlight;
  * class of the impimention of ex2
  */
 class MyImplementation : virtual public Ex2 {
+    /**
+     * class of map of employees per flight
+     */
+    Schedule *schedule;
+
     /**
      * company id generator
      */
@@ -74,10 +80,7 @@ class MyImplementation : virtual public Ex2 {
      * list of mycustomer to some update
      */
     list<MyCustomer *> myCusList;
-    /**
-     * list of myFloight to some update
-     */
-    list<MyFlight *> myFlyList;
+
 
 
     bool loadSetting();
@@ -166,6 +169,7 @@ class MyImplementation : virtual public Ex2 {
     int numOfCatch(Flight *fly, const Classes &cls);
 
 public:
+    Schedule *getSchedule();
     /**
      * C-TOR.
      */
@@ -177,6 +181,8 @@ public:
      * @return plan of this model
      */
     Plane *getPlaneByModel(const int &model);
+
+    void addToSche(string flyId, string empId);
 
     /**
     * enter work to new flight

@@ -15,6 +15,8 @@
 #include "MyReservation.h"
 #include "MyCustomer.h"
 #include "interface.h"
+#include "Schedule.h"
+
 
 FlightTable::FlightTable(std::list<MyFlight *> &list) {
     this->list = list;
@@ -41,10 +43,11 @@ MyFlight *FlightTable::loadFromString(const string &s, MyImplementation *lists) 
     string to = this->underscore2space(results.at(4));
     MyFlight *tmp = new MyFlight(id, model, date, from, to);
     Date d(date);
-    std::list<Employee *> *l;
-    l = lists->arrangeWorkers(lists->getPlaneByModel(model)->getCrewNeeded(), d);
-    tmp->setTeam(*l);
-    delete l;
+    std::list<Employee *> *l = this->stringToEmp(lists->getSchedule()->getEmpOfFly(id), lists);
+    tmp->setTeam(l);
+
+//    l = lists->arrangeWorkers(lists->getPlaneByModel(model)->getCrewNeeded(), d);
+    // tmp->setTeamBySchecule(lists->getSchedule());
     return tmp;
 }
 
@@ -54,6 +57,14 @@ string FlightTable::makeString(MyFlight *tmp) {
             this->space2underscore(tmp->getSource()) + " " +
             this->space2underscore(tmp->getDestination());
     return s;
+}
+
+std::list<Employee *> *FlightTable::stringToEmp(std::list<string> l, MyImplementation *listsImp) {
+    std::list<Employee *> *list = new std::list<Employee *>;
+    for (auto tmp:l) {
+        list->push_back(listsImp->getEmployee(tmp));
+    }
+    return list;
 }
 
 

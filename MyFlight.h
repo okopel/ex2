@@ -30,7 +30,9 @@ public:
     explicit MyFlight(const string &id, int model, const string &date, const string &from,
                       const string &des);
 
-    void setTeam(list<Employee *> team);
+    void setTeam(list<Employee *> *team);
+
+    void setTeamBySchecule(Schedule *s);
 
     int getModelNumber() override;
 

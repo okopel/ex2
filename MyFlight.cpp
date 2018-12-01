@@ -58,8 +58,11 @@ void MyFlight::addReserv(Reservation *res) {
     this->reser.push_back(res);
 }
 
-void MyFlight::setTeam(list<Employee *> team) {
-    MyFlight::team = team;
+void MyFlight::setTeam(list<Employee *> *team) {
+    MyFlight::team = *team;
+}
+
+void MyFlight::setTeamBySchecule(Schedule *s) {
 }
 
 MyFlight::~MyFlight() = default;
